@@ -22,8 +22,9 @@
 // });
 
 
-
+// AN Note:  This is the code I edited from the tutorial.
 import React from 'react';
+// Import a bunch of stuff from React Native.
 import {
 	ActivityIndicator,
 	Button,
@@ -36,29 +37,47 @@ import {
 	ScrollView,
 	View
 } from 'react-native';
+// I needed to install expo-image-picker (not included in the tutorial).
 import * as ImagePicker from 'expo-image-picker';
+// I needed to install expo-camera (not included in the tutorial).
 import {Camera} from 'expo-camera'
+// I was fine using uuid, the tutorial uses nanoid.
+// This basically gives a unique identifier to each item.
 import uuid from 'uuid';
+// This is importing my firebase.
 import firebase from './config/firebase';
+// This is importing my environment/keys to use.
 import Environment from './config/environment';
 
-
+// The tutorial is using class components, but is this best?
+// Aka should we be using hooks?
 export default class App extends React.Component {
-	state = {
+	// The tutorial is setting state to be an object with image, uploading, and googleResponse keys.
+  state = {
 		image: null,
 		uploading: false,
 		googleResponse: null
 	};
 
+// When component mounts, make sure to get access to camera and pics.
 	async componentDidMount() {
+    // This is code from the tutorial that was out of date.  
+    // We should be using Camera and Image Picker here instead so I updated that.
+    // Actually, maybe I'll still need these lines of code....will play with them.
 		//await Permissions.askAsync(Permissions.CAMERA_ROLL);
 		//await Permissions.askAsync(Permissions.CAMERA);
+    // Here I'm requesting permission to use the camera of the user.
     await Camera.requestCameraPermissionsAsync();
+    // Here I'm requesting permission to use cameral.
     await ImagePicker.requestCameraPermissionsAsync();
+    // Here I'm requesting permission to take a picture from the user's camera roll.
+    // I'm inputting false as a parameter because I don't need write-only permissions.  
     await ImagePicker.requestMediaLibraryPermissionsAsync(false);
 	}
 
+  // This is rendering my screen.
 	render() {
+    // Deconstructing image from this.state.
 		let { image } = this.state;
 
 		return (
@@ -72,13 +91,13 @@ export default class App extends React.Component {
 							<Text style={styles.getStartedText}>Google Cloud Vision</Text>
 						)}
 					</View>
-
+{/* When you hit pick image from camera roll, on press kick off pick image function */}
 					<View style={styles.helpContainer}>
 						<Button
 							onPress={this._pickImage}
 							title="Pick an image from camera roll"
 						/>
-
+{/* When you hit take a photo, access camera and take image, but I can't get this to work yet.  Need to figure out how to get the app on my phone to test with my camera */}
 						<Button onPress={this._takePhoto} title="Take a photo" />
 						{this.state.googleResponse && (
 							<FlatList
@@ -95,7 +114,7 @@ export default class App extends React.Component {
 			</View>
 		);
 	}
-
+// I currently don't know that this is organizing.
 	organize = array => {
 		return array.map(function(item, i) {
 			return (
@@ -105,7 +124,7 @@ export default class App extends React.Component {
 			);
 		});
 	};
-
+// Rendering the Overlay - basically this is formatting stuff.
 	_maybeRenderUploadingOverlay = () => {
 		if (this.state.uploading) {
 			return (
@@ -124,13 +143,15 @@ export default class App extends React.Component {
 			);
 		}
 	};
-
+// This is rendering the image.
 	_maybeRenderImage = () => {
+    // Deconstructing image and google response from this.state.
 		let { image, googleResponse } = this.state;
+    // However, if there is no image, do nothing.
 		if (!image) {
 			return;
 		}
-
+// If there is one, then style it and render.
 		return (
 			<View
 				style={{
@@ -140,6 +161,7 @@ export default class App extends React.Component {
 					elevation: 2
 				}}
 			>
+        {/* This is a button that kicks off the function that submits the image to the google api */}
 				<Button
 					style={{ marginBottom: 10 }}
 					onPress={() => this.submitToGoogle()}
@@ -166,14 +188,15 @@ export default class App extends React.Component {
 				/>
 
 				<Text>Raw JSON:</Text>
-
+{/* If a google response is received, display it on the screen */}
+{/* Also if you click on the image with your mouse, you can copy it to your clipboard */}
 				{googleResponse && (
 					<Text
 						onPress={this._copyToClipboard}
 						onLongPress={this._share}
 						style={{ paddingVertical: 10, paddingHorizontal: 10 }}
 					>
-						JSON.stringify(googleResponse.responses)}
+						{JSON.stringify(googleResponse.responses)}
 					</Text>
 				)}
 			</View>
@@ -232,7 +255,10 @@ export default class App extends React.Component {
 			this.setState({ uploading: false });
 		}
 	};
-
+// So here's the important bit, this is where you talk to google.
+// You get charged by feature you use from google.
+// So I'm only using landmark detection, text, and document text detection.
+// I'm keeping landmark so I can demonstrate how this works to my team.
 	submitToGoogle = async () => {
 		try {
 			this.setState({ uploading: true });
@@ -242,7 +268,7 @@ export default class App extends React.Component {
 					{
 						features: [
 							// { type: 'LABEL_DETECTION', maxResults: 10 },
-							// { type: 'LANDMARK_DETECTION', maxResults: 5 },
+							{ type: 'LANDMARK_DETECTION', maxResults: 5 },
 							// { type: 'FACE_DETECTION', maxResults: 5 },
 							// { type: 'LOGO_DETECTION', maxResults: 5 },
 							{ type: 'TEXT_DETECTION', maxResults: 5 },
@@ -260,6 +286,9 @@ export default class App extends React.Component {
 					}
 				]
 			});
+      // Here you fetch a response from google. 
+      // It looks like you don't need to convert to base 64 here?
+      // You're body contains the image info in the format google vision API needs.
 			let response = await fetch(
 				'https://vision.googleapis.com/v1/images:annotate?key=' +
 					Environment['GOOGLE_CLOUD_VISION_API_KEY'],
@@ -283,7 +312,7 @@ export default class App extends React.Component {
 		}
 	};
 }
-
+// I think this is where you are storing the image into firebase.
 async function uploadImageAsync(uri) {
 	const blob = await new Promise((resolve, reject) => {
 		const xhr = new XMLHttpRequest();
@@ -309,7 +338,7 @@ async function uploadImageAsync(uri) {
 
 	return await snapshot.ref.getDownloadURL();
 }
-
+// Styling for the screen.
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
