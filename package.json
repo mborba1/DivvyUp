@@ -8,6 +8,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@google-cloud/vision": "^2.3.8",
     "expo": "~42.0.1",
     "expo-camera": "~11.2.2",
     "expo-constants": "~11.0.1",

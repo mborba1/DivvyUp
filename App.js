@@ -64,8 +64,8 @@ export default class App extends React.Component {
     // This is code from the tutorial that was out of date.  
     // We should be using Camera and Image Picker here instead so I updated that.
     // Actually, maybe I'll still need these lines of code....will play with them.
-		//await Permissions.askAsync(Permissions.CAMERA_ROLL);
-		//await Permissions.askAsync(Permissions.CAMERA);
+		await Permissions.askAsync(Permissions.CAMERA_ROLL);
+		await Permissions.askAsync(Permissions.CAMERA);
     // Here I'm requesting permission to use the camera of the user.
     await Camera.requestCameraPermissionsAsync();
     // Here I'm requesting permission to use cameral.

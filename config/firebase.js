@@ -5,10 +5,8 @@ import Environment from "./environment"
 
 // This says that if there is not an existing firebase db/storage,
 // Then initialize a new app and name it divvyup.
-console.log(firebase.apps)
 // I needed to add this line checking if there was an existing firebase, if not, a new one is initialized.
-if (firebase.apps.length === 0){
-    console.log(firebase.apps)
+// if (firebase.apps.length === 0){
 firebase.initializeApp({
     apiKey: Environment['FIREBASE_API_KEY'],
     authDomain: Environment['FIREBASE_AUTH_DOMAIN'],
@@ -17,8 +15,11 @@ firebase.initializeApp({
     storageBucket: Environment['FIREBASE_STORAGE_BUCKET'],
     messagingSenderId: Environment['FIREBASE_MESSAGING_SENDER_ID'],
     //appId: Environment['FIREBASE_APP_ID']
-    },"divvyup");
-}
+    });
+// }else{
+//     firebase.app();
+// }
+
 
 // This is running and exporting this entire file.
 export default firebase;
