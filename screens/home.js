@@ -1,5 +1,6 @@
 // AN Note: Creating Home Page.  Maybe this can be converted to a log-in page?
 import React from 'react';
+import Header from './header';
 import {
   StyleSheet,
   Text,
@@ -21,6 +22,7 @@ import {
   Lato_900Black,
   Lato_900Black_Italic,
 } from '@expo-google-fonts/lato';
+import {TextInput, Button} from 'react-native-paper';
 
 const Home = ({navigation}) => {
   const {img, text, button, container} = styles;
@@ -51,7 +53,14 @@ const Home = ({navigation}) => {
           source={require('../assets/divvyup-background.jpg')}
           resizeMode="cover">
           <View>
-            <Text style={text}>DIVVY/UP</Text>
+            <Header />
+            <Text style={text}>Username:</Text>
+            <TextInput placeholder="Type something"></TextInput>
+            <Text style={text}>Password:</Text>
+            <TextInput placeholder="Type something"></TextInput>
+            <Button mode="contained">
+              <Text style={text}>Submit</Text>
+            </Button>
             <TouchableOpacity onPress={() => navigation.navigate('Receipt')}>
               <Text style={button}>Access Application</Text>
             </TouchableOpacity>
@@ -69,12 +78,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
   },
-  text: {
-    fontSize: 65,
-    fontFamily: 'Lato_300Light',
-    textAlign: 'center',
-    color: 'white',
-  },
   container: {
     flex: 1,
   },
@@ -87,8 +90,14 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     alignItems: 'center',
-    padding: 20,
+    padding: 30,
     borderRadius: 10,
+  },
+  text: {
+    fontSize: 18,
+    fontWeight: '600',
+    fontFamily: 'Lato_400Regular',
+    color: 'white',
   },
   buttonText: {
     fontSize: 18,
