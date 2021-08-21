@@ -302,7 +302,8 @@ export default class App extends React.Component {
 				}
 			);
 			let responseJson = await response.json();
-			console.log(responseJson);
+			console.log('responseSJON: ',responseJson);
+			console.dir('responseSJON dir: ',responseJson);
 			this.setState({
 				googleResponse: responseJson,
 				uploading: false
