@@ -49,7 +49,9 @@ import firebase from './config/firebase';
 // This is importing my environment/keys to use.
 import Environment from './config/environment';
 
-import Login from './Screens/Login';
+import Login from './screens/Login';
+import Signup from './screens/Signup';
+import { Modal } from 'react-native';
 
 // The tutorial is using class components, but is this best?
 // Aka should we be using hooks?
@@ -112,8 +114,10 @@ export default class App extends React.Component {
 						{this._maybeRenderImage()}
 						{this._maybeRenderUploadingOverlay()}
 					</View>
-          <Login />
 				</ScrollView>
+        <Modal>
+          <Signup />
+        </Modal>
 			</View>
 		);
 	}
