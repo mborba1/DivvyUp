@@ -24,10 +24,13 @@ firebase.initializeApp({
 // This is running and exporting this entire file.
 export default firebase;
 
-// const db = firebase.firestore();
-// db.settings({ timestampsInSnapshots: true });
-// export default db;
+//making a reference to firebase firestore
+//update firestore settings, dictating how the db will be working with timestamps
+const db = firebase.firestore();
+db.settings({ timestampsInSnapshots: true });
+export { db };
 
+//making a reference for firebase authentication
 export const auth = firebase.auth();
 
 const provider = new firebase.auth.GoogleAuthProvider();

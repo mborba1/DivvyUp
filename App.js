@@ -51,6 +51,7 @@ import Environment from './config/environment';
 
 import Login from './screens/Login';
 import Signup from './screens/Signup';
+import LogoutButton from './screens/LogoutButton';
 import { Modal } from 'react-native';
 
 // The tutorial is using class components, but is this best?
@@ -116,7 +117,7 @@ export default class App extends React.Component {
 					</View>
 				</ScrollView>
         <Modal>
-          <Signup />
+          <Login />
         </Modal>
 			</View>
 		);
