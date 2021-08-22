@@ -46,9 +46,8 @@ function getEnvironment(env){
     return environments[env];
 }
 
-// This is saying set a variable called environment to getEnvironment(staging);
+// This is saying set a variable called enviornment to getEnvironment(staging);
 var Environment = getEnvironment(getReleaseChannel());
 
 // This is exporting the environment which is all of the secret keys.
 export default Environment;
- 

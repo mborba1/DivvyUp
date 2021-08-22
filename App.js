@@ -1,3 +1,4 @@
+// AN Note: The below is default code that comes when you create a new expo app.
 // import { StatusBar } from 'expo-status-bar';
 // import React from 'react';
 // import { StyleSheet, Text, View } from 'react-native';
@@ -5,7 +6,7 @@
 // export default function App() {
 //   return (
 //     <View style={styles.container}>
-//       <Text>Open up App.js to start working on your app!</Text>
+//       <Text>This is a test</Text>
 //       <StatusBar style="auto" />
 //     </View>
 //   );
@@ -19,6 +20,8 @@
 //     justifyContent: 'center',
 //   },
 // });
+
+
 // AN Note:  This is the code I edited from the tutorial.
 import React from 'react';
 // Import a bunch of stuff from React Native.
@@ -39,13 +42,13 @@ import * as ImagePicker from 'expo-image-picker';
 // I needed to install expo-camera (not included in the tutorial).
 import {Camera} from 'expo-camera'
 // I was fine using uuid, the tutorial uses nanoid.
-import Permissions from 'expo-permissions'
 // This basically gives a unique identifier to each item.
 import uuid from 'uuid';
 // This is importing my firebase.
 import firebase from './config/firebase';
 // This is importing my environment/keys to use.
 import Environment from './config/environment';
+
 
 // The tutorial is using class components, but is this best?
 // Aka should we be using hooks?
@@ -62,8 +65,8 @@ export default class App extends React.Component {
     // This is code from the tutorial that was out of date.  
     // We should be using Camera and Image Picker here instead so I updated that.
     // Actually, maybe I'll still need these lines of code....will play with them.
-		// await Permissions.askAsync(Permissions.CAMERA_ROLL);
-		// await Permissions.askAsync(Permissions.CAMERA);
+		await Permissions.askAsync(Permissions.CAMERA_ROLL);
+		await Permissions.askAsync(Permissions.CAMERA);
     // Here I'm requesting permission to use the camera of the user.
     await Camera.requestCameraPermissionsAsync();
     // Here I'm requesting permission to use cameral.
@@ -244,7 +247,6 @@ export default class App extends React.Component {
 
 			if (!pickerResult.cancelled) {
 				let uploadUrl = await uploadImageAsync(pickerResult.uri);
-        console.log(uploadUrl)
 				this.setState({ image: uploadUrl });
 			}
 		} catch (e) {
@@ -372,4 +374,3 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	}
 });
-
