@@ -117,7 +117,7 @@ export default class App extends React.Component {
 					</View>
 				</ScrollView>
         <Modal>
-          <Login />
+          <Signup />
         </Modal>
 			</View>
 		);
