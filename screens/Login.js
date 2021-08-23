@@ -1,5 +1,5 @@
 import React, { Component, useState } from 'react';
-import { Alert, Button, TextInput, View, StyleSheet } from 'react-native';
+import { Alert, Button, TextInput, View, StyleSheet, TouchableHighlight } from 'react-native';
 
 
 
@@ -24,45 +24,98 @@ export default function Login (props) {
     }
   }
 
+  console.log("what is auth after logging in", auth);
+
   return (
     <View style={styles.screen}>
       <TextInput
         placeholder='Email Address'
         value={userEmail}
         onChangeText={(userEmail) => setUserEmail(userEmail)}
-        style={styles.input}
+        style={styles.inputText}
       />
       <TextInput
         placeholder='Password'
         value={password}
         onChangeText={(password) => setPassword(password)}
-        style={styles.input}
+        style={styles.inputText}
       />
       <Button
         title={'Login'}
-        style={styles.input}
+        style={styles.button}
         onPress={() => signIn(userEmail, password)}
       />
+      {/* <Button 
+        style={styles.button}
+        title='Signup'>
+        New to our app? Click here to sign up!
+      </Button> */}
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   screen: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#ecf0f1',
-  },
-  input: {
-    width: 200,
-    height: 44,
-    padding: 10,
-    borderWidth: 1,
-    borderColor: 'black',
-    marginBottom: 10,
-  },
+  flex: 1,
+  alignItems: 'center',
+  justifyContent: 'center',
+},
+img: {
+  flex: 1,
+  justifyContent: 'center',
+},
+container: {
+  flex: 1,
+},
+button: {
+  width: '100%',
+  height: '40%',
+  color: 'white',
+  fontFamily: 'Lato_400Regular',
+  backgroundColor: 'black',
+  fontSize: 20,
+  textAlign: 'center',
+  alignItems: 'center',
+  padding: 30,
+  borderRadius: 10,
+},
+text: {
+  fontSize: 18,
+  fontWeight: '600',
+  fontFamily: 'Lato_400Regular',
+  color: 'white',
+},
+inputText: {
+  width: 200,
+  height: 44,
+  padding: 10,
+  borderWidth: 1,
+  borderColor: 'black',
+  marginBottom: 10,
+},
+buttonText: {
+  fontSize: 18,
+  fontWeight: '600',
+  fontFamily: 'Lato_400Regular',
+},
 });
+
+// const styles = StyleSheet.create({
+//   screen: {
+//     flex: 1,
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//     backgroundColor: '#ecf0f1',
+//   },
+//   input: {
+//     width: 200,
+//     height: 44,
+//     padding: 10,
+//     borderWidth: 1,
+//     borderColor: 'black',
+//     marginBottom: 10,
+//   },
+// });
 
 // export default class Login extends Component {
 //   constructor(props) {

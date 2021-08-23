@@ -7,22 +7,14 @@ import {
   StyleSheet 
 } from 'react-native';
 
-// Import Google Signin
-import {
-  GoogleSignin,
-  GoogleSigninButton,
-  statusCodes,
-} from 'react-native-google-signin';
-
 import { auth } from '../config/firebase';
-import { signInWithGoogle } from '../config/firebase';
 import { db } from '../config/firebase';
 
 export default function Signup (props) {
   const [userEmail, setUserEmail] = useState('');
   const [password, setPassword] = useState('');
 
-        console.log("what is auth in signup", auth);
+  console.log("what is auth in signup", auth);
 
   // console.log('inside signup, what is props', props);
   // console.log('what is auth inside signup', auth);
@@ -67,33 +59,55 @@ export default function Signup (props) {
       <TextInput
         placeholder='Email Address'
         onChangeText={(userEmail) => setUserEmail(userEmail)}
-        style={styles.input}
+        style={styles.inputText}
       />
       <TextInput
         placeholder='Password'
         onChangeText={(password) => setPassword(password)}
-        style={styles.input}
+        style={styles.inputText}
       />
       <Button
         title={'Sign Up'}
-        style={styles.input}
+        style={styles.button}
         onPress={() => signUp(userEmail, password)}
       />
-      <Button>
-        <GoogleSigninButton onPress={signInWithGoogle} />
-      </Button>
     </View>
   )
 }
 
+
 const styles = StyleSheet.create({
-  screen: {
+    screen: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#ecf0f1',
   },
-  input: {
+  img: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  container: {
+    flex: 1,
+  },
+  button: {
+    width: '100%',
+    height: '40%',
+    color: 'white',
+    fontFamily: 'Lato_400Regular',
+    backgroundColor: 'black',
+    fontSize: 20,
+    textAlign: 'center',
+    alignItems: 'center',
+    padding: 30,
+    borderRadius: 10,
+  },
+  text: {
+    fontSize: 18,
+    fontWeight: '600',
+    fontFamily: 'Lato_400Regular',
+    color: 'white',
+  },
+  inputText: {
     width: 200,
     height: 44,
     padding: 10,
@@ -101,4 +115,38 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     marginBottom: 10,
   },
+  buttonText: {
+    fontSize: 18,
+    fontWeight: '600',
+    fontFamily: 'Lato_400Regular',
+  },
 });
+
+// const styles = StyleSheet.create({
+//   screen: {
+//     flex: 1,
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//     backgroundColor: '#ecf0f1',
+//   },
+//   input: {
+//     width: 200,
+//     height: 44,
+//     padding: 10,
+//     borderWidth: 1,
+//     borderColor: 'black',
+//     marginBottom: 10,
+//   },
+// });
+
+
+// // Import Google Signin
+// import {
+//   GoogleSignin,
+//   GoogleSigninButton,
+//   statusCodes,
+// } from 'react-native-google-signin';
+// import { signInWithGoogle } from '../config/firebase';
+// <Button>
+// <GoogleSigninButton onPress={signInWithGoogle} />
+// </Button>
