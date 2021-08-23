@@ -27,11 +27,11 @@ let imgFullTextPages = imgMainFullText['pages']
 //FULLTEXT OBJ, PAGES' OBJECT: 
 //KEYS OF Pages[0] OBJ: [ 'property', 'width', 'height', 'blocks' ]
 let imgFullTextPagesObj = imgMainFullText['pages'][0]
-//FULLTEXT OBJ,TEXT KEY/VALUE: string text results!!
+//FULLTEXT OBJ,TEXT KEY/VALUE: string text results!!!!!!!
 let imgFullTextString = imgMainFullText['text']
 let receiptTextArray = imgFullTextString.split('\n')
 
-// console.log('GOOGLE OUTPUT 1: ', (desc(47)) ,vert(47), desc(48), vert(48), vert(49), desc(49), vert(50),'item 2:',vert(51),vert(52),vert(53))
+ console.log('GOOGLE OUTPUT 1: ', (desc(47)) ,vert(47), desc(48), vert(48), vert(49), desc(49), vert(50),'item 2:',vert(51),vert(52),vert(53))
 
 //HOW TO ASSIGN KEY NAME TO KEY/VALUE WITH NO KEY NAME:
 // var x = {};
@@ -47,8 +47,35 @@ function parseImg(gcp){
     const mainTextMap = mainText[0] 
     const mainTextVerticesArr = mainTextMap['boundingPoly']['vertices']
     const receiptPerimeter = findMinMax(mainTextVerticesArr) // RECEIPT mainBounds: ['minX'],['midX'],['maxX'],['minY'], ['maxY']
-    const letterSizeFreq = letterLengths(mainText)
-  //  const xAxisStartFreq = //find x-axis freq to know start, stop, end on x-axis of receipt... 
+    //IDENTIFY BY LETTER SIZE (Ymax- Ymin):
+    const letterSizeMap = letterHeight(mainText)
+    const letterSizeMain =  findLetterSizeMain(letterSizeMap)
+    const largestLetter =  letterSizeMain.maxSize
+    const indexOfLargestLetter = largestLetter[Object.keys(largestLetter)]['indexes']
+    const titleFirstObj = findByLetterIndex(mainText, indexOfLargestLetter)
+    const mostFreqLetterSize =  letterSizeMain.mostFreq
+    const indexesOfMostFreqSize = mostFreqLetterSize[Object.keys(mostFreqLetterSize)]['indexes']
+    const mostFreqObjs = findByLetterIndex(mainText, indexesOfMostFreqSize)
+    //IDENTIFY BY X-AXIS START: 
+
+    function findByLine(mainText){
+        let objByLine= {}
+        for(let i=1; i< mainText.length; i++){
+            let currObj = mainText[i]
+            let currDesc = currObj['description']
+            let currVert = currObj['boundingPoly']['vertices']
+            const currBounds = findMinMax(currVert)
+             let currLine = currBounds['minY']
+                if(objByLine[currLine]){
+                     objByLine[currLine].push(currObj)
+                 } else {
+                     objByLine[currLine] = [currObj]
+                 }
+        }
+        return objByLine
+    } 
+    const sameLine = findByLine(mainText)
+    console.log(sameLine)
 
     return receipt;
 }
@@ -88,21 +115,63 @@ function findMinMax(mainTextVerticesArr){
 
 //APPLIED TO RECEIPT LEVEL:
 //MAP OF LENGTHS OF Y (aka text size) AND their fequency: 
-function letterLengths(mainText){
-    let freq={}
+function letterHeight(mainText){
+    let letterHeight= {}
     for(let i=1; i< mainText.length; i++){
         let currObj = mainText[i]
         let currDesc = currObj['description']
         let currVert = currObj['boundingPoly']['vertices']
         const currBounds = findMinMax(currVert)
         let currYdiff = currBounds['maxY'] - currBounds['minY']
-        if(freq[currYdiff]){
-            freq[currYdiff]++
+        if(letterHeight[currYdiff]){
+            letterHeight[currYdiff]['freq'] ++
+            letterHeight[currYdiff]['indexes'].push(i)
         } else {
-            freq[currYdiff] = 1
+            letterHeight[currYdiff] = {'freq': 1, 'indexes': [i]} 
         }
     }
-    return freq
+    return letterHeight
 } 
+
+//AFTER CALCULATING MAP OF LENGTHS OF Y (aka text height/size), FIND THE sizes of interest and their indexes (locations)
+//SIZES OF INTEREST: largest = title of place/business, most frequent = most listed text aka the ITEMS!
+function findLetterSizeMain(letterSizeMap){
+    let maxSize = 0 
+    let mostFreq = 0
+    let mostFreqKey
+    let maxSizeObj
+    for (const key in letterSizeMap){
+        let currObj = letterSizeMap[key]
+        if(maxSize < Number(key)){
+            maxSize = key
+            maxSizeObj = currObj
+        }
+        if(mostFreq < letterSizeMap[key]['freq']){
+            mostFreq = letterSizeMap[key]['freq']
+            mostFreqKey = key
+            mostFreqObj = currObj
+        }
+    }
+    return {
+        'maxSize': {[`${maxSize}`]: maxSizeObj},
+        'mostFreq': {[`${mostFreqKey}`]: mostFreqObj}
+    }
+}
+
+//FIND/RETURN ALL OBJECTS THAT BELONG TO MOST FREQUENT LETTER SIZE:
+function findByLetterIndex(mainText, indexesOfMostFreqSize){
+    let mostFreq = []
+    for (let i= 0; i < indexesOfMostFreqSize.length; i++){
+        let currIndex = indexesOfMostFreqSize[i]
+        let currObj = mainText[currIndex]
+        console.log()
+        mostFreq.push(currObj)
+    }
+    return mostFreq
+}
+
+//APPLIED TO RECEIPT LEVEL:
+//MAP OF LOCATIONS OF Ystart (aka all items on SAME LINE)
+
 
 parseImg(gcpOutput1);
