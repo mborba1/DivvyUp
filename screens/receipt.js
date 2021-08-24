@@ -170,7 +170,7 @@ export default class Receipt extends React.Component {
             onLongPress={this._share}
             style={{paddingVertical: 10, paddingHorizontal: 10}}>
             {JSON.stringify(googleResponse.responses)}
-            {console.log(JSON.stringify(googleResponse.responses))}
+            {console.log('Raw JSON output:', JSON.stringify(googleResponse.responses))}
           </Text>
         )}
       </View>
@@ -276,7 +276,7 @@ export default class Receipt extends React.Component {
         },
       );
       let responseJson = await response.json();
-      console.log(responseJson);
+      console.log('submitToGoogle responseJson:', responseJson);
       this.setState({
         googleResponse: responseJson,
         uploading: false,

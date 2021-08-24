@@ -11,6 +11,7 @@
     "@expo-google-fonts/dev": "^0.2.0",
     "@expo-google-fonts/inter": "^0.2.0",
     "@expo-google-fonts/lato": "^0.2.0",
+    "@expo/vector-icons": "^12.0.5",
     "@google-cloud/vision": "^2.3.8",
     "@react-navigation/bottom-tabs": "^6.0.5",
     "@react-navigation/material-bottom-tabs": "^6.0.5",

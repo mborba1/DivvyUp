@@ -26,8 +26,8 @@ import {TextInput, Button} from 'react-native-paper';
 
 import { auth } from '../config/firebase';
 
-import Signup from './Signup';
-import Login from './Login';
+import Signup from './SignupScreen';
+import Login from './LoginScreen';
 
 const Home = ({navigation}) => {
   const {img, text, button, container} = styles;

@@ -14,7 +14,7 @@ if (firebase.apps.length === 0) {
     projectId: Environment['FIREBASE_PROJECT_ID'],
     storageBucket: Environment['FIREBASE_STORAGE_BUCKET'],
     messagingSenderId: Environment['FIREBASE_MESSAGING_SENDER_ID'],
-    //appId: Environment['FIREBASE_APP_ID']
+    appId: Environment['FIREBASE_APP_ID']
   });
 } else {
   firebase.app();
