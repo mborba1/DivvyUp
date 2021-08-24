@@ -14,6 +14,7 @@ import {
   ScrollView,
   View,
   ImageBackground,
+  TouchableOpacity,
 } from 'react-native';
 // I needed to install expo-image-picker (not included in the tutorial).
 import * as ImagePicker from 'expo-image-picker';
@@ -69,6 +70,10 @@ export default class Receipt extends React.Component {
           <ScrollView contentContainerStyle={styles.contentContainer}>
             {/* When you hit pick image from camera roll, on press kick off pick image function */}
             <View style={styles.helpContainer}>
+              <TouchableOpacity
+                onPress={() => this.props.navigation.navigate('Itemized')}>
+                <Text style={styles.button}>View Itemized Display</Text>
+              </TouchableOpacity>
               <Button
                 onPress={this._pickImage}
                 title="Pick an image from camera roll"
@@ -168,7 +173,11 @@ export default class Receipt extends React.Component {
           <Text
             onPress={this._copyToClipboard}
             onLongPress={this._share}
-            style={{paddingVertical: 10, paddingHorizontal: 10}}>
+            style={{
+              paddingVertical: 10,
+              paddingHorizontal: 10,
+              color: 'white',
+            }}>
             {JSON.stringify(googleResponse.responses)}
             {console.log(JSON.stringify(googleResponse.responses))}
           </Text>
@@ -242,7 +251,7 @@ export default class Receipt extends React.Component {
           {
             features: [
               // { type: 'LABEL_DETECTION', maxResults: 10 },
-              {type: 'LANDMARK_DETECTION', maxResults: 5},
+              // {type: 'LANDMARK_DETECTION', maxResults: 5},
               // { type: 'FACE_DETECTION', maxResults: 5 },
               // { type: 'LOGO_DETECTION', maxResults: 5 },
               {type: 'TEXT_DETECTION', maxResults: 5},
@@ -331,5 +340,10 @@ const styles = StyleSheet.create({
   helpContainer: {
     marginTop: 15,
     alignItems: 'center',
+  },
+  button: {
+    width: '100%',
+    color: 'white',
+    fontSize: 20,
   },
 });

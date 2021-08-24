@@ -5,6 +5,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
 import Receipt from './screens/receipt.js';
 import Home from './screens/home.js';
+import Itemized from './screens/itemized.js';
 
 const Stack = createStackNavigator();
 
@@ -14,6 +15,7 @@ const App = () => {
       <Stack.Navigator>
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Receipt" component={Receipt} />
+        <Stack.Screen name="Itemized" component={Itemized} />
       </Stack.Navigator>
     </NavigationContainer>
   );
