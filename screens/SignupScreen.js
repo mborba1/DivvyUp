@@ -1,14 +1,28 @@
 import { StatusBar } from 'expo-status-bar';
+import Header from './header';
 import React, { useState } from 'react';
-import { Alert, Button as RNButton, TextInput, View, StyleSheet, Text } from 'react-native';
+import { Alert, Button as RNButton, TextInput, View, StyleSheet, Text, ImageBackground} from 'react-native';
 
 import { Button, InputField, ErrorMessage } from '../components';
 
 import { auth } from '../config/firebase';
 import { db } from '../config/firebase';
-
+import {
+  useFonts,
+  Lato_100Thin,
+  Lato_100Thin_Italic,
+  Lato_300Light,
+  Lato_300Light_Italic,
+  Lato_400Regular,
+  Lato_400Regular_Italic,
+  Lato_700Bold,
+  Lato_700Bold_Italic,
+  Lato_900Black,
+  Lato_900Black_Italic,
+} from '@expo-google-fonts/lato';
+// import {TextInput} from 'react-native-paper';
 export default function Signup ({ navigation }) {
-
+  const {img, text, button, container} = styles;
  //input fields where user will enter email and password
   //values of each input field is stored inside state variables using useState hook
   //initial values of each state variable is an empty string and then updated with "set" functions with the values inside input fields
@@ -50,6 +64,8 @@ export default function Signup ({ navigation }) {
 
   return (
     <View style={styles.container}>
+      <ImageBackground style={img} source={require('../assets/divvyup-background.jpg')}
+          resizeMode="cover">
       <StatusBar style='dark-content' />
       <Text style={styles.title}>Create new account</Text>
       <InputField
@@ -91,7 +107,7 @@ export default function Signup ({ navigation }) {
       {signupError ? <ErrorMessage error={signupError} visible={true} /> : null}
       <Button
         onPress={onHandleSignup}
-        backgroundColor='#f57c00'
+        // backgroundColor='#f57c00'
         title='Signup'
         tileColor='#fff'
         titleSize={20}
@@ -104,6 +120,7 @@ export default function Signup ({ navigation }) {
         title='Go to Login'
         color='#fff'
       />
+      </ImageBackground>
     </View>
   );
 
@@ -167,9 +184,7 @@ export default function Signup ({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#e93b81',
-    paddingTop: 50,
-    paddingHorizontal: 12
+  
   },
   title: {
     fontSize: 24,
@@ -177,7 +192,34 @@ const styles = StyleSheet.create({
     color: '#fff',
     alignSelf: 'center',
     paddingBottom: 24
-  }
+  },
+  img: {
+    flex: 1,
+    justifyContent: 'center'
+  },
+  button: {
+    width: '100%',
+    height: '40%',
+    color: 'white',
+    fontFamily: 'Lato_400Regular',
+    backgroundColor: 'black',
+    fontSize: 20,
+    textAlign: 'center',
+    alignItems: 'center',
+    padding: 30,
+    borderRadius: 10,
+  },
+  text: {
+    fontSize: 18,
+    fontWeight: '600',
+    fontFamily: 'Lato_400Regular',
+    color: 'white',
+  },
+  buttonText: {
+    fontSize: 18,
+    fontWeight: '600',
+    fontFamily: 'Lato_400Regular',
+  },
 });
 
 // const styles = StyleSheet.create({
