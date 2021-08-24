@@ -24,11 +24,6 @@ import {
 } from '@expo-google-fonts/lato';
 import {TextInput, Button} from 'react-native-paper';
 
-import { auth } from '../config/firebase';
-
-import Signup from './SignupScreen';
-import Login from './LoginScreen';
-
 const Home = ({navigation}) => {
   const {img, text, button, container} = styles;
   let [fontsLoaded] = useFonts({
@@ -44,10 +39,6 @@ const Home = ({navigation}) => {
     Lato_900Black_Italic,
   });
 
-  //is there an user already logged in?  Is there a currentUser?
-    console.log("what is auth in home", auth);
-  // console.log('what is currentUser object', auth.currentUser);
-
   if (!fontsLoaded) {
     return (
       <View>
@@ -62,16 +53,14 @@ const Home = ({navigation}) => {
           source={require('../assets/divvyup-background.jpg')}
           resizeMode="cover">
           <View>
-            {/* <Login /> */}
-            <Signup />
-            {/* <Header />
+            <Header />
             <Text style={text}>Username:</Text>
             <TextInput placeholder="Type something"></TextInput>
             <Text style={text}>Password:</Text>
             <TextInput placeholder="Type something"></TextInput>
             <Button mode="contained">
               <Text style={text}>Submit</Text>
-            </Button> */}
+            </Button>
             <TouchableOpacity onPress={() => navigation.navigate('Receipt')}>
               <Text style={button}>Access Application</Text>
             </TouchableOpacity>
