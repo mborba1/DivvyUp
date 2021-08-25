@@ -24,7 +24,7 @@ import {
 //0. Import firebase for receipt collection: 
  import firebase from '../config/firebase'
  const firestore = firebase.firestore();
-//J: include user data in receipt page -> currently UNDEFINED
+//1: Import authenticated user 
 import { auth } from '../config/firebase';
 import { AuthenticatedUserContext } from '../navigation/AuthenticatedUserProvider';
 
@@ -32,11 +32,11 @@ import { AuthenticatedUserContext } from '../navigation/AuthenticatedUserProvide
 //COMPONENT:
 export default ConfirmReceipt = ({ route, navigation }) => {
 
-//1.set/initialize the collection (model):
- // const ref = firestore.collection('receipts');
 
-  const { user } = useContext(AuthenticatedUserContext) ? useContext(AuthenticatedUserContext) : 'NO USER!'
+ 
   const {img, text, button, container} = styles;
+  //2.Set user object. Set state (however, receipt in local state here will be the PARSED receipt) 
+  const { user } = useContext(AuthenticatedUserContext) ? useContext(AuthenticatedUserContext) : 'NO USER!'
   const [receipt, setReceipt] = useState({businessName: 'PIZZERIA', items:[{price: 15, description: 'pizza', quantity: 1},{price: 20, description: 'pasta',quantity: 1},{price: 12, description: 'wine',quantity: 2}]})
 
 
@@ -54,10 +54,14 @@ export default ConfirmReceipt = ({ route, navigation }) => {
   });
 
   function submitReceipt(){
-   return firestore.collection('receipts').add({
-       receipt: receipt
-   })
+   return (
+       firestore.collection('receipts')
+       .add({receipt: {...receipt, charger: `${user.uid}`}})
+   )        
   }
+
+
+
 
   if (!fontsLoaded) {
     return (
@@ -66,7 +70,7 @@ export default ConfirmReceipt = ({ route, navigation }) => {
       </View>
     );
   } else {
-    console.log('USER: ', user)
+    console.log('USER: ', user.uid)
     return (
       <View style={container}>
         <ImageBackground
@@ -74,8 +78,7 @@ export default ConfirmReceipt = ({ route, navigation }) => {
           source={require('../assets/divvyup-background.jpg')}
           resizeMode="cover">
           <View>
-            <Text style={text}>USER: {JSON.stringify(user)}</Text>
-            <Text style={text}>ITEMS: {JSON.stringify(receipt.items)}</Text>
+            <Text style={text}>Items: {JSON.stringify(receipt.items)} </Text>
             <Button onPress={submitReceipt} title="Submit"/>
             <Button title="Edit"/>
  
