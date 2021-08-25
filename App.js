@@ -2,7 +2,6 @@
 //moved Anj's home screen into HomeStack.js in navigation
 
 import React from 'react';
-
 import Routes from './navigation/index';
 
 export default function App() {
@@ -11,7 +10,7 @@ export default function App() {
 
 
 
-// // NOTE TO SELF--ORIGINAL CODE: DO NOT TOUCH---------------------------------
+// // NOTE TO SELF--ORIGINAL CODE: DO NOT TOUCH UNTIL EVERYTHING'S REFACTORED---------------------------------
 // // AN Note: Using React Navigation to navigate through our app.
 // import {NavigationContainer} from '@react-navigation/native';
 // import {createStackNavigator} from '@react-navigation/stack';

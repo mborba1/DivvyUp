@@ -17,12 +17,13 @@ export default function Signup ({ navigation }) {
 
   //3 other state variables defined
   const [passwordVisibility, setPasswordVisibility] = useState(true); //show or hide password on input field
-  const [rightIcon, setRightIcon] = useState('eye'); //to set a default icon for password visability functionality
+  const [rightIcon, setRightIcon] = useState('eye'); //to set a default eye icon for password visability functionality
   const [signupError, setSignupError] = useState(''); //to store any incoming error when signing up from firebase
 
   // console.log('inside signup, what is props', props);
   // console.log('what is auth inside signup', auth);
 
+  //toggle function to to see password in inputText form
   const handlePasswordVisibility = () => {
     if (rightIcon === 'eye') {
       setRightIcon('eye-off');
@@ -33,14 +34,19 @@ export default function Signup ({ navigation }) {
     }
   };
 
+  //onHandleSignup asynchronously handles whether to sign up an user based on their email and password values, can't be empty
+  //values are then passed into createUserWithEmailAndPassword function provided by firebase auth
+  //firebase returns built in error message if user already exists
+  //firebase auth generates its own UID for each new user, and we use the credential (or user object) from recently created user to find its UID
+  //firebase auth unique UID is then used as ID number to generate new doc(instance) in users collection (db model)-->see firestore
   const onHandleSignup = async () => {
     try {
       if (userEmail !== '' && password !== '') {
-        const cred = await auth.createUserWithEmailAndPassword(userEmail, password);
+        const credential = await auth.createUserWithEmailAndPassword(userEmail, password);
 
         //once new user signed up, link auth uid to new instance in users collection in firestore
-        db.collection('users').doc(cred.user.uid).set({
-          email: cred.user.email
+        db.collection('users').doc(credential.user.uid).set({
+          email: credential.user.email
         });
       }
     } catch (error) {
@@ -67,7 +73,7 @@ export default function Signup ({ navigation }) {
         textContentType='emailAddress'
         autoFocus={true}
         value={userEmail}
-        onChangeText={(userEmail) => setUserEmail(userEmail)}
+        onChangeText={(text) => setUserEmail(text)}
       />
       <InputField
         inputStyle={{
