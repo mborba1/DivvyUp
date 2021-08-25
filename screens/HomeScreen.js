@@ -46,6 +46,7 @@ export default function HomeScreen() {
         />
       </View>
       <Text style={styles.text}>Your UID is: {user.uid} </Text>
+
      
     </View>
   );

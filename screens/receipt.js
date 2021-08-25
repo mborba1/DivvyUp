@@ -1,6 +1,6 @@
 // AN Note:  This is the code I edited from the tutorial.
 // This is a messy file and I need to separate out components/convert to modal screens.
-import React from 'react';
+import React, { useContext } from 'react'; //J: added use context
 // Import a bunch of stuff from React Native.
 import {
   ActivityIndicator,
@@ -28,7 +28,6 @@ import firebase from '../config/firebase';
 import Environment from '../config/environment';
 import Header from './header';
 import HomeScreen from './HomeScreen';
-
 
 // The tutorial is using class components, but is this best?
 // Aka should we be using hooks?
@@ -85,6 +84,13 @@ export default class Receipt extends React.Component {
                   keyExtractor={this._keyExtractor}
                   renderItem={({item}) => <Text>Item: {item.description}</Text>}
                 />
+              )}
+              {this.state.googleResponse && (
+                <Button
+                style={{marginBottom: 10}}
+                title="SHOW RECEIPT"
+                onPress={()=> {this.props.navigation.navigate('ConfirmReceipt')}}
+              />
               )}
               {this._maybeRenderImage()}
               {this._maybeRenderUploadingOverlay()}

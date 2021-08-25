@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '../screens/HomeScreen';  //pink homescreen from tutorial
 import Home from '../screens/home';  //Anj's homescreen
 import Receipt from '../screens/receipt'; //Anj's receipt
+import ConfirmReceipt from '../screens/confirmReceipt'
 
 const Stack = createStackNavigator();
 
@@ -12,6 +13,7 @@ export default function HomeStack() {
     <Stack.Navigator headerMode='false'>
       {/* <Stack.Screen name='Home' component={HomeScreen} /> */}
       <Stack.Screen name="Receipt" component={Receipt} />
+      <Stack.Screen name="ConfirmReceipt" component={ConfirmReceipt} /> 
     </Stack.Navigator>
   );
 }
