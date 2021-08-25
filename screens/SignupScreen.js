@@ -66,6 +66,7 @@ export default function Signup ({ navigation }) {
     <View style={styles.container}>
       <ImageBackground style={img} source={require('../assets/divvyup-background.jpg')}
           resizeMode="cover">
+          
       <StatusBar style='dark-content' />
       <Text style={styles.title}>Create new account</Text>
       <InputField

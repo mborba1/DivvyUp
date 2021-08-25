@@ -27,6 +27,8 @@ import firebase from '../config/firebase';
 // This is importing my environment/keys to use.
 import Environment from '../config/environment';
 import Header from './header';
+import HomeScreen from './HomeScreen';
+
 
 // The tutorial is using class components, but is this best?
 // Aka should we be using hooks?
@@ -66,6 +68,7 @@ export default class Receipt extends React.Component {
           source={require('../assets/divvyup-background.jpg')}
           resizeMode="cover">
           <Header />
+          <HomeScreen />
           <ScrollView contentContainerStyle={styles.contentContainer}>
             {/* When you hit pick image from camera roll, on press kick off pick image function */}
             <View style={styles.helpContainer}>

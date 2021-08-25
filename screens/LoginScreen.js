@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import Header from './header';
 import React, { useState } from 'react';
-import { Alert, Button as RNButton, View, StyleSheet, Text, ImageBackground } from 'react-native';
+import { Alert, Button as RNButton, View, StyleSheet, Text, ImageBackground, ScrollView} from 'react-native';
 
 import { Button, InputField, ErrorMessage } from '../components';
 
@@ -20,7 +20,7 @@ import {
   Lato_900Black,
   Lato_900Black_Italic,
 } from '@expo-google-fonts/lato';
-// import {TextInput} from 'react-native-paper';
+
 
   //2 input fields and a button for this screen
 export default function Login ({ navigation }) {
@@ -75,11 +75,15 @@ export default function Login ({ navigation }) {
   console.log("what is auth after logging in", auth);
   
   return (
+    
     <View style={styles.container}>
       <ImageBackground style={img} source={require('../assets/divvyup-background.jpg')}
           resizeMode="cover">
+            
+            {/* <Header /> */}
+          {/* <ScrollView contentContainerStyle={styles.contentContainer}></ScrollView> */}
       <StatusBar style='dark-content' />
-      {/* <Header /> */}
+     
       <Text style={styles.title}>Login</Text>
       <InputField
         inputStyle={{
@@ -124,16 +128,18 @@ export default function Login ({ navigation }) {
         tileColor='#fff'
         titleSize={20}
         containerStyle={{
-          marginBottom: 24
+          marginBottom: 40
         }}
       />
-      <RNButton
+      <RNButton style={styles.buttonText}
         onPress={() => navigation.navigate('Signup')}
         title='Go to Signup'
-        color='#fff'
+        color='#fff' 
+        
       />
       </ImageBackground>
     </View>
+    
   );
 
   // return (
@@ -177,7 +183,7 @@ const styles = StyleSheet.create({
   },
   img: {
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: "center"
   },
   button: {
     width: '100%',
@@ -201,7 +207,12 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '600',
     fontFamily: 'Lato_400Regular',
+   
   },
+  contentContainer: {
+    paddingTop: 30,
+  }
+ 
 });
 
 // const styles = StyleSheet.create({

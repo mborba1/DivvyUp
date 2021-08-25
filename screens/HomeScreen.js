@@ -30,10 +30,11 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
+       {/* <Receipt /> */}
       <StatusBar style='dark-content' />
       <View style={styles.row}>
         <Text style={styles.title}>Welcome {user.email}!</Text>
-        <IconButton
+        <IconButton style={styles.logout}
           name='logout'
           size={24}
           color='#fff'
@@ -41,7 +42,7 @@ export default function HomeScreen() {
         />
       </View>
       <Text style={styles.text}>Your UID is: {user.uid} </Text>
-      <Receipt />
+     
     </View>
   );
 }
@@ -49,9 +50,9 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#e93b81',
+    // backgroundColor: '#e93b81',
     paddingTop: 50,
-    paddingHorizontal: 12
+    // paddingHorizontal: 12
   },
   row: {
     flexDirection: 'row',
@@ -62,11 +63,16 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: '600',
-    color: '#fff'
+    color: '#fff',
+    // alignContent: 'center',
+    paddingLeft: 70
   },
   text: {
     fontSize: 16,
     fontWeight: 'normal',
     color: '#fff'
+  },
+  logout:{
+    paddingRight: 100
   }
 });
