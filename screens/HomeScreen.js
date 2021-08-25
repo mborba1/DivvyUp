@@ -10,16 +10,20 @@ import { auth } from '../config/firebase';
 
 import { AuthenticatedUserContext } from '../navigation/AuthenticatedUserProvider';
 
-//import receipt/scanner functionalities into our home screen
+//import receipt/scanner functionalities into our home screen, displayed below user info in return statement
 import Receipt from './receipt';
 
+//this screen is our main home screen
 //this screen will show user's email and their UID when the user has successfully signed up or logged in
+//signOut button/component allows user to log out of current account and return to login/signup screen
+//Receipt/scanner component is imported into this homescreen and displayed beneath user info
 export default function HomeScreen() {
 
-
+  //AuthenticatedUserContext allows us to access user state so we can generate UID and email address
+  //this will also allow us to access other info on user once other info is set-up
   const { user } = useContext(AuthenticatedUserContext);
 
-  
+  //this function is triggered once logout icon is pressed and will log out user
   const handleSignOut = async () => {
     try {
       await auth.signOut();

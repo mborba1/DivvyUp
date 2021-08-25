@@ -1,3 +1,5 @@
+//no longer need this button/component--WAIT TO DELETE after everything is set up
+
 import React, { useState} from 'react';
 import {
   Alert,

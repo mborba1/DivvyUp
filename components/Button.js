@@ -3,6 +3,8 @@ import { StyleSheet, Pressable, Text } from 'react-native';
 
 //this Button component contains a configurable <Pressable /> component
 
+//const Button = (properties) => {return(Pressable function)}
+
 const Button = ({
   title,
   backgroundColor = '#000',

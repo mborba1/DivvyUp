@@ -4,6 +4,8 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 //this inputField component contains <TextInut /> component
 
+//const InputField = (properties) => {return(what to render)}
+
 const InputField = ({
   leftIcon,
   iconColor = '#000',

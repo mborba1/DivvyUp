@@ -47,7 +47,7 @@ export default function Login ({ navigation }) {
   };
 
   //onLogin asynchronously handles whether to log in user based on their email and password values, can't be empty
-  //values are then passed into signin method provided by firebase auth
+  //values are then passed into signInWithEmailAndPassword function provided by firebase auth
   const onLogin = async () => {
     try {
       if (userEmail !== '' && password !== '') {

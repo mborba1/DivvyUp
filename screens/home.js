@@ -1,3 +1,4 @@
+//Now using Google auth tutorial homescreen--WAIT TO DELETE after whole navigation system is set up
 // AN Note: Creating Home Page.  Maybe this can be converted to a log-in page?
 import React from 'react';
 import Header from './header';
