@@ -14,7 +14,7 @@ if (firebase.apps.length === 0) {
     projectId: Environment['FIREBASE_PROJECT_ID'],
     storageBucket: Environment['FIREBASE_STORAGE_BUCKET'],
     messagingSenderId: Environment['FIREBASE_MESSAGING_SENDER_ID'],
-    //appId: Environment['FIREBASE_APP_ID']
+    appId: Environment['FIREBASE_APP_ID']
   });
 } else {
   firebase.app();
@@ -22,3 +22,16 @@ if (firebase.apps.length === 0) {
 
 // This is running and exporting this entire file.
 export default firebase;
+
+//making a reference to firebase firestore
+//update firestore settings, dictating how the db will be working with timestamps
+const db = firebase.firestore();
+db.settings({ timestampsInSnapshots: true });
+export { db };
+
+//making a reference for firebase authentication
+export const auth = firebase.auth();
+
+const provider = new firebase.auth.GoogleAuthProvider();
+provider.setCustomParameters({prompt: 'select_account'});
+export const signInWithGoogle = () => auth.signInWithPopup(provider);

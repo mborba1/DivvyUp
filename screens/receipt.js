@@ -27,6 +27,8 @@ import firebase from '../config/firebase';
 // This is importing my environment/keys to use.
 import Environment from '../config/environment';
 import Header from './header';
+import HomeScreen from './HomeScreen';
+
 
 // The tutorial is using class components, but is this best?
 // Aka should we be using hooks?
@@ -66,6 +68,7 @@ export default class Receipt extends React.Component {
           source={require('../assets/divvyup-background.jpg')}
           resizeMode="cover">
           <Header />
+          <HomeScreen />
           <ScrollView contentContainerStyle={styles.contentContainer}>
             {/* When you hit pick image from camera roll, on press kick off pick image function */}
             <View style={styles.helpContainer}>
@@ -170,7 +173,7 @@ export default class Receipt extends React.Component {
             onLongPress={this._share}
             style={{paddingVertical: 10, paddingHorizontal: 10}}>
             {JSON.stringify(googleResponse.responses)}
-            {console.log(JSON.stringify(googleResponse.responses))}
+            {console.log('Raw JSON output:', JSON.stringify(googleResponse.responses))}
           </Text>
         )}
       </View>
@@ -276,7 +279,7 @@ export default class Receipt extends React.Component {
         },
       );
       let responseJson = await response.json();
-      console.log(responseJson);
+      console.log('submitToGoogle responseJson:', responseJson);
       this.setState({
         googleResponse: responseJson,
         uploading: false,
