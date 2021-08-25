@@ -28,7 +28,6 @@ import firebase from '../config/firebase';
 // This is importing my environment/keys to use.
 import Environment from '../config/environment';
 import Header from './header';
-
 // The tutorial is using class components, but is this best?
 // Aka should we be using hooks?
 export default class Receipt extends React.Component {
@@ -71,7 +70,11 @@ export default class Receipt extends React.Component {
             {/* When you hit pick image from camera roll, on press kick off pick image function */}
             <View style={styles.helpContainer}>
               <TouchableOpacity
-                onPress={() => this.props.navigation.navigate('Itemized')}>
+                onPress={() =>
+                  this.props.navigation.navigate('Itemized', {
+                    receiptData: this.state.googleResponse,
+                  })
+                }>
                 <Text style={styles.button}>View Itemized Display</Text>
               </TouchableOpacity>
               <Button
@@ -145,7 +148,7 @@ export default class Receipt extends React.Component {
         <Button
           style={{marginBottom: 10}}
           onPress={() => this.submitToGoogle()}
-          title="Analyze!"
+          title="Process Receipt"
         />
 
         <View
@@ -165,10 +168,8 @@ export default class Receipt extends React.Component {
           onLongPress={this._share}
           style={{paddingVertical: 10, paddingHorizontal: 10}}
         />
-
-        <Text>Raw JSON:</Text>
-        {/* If a google response is received, display it on the screen */}
-        {/* Also if you click on the image with your mouse, you can copy it to your clipboard */}
+        {/* End User Doesn't Need to See This So I'm Commenting It Out For Now */}
+        {/* <Text>Raw JSON:</Text>
         {googleResponse && (
           <Text
             onPress={this._copyToClipboard}
@@ -181,7 +182,7 @@ export default class Receipt extends React.Component {
             {JSON.stringify(googleResponse.responses)}
             {console.log(JSON.stringify(googleResponse.responses))}
           </Text>
-        )}
+        )} */}
       </View>
     );
   };
@@ -290,6 +291,9 @@ export default class Receipt extends React.Component {
         googleResponse: responseJson,
         uploading: false,
       });
+      if (this.state.googleResponse !== null) {
+        console.log('test');
+      }
     } catch (error) {
       console.log(error);
     }

@@ -1,17 +1,89 @@
 import React from 'react';
-import {StyleSheet, Text, View, ImageBackground} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ImageBackground,
+  useEffect,
+  useState,
+} from 'react-native';
 import {receiptParser} from '../utilities/receiptParser';
+import {DataTable, Button} from 'react-native-paper';
 
-const Itemized = () => {
-  const {img, container, text} = styles;
+const Itemized = ({route, navigation}) => {
+  const {img, container, text, bottom} = styles;
+  const {receiptData} = route.params;
+  let stringifiedReceiptData = JSON.stringify(receiptData.responses);
+
+  let parsedData = receiptParser(receiptData.responses);
+  let string = JSON.stringify(parsedData);
+
+  const displayItemized = () => {
+    if (receiptData === null) {
+      return null;
+    } else {
+      return (
+        <View>
+          {parsedData.map(itemObject => (
+            <DataTable.Row>
+              <DataTable.Cell>{itemObject.words.join(' ')}</DataTable.Cell>
+              <DataTable.Cell numeric>{itemObject.price}</DataTable.Cell>
+            </DataTable.Row>
+          ))}
+        </View>
+      );
+    }
+  };
+
+  //   const total = () => {
+  //     if (parsedData) {
+  //       let totalAmt = parsedData.reduce(
+  //         acc,
+  //         itemObject => {
+  //           if (itemObject.words.includes('Total')) {
+  //             return acc + itemObject.price;
+  //           }
+  //         },
+  //         0,
+  //       );
+  //       return totalAmt;
+  //     }
+  //   };
+
+  const acceptButton = () => {
+    return (
+      <Button mode="contained">
+        <Text>Accept</Text>
+      </Button>
+    );
+  };
+
+  const editButton = () => {
+    return (
+      <Button mode="contained">
+        <Text>Edit</Text>
+      </Button>
+    );
+  };
+
   return (
     <View style={container}>
-      <ImageBackground
+      {/* <ImageBackground
         style={img}
         source={require('../assets/divvyup-background.jpg')}
-        resizeMode="cover">
-        <Text style={text}>Test</Text>
-      </ImageBackground>
+        resizeMode="cover"> */}
+      <DataTable>
+        <DataTable.Header>
+          <DataTable.Title>Item/Meal</DataTable.Title>
+          <DataTable.Title numeric>Cost</DataTable.Title>
+        </DataTable.Header>
+      </DataTable>
+      {displayItemized()}
+      <View style={bottom}>
+        {acceptButton()}
+        {editButton()}
+        <Text>{total()}</Text>
+      </View>
     </View>
   );
 };
@@ -31,15 +103,11 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: 'white',
   },
-  button: {
-    width: '100%',
-    height: '40%',
-    color: 'white',
-    backgroundColor: 'black',
-    fontSize: 20,
-    textAlign: 'center',
-    alignItems: 'center',
-    padding: 30,
-    borderRadius: 10,
+  bottom: {
+    marginBottom: 12,
+    paddingVertical: 16,
+    paddingHorizontal: 40,
+    justifyContent: 'space-between',
+    flexDirection: 'row',
   },
 });

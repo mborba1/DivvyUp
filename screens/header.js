@@ -47,11 +47,7 @@ const Header = () => {
 export default Header;
 
 const styles = StyleSheet.create({
-  header: {
-    height: 60,
-    padding: 15,
-    flex: 1,
-  },
+  header: {},
   text: {
     fontSize: 65,
     fontFamily: 'Lato_300Light',
