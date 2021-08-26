@@ -23,8 +23,8 @@ const Itemized = ({route, navigation}) => {
     } else {
       return (
         <View>
-          {parsedData.map(itemObject => (
-            <DataTable.Row>
+          {parsedData.map((itemObject, index) => (
+            <DataTable.Row key={index}>
               <DataTable.Cell>{itemObject.words.join(' ')}</DataTable.Cell>
               <DataTable.Cell numeric>{itemObject.price}</DataTable.Cell>
             </DataTable.Row>
