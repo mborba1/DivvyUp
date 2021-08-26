@@ -29,6 +29,8 @@ import Environment from '../config/environment';
 import Header from './header';
 import HomeScreen from './HomeScreen';
 
+import EvenSplitButton from './EvenSplitScreen';
+
 
 // The tutorial is using class components, but is this best?
 // Aka should we be using hooks?
@@ -90,6 +92,7 @@ export default class Receipt extends React.Component {
               {this._maybeRenderUploadingOverlay()}
             </View>
           </ScrollView>
+          <EvenSplitButton />
         </ImageBackground>
       </View>
     );

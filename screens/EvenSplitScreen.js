@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button as RNButton, StyleSheet, Text, View } from 'react-native';
+import { Button as RNButton, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
 import { Button, InputField, IconButton, ErrorMessage } from '../components';
 
@@ -26,18 +26,47 @@ const dummyReceipt = {
       description: 'carbonara',
       price: '2250'
     },
-  ]
-}
+  ],
+  total: 7550,
+};
 
-const evenSplit = () => {
+//this will be queried from the inputField
+const numPeople = 8;
 
+export default function EvenSplitButton(){
+  // console.log(dummyReceipt.total);
+
+  const {total} = dummyReceipt;
+
+  const onEvenSplit = (num, totalPrice) => {
+    const splitAmount = (totalPrice / num);
+    // console.log(splitAmount)
+    return splitAmount;
+  }
 
   return (
     <View>
-      <Text>Split Evently</Text>
+    <TouchableOpacity onPress={() => console.log(onEvenSplit(numPeople, total))}>
+      <View style={styles.button}>
+        <Text style={styles.buttonText}>Evenly Split</Text>
+      </View>
+    </TouchableOpacity>
     </View>
   )
-}
+};
 
-export default evenSplit;
-
+const styles = StyleSheet.create({
+  button: {
+    borderRadius: 8,
+    paddingVertical: 14,
+    paddingHorizontal: 10,
+    backgroundColor: '#f01d71',
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
+    fontSize: 16,
+    textAlign: 'center',
+  }
+})
