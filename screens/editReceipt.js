@@ -33,15 +33,15 @@ import { AuthenticatedUserContext } from '../navigation/AuthenticatedUserProvide
 
 
 //COMPONENT:
-export default ConfirmReceipt = ({ route, navigation }) => {
+export default EditReceipt = ({ route }) => {
 
 
  
   const {img, text, button, container} = styles;
   //2.Set user object. Set state (however, receipt in local state here will be the PARSED receipt) 
-  const { user } = useContext(AuthenticatedUserContext) ? useContext(AuthenticatedUserContext) : 'NO USER!'
-  const [receipt, setReceipt] = useState({businessName: 'PIZZERIA', items:[{price: 15, description: 'pizza', quantity: 1},{price: 20, description: 'pasta',quantity: 1},{price: 12, description: 'wine',quantity: 2}]})
-
+  const { user } = useContext(AuthenticatedUserContext) 
+  //const [receipt, setReceipt] = useState({businessName: 'PIZZERIA', items:[{price: 15, description: 'pizza', quantity: 1},{price: 20, description: 'pasta',quantity: 1},{price: 12, description: 'wine',quantity: 2}]})
+  const parsedData = route.params
 
   let [fontsLoaded] = useFonts({
     Lato_100Thin,
@@ -64,9 +64,12 @@ export default ConfirmReceipt = ({ route, navigation }) => {
   }
 
   function listItems(){
+    // console.log('PARAM PASSED: ', parsedData)
       return (
           <View  style={{alignItems: 'center'}} >
-              <FlatList
+            <Text>USER: {user.uid}</Text>
+            <Text>PARAMS:</Text>
+              {/* <FlatList
               data={receipt.items}
               renderItem={({item}) => { 
                 return (
@@ -78,7 +81,7 @@ export default ConfirmReceipt = ({ route, navigation }) => {
                       <TextInput style={{ margin: 5, fontSize: 24, backgroundColor: '#fff', justifyContents: 'space-evenly'}} placeholder='PRICE'/>
                   </View>
                 )}}          
-              />
+              /> */}
           </View>
     )}
 

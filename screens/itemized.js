@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   StyleSheet,
   Text,
@@ -10,12 +10,23 @@ import {
 import {receiptParser} from '../utilities/receiptParser';
 import {DataTable, Button} from 'react-native-paper';
 
+//0.a. Import: firebase for saving receipt to store collection:
+import firebase from '../config/firebase'
+const firestore = firebase.firestore();
+//0.b: Import: authenticated user to make associate/reference to receipt: 
+import { auth } from '../config/firebase';
+import { AuthenticatedUserContext } from '../navigation/AuthenticatedUserProvider';
+
 const Itemized = ({route, navigation}) => {
   const {container, bottom} = styles;
   const {receiptData} = route.params;
   let stringifiedReceiptData = JSON.stringify(receiptData.responses);
   let parsedData = receiptParser(receiptData.responses);
   let string = JSON.stringify(parsedData);
+
+//1.a. Initialize current user (context)
+  const { user } = useContext(AuthenticatedUserContext) 
+//1.b. Initialize state to pass to next component ->   
 
   const displayItemized = () => {
     if (receiptData === null) {
@@ -43,9 +54,23 @@ const Itemized = ({route, navigation}) => {
   //     console.log(receiptObject);
   //   };
 
+  //SUBMIT RECEIPT OBJECT TO STORE + ADD ASSOCIATION 
+  //RECEIPT SHOULD HAVE: owner/receipts or charger/chargees references 
+  function submitReceiptToStore(){
+    console.log('USER IN SUBMIT:', user, parsedData)
+    // return (
+    //     firestore.collection('receipts')
+    //     .add({receipt: {...parsedData, owner: `${user.uid}`}})
+    // )        
+   }
+
+
   const acceptButton = () => {
     return (
-      <Button mode="contained">
+      <Button 
+        mode="contained"
+        onPress={submitReceiptToStore}
+      >
         <Text>Accept</Text>
       </Button>
     );
@@ -53,11 +78,14 @@ const Itemized = ({route, navigation}) => {
 
   const editButton = () => {
     return (
-      <Button mode="contained">
+      <Button 
+        mode="contained"
+        onPress={()=> {this.props.navigation.navigate('EditReceipt')}}
+      >
         <Text>Edit</Text>
       </Button>
     );
-  };
+  }
 
   return (
     <View style={container}>
