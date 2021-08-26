@@ -2,7 +2,7 @@
 import React, {useContext, useState} from 'react';
 // Importing items from react native to be used in my screen.
 import {StyleSheet, Text, View, ScrollView} from 'react-native';
-// Importing my receipt parser function to use when someone clicks parse receipt.
+// Importing my receipt parser function to use when someone navigates to this page.
 import {receiptParser} from '../utilities/receiptParser';
 // Importing react native paper elements to be used for styling.
 import {DataTable, Button} from 'react-native-paper';
@@ -10,7 +10,7 @@ import {DataTable, Button} from 'react-native-paper';
 import firebase from '../config/firebase';
 // Initiating firestore?  Ask Jazmin for clarity/should we do this in a separate file/move to config?
 const firestore = firebase.firestore();
-// Per Jazz, importing authenticated user.
+// Per Jazz, importing authenticated user and authenticated user context.
 import {auth} from '../config/firebase';
 import {AuthenticatedUserContext} from '../navigation/AuthenticatedUserProvider';
 
@@ -47,9 +47,7 @@ const Itemized = ({route, navigation}) => {
   // AN's Accept Button
   const acceptButton = () => {
     return (
-      <Button
-        onPress={() => convertDataToCleanObjectAndSubmitToFirestore()}
-        mode="contained">
+      <Button onPress={() => acceptButtonFunctionality()} mode="contained">
         <Text>Accept</Text>
       </Button>
     );
@@ -57,9 +55,7 @@ const Itemized = ({route, navigation}) => {
   // AN's Edit Button
   const editButton = () => {
     return (
-      <Button
-        onPress={() => convertDataToCleanObjectAndSubmitToFirestore()}
-        mode="contained">
+      <Button onPress={() => editButtonFunctionality()} mode="contained">
         <Text>Edit</Text>
       </Button>
     );
@@ -85,10 +81,20 @@ const Itemized = ({route, navigation}) => {
       items.push(obj);
     });
     cleanReceipt.items = items;
-    // AN set new receipt to clean receipt.
+    // AN set receipt state to clean receipt.
     setReceipt(cleanReceipt);
     // Submit clean receipt to firestore with Jazz's function.
     submitReceipt();
+  };
+
+  const acceptButtonFunctionality = () => {
+    convertDataToCleanObjectAndSubmitToFirestore();
+    // Need to add navigation to Margareth's screen here.
+  };
+
+  const editButtonFunctionality = () => {
+    convertDataToCleanObjectAndSubmitToFirestore();
+    // Need to add navigation to Jazz's edit screen here.
   };
 
   //   AN: This is what will be displayed on the screen.  Using react native paper because it's cute.
