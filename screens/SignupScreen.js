@@ -1,12 +1,20 @@
-import { StatusBar } from 'expo-status-bar';
+import {StatusBar} from 'expo-status-bar';
 import Header from './header';
-import React, { useState } from 'react';
-import { Alert, Button as RNButton, TextInput, View, StyleSheet, Text, ImageBackground} from 'react-native';
+import React, {useState} from 'react';
+import {
+  Alert,
+  Button as RNButton,
+  TextInput,
+  View,
+  StyleSheet,
+  Text,
+  ImageBackground,
+} from 'react-native';
 
-import { Button, InputField, ErrorMessage } from '../components';
+import {Button, InputField, ErrorMessage} from '../components';
 
-import { auth } from '../config/firebase';
-import { db } from '../config/firebase';
+import {auth} from '../config/firebase';
+import {db} from '../config/firebase';
 import {
   useFonts,
   Lato_100Thin,
@@ -21,9 +29,9 @@ import {
   Lato_900Black_Italic,
 } from '@expo-google-fonts/lato';
 // import {TextInput} from 'react-native-paper';
-export default function Signup ({ navigation }) {
+export default function Signup({navigation}) {
   const {img, text, button, container} = styles;
- //input fields where user will enter email and password
+  //input fields where user will enter email and password
   //values of each input field is stored inside state variables using useState hook
   //initial values of each state variable is an empty string and then updated with "set" functions with the values inside input fields
   const [userEmail, setUserEmail] = useState('');
@@ -56,11 +64,14 @@ export default function Signup ({ navigation }) {
   const onHandleSignup = async () => {
     try {
       if (userEmail !== '' && password !== '') {
-        const credential = await auth.createUserWithEmailAndPassword(userEmail, password);
+        const credential = await auth.createUserWithEmailAndPassword(
+          userEmail,
+          password,
+        );
 
         //once new user signed up, link auth uid to new instance in users collection in firestore
         db.collection('users').doc(credential.user.uid).set({
-          email: credential.user.email
+          email: credential.user.email,
         });
       }
     } catch (error) {
@@ -70,67 +81,69 @@ export default function Signup ({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <ImageBackground style={img} source={require('../assets/divvyup-background.jpg')}
-          resizeMode="cover">
-          
-      <StatusBar style='dark-content' />
-      <Text style={styles.title}>Create new account</Text>
-      <InputField
-        inputStyle={{
-          fontSize: 14
-        }}
-        containerStyle={{
-          backgroundColor: '#fff',
-          marginBottom: 20
-        }}
-        leftIcon='email'
-        placeholder='Enter email'
-        autoCapitalize='none'
-        keyboardType='email-address'
-        textContentType='emailAddress'
-        autoFocus={true}
-        value={userEmail}
-        onChangeText={(text) => setUserEmail(text)}
-      />
-      <InputField
-        inputStyle={{
-          fontSize: 14
-        }}
-        containerStyle={{
-          backgroundColor: '#fff',
-          marginBottom: 20
-        }}
-        leftIcon='lock'
-        placeholder='Enter password'
-        autoCapitalize='none'
-        autoCorrect={false}
-        secureTextEntry={passwordVisibility}
-        textContentType='password'
-        rightIcon={rightIcon}
-        value={password}
-        onChangeText={text => setPassword(text)}
-        handlePasswordVisibility={handlePasswordVisibility}
-      />
-      {signupError ? <ErrorMessage error={signupError} visible={true} /> : null}
-      <Button
-        onPress={onHandleSignup}
-        // backgroundColor='#f57c00'
-        title='Signup'
-        tileColor='#fff'
-        titleSize={20}
-        containerStyle={{
-          marginBottom: 24
-        }}
-      />
-      <RNButton
-        onPress={() => navigation.navigate('Login')}
-        title='Go to Login'
-        color='#fff'
-      />
+      <ImageBackground
+        style={img}
+        source={require('../assets/divvyup-background.jpg')}
+        resizeMode="cover">
+        <StatusBar style="dark-content" />
+        <Text style={styles.title}>Create new account</Text>
+        <InputField
+          inputStyle={{
+            fontSize: 14,
+          }}
+          containerStyle={{
+            backgroundColor: '#fff',
+            marginBottom: 20,
+          }}
+          leftIcon="email"
+          placeholder="Enter email"
+          autoCapitalize="none"
+          keyboardType="email-address"
+          textContentType="emailAddress"
+          autoFocus={true}
+          value={userEmail}
+          onChangeText={text => setUserEmail(text)}
+        />
+        <InputField
+          inputStyle={{
+            fontSize: 14,
+          }}
+          containerStyle={{
+            backgroundColor: '#fff',
+            marginBottom: 20,
+          }}
+          leftIcon="lock"
+          placeholder="Enter password"
+          autoCapitalize="none"
+          autoCorrect={false}
+          secureTextEntry={passwordVisibility}
+          textContentType="password"
+          rightIcon={rightIcon}
+          value={password}
+          onChangeText={text => setPassword(text)}
+          handlePasswordVisibility={handlePasswordVisibility}
+        />
+        {signupError ? (
+          <ErrorMessage error={signupError} visible={true} />
+        ) : null}
+        <Button
+          onPress={onHandleSignup}
+          // backgroundColor='#f57c00'
+          title="Signup"
+          tileColor="#fff"
+          titleSize={20}
+          containerStyle={{
+            marginBottom: 24,
+          }}
+        />
+        <RNButton
+          onPress={() => navigation.navigate('Login')}
+          title="Go to Login"
+          color="#fff"
+        />
       </ImageBackground>
     </View>
   );
-
 
   // //sign up new user with provided firebase auth methods
   // const signUp = async (userEmail, password) => {
@@ -165,7 +178,7 @@ export default function Signup ({ navigation }) {
 
   // console.log("what is auth after signup", auth);
 
-  // // console.log('inside signup, what is props after signup', props); 
+  // // console.log('inside signup, what is props after signup', props);
 
   // return (
   //   <View style={styles.screen}>
@@ -191,18 +204,17 @@ export default function Signup ({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  
   },
   title: {
     fontSize: 24,
     fontWeight: '600',
     color: '#fff',
     alignSelf: 'center',
-    paddingBottom: 24
+    paddingBottom: 24,
   },
   img: {
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   button: {
     width: '100%',
@@ -291,7 +303,6 @@ const styles = StyleSheet.create({
 //     marginBottom: 10,
 //   },
 // });
-
 
 // // Import Google Signin
 // import {
