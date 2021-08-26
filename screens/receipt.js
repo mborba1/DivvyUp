@@ -91,7 +91,6 @@ export default class Receipt extends React.Component {
               {this._maybeRenderViewItemizedDisplay()}
             </View>
           </ScrollView>
-          <EvenSplitButton />
         </ImageBackground>
       </View>
     );
