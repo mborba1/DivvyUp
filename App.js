@@ -1,24 +1,33 @@
-// AN Note: Using React Navigation to navigate through our app.
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+//GOOGLE AUTH TUTORIAL---------------------------------
+//moved Anj's home screen into HomeStack.js in navigation
 
 import React from 'react';
-import Receipt from './screens/receipt.js';
-import Home from './screens/home.js';
-import Itemized from './screens/itemized.js';
+import Routes from './navigation/index';
 
-const Stack = createStackNavigator();
+export default function App() {
+  return <Routes />;
+}
 
-const App = () => {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="Receipt" component={Receipt} />
-        <Stack.Screen name="Itemized" component={Itemized} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-};
+// // NOTE TO SELF--ORIGINAL CODE: DO NOT TOUCH UNTIL EVERYTHING'S REFACTORED---------------------------------
+// // AN Note: Using React Navigation to navigate through our app.
+// import {NavigationContainer} from '@react-navigation/native';
+// import {createStackNavigator} from '@react-navigation/stack';
 
-export default App;
+// import React from 'react';
+// import Receipt from './screens/receipt.js';
+// import Home from './screens/home.js';
+
+// const Stack = createStackNavigator();
+
+// const App = () => {
+//   return (
+//     <NavigationContainer>
+//       <Stack.Navigator>
+//         <Stack.Screen name="Home" component={Home} />
+//         <Stack.Screen name="Receipt" component={Receipt} />
+//       </Stack.Navigator>
+//     </NavigationContainer>
+//   );
+// };
+
+// export default App;

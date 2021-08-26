@@ -7,6 +7,7 @@ import {
   FIREBASE_PROJECT_ID,
   FIREBASE_STORAGE_BUCKET,
   FIREBASE_MESSAGING_SENDER_ID,
+  FIREBASE_APP_ID
 } from './secret.js';
 // I needed to install expo-constants and then edit the below code to get this functioning.
 import Constants from 'expo-constants';
@@ -21,6 +22,7 @@ var environments = {
     FIREBASE_PROJECT_ID,
     FIREBASE_STORAGE_BUCKET,
     FIREBASE_MESSAGING_SENDER_ID,
+    FIREBASE_APP_ID,
     GOOGLE_CLOUD_VISION_API_KEY,
   },
   production: {

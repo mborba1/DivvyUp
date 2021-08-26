@@ -28,6 +28,8 @@ import firebase from '../config/firebase';
 // This is importing my environment/keys to use.
 import Environment from '../config/environment';
 import Header from './header';
+import HomeScreen from './HomeScreen';
+
 // The tutorial is using class components, but is this best?
 // Aka should we be using hooks?
 export default class Receipt extends React.Component {
@@ -66,17 +68,10 @@ export default class Receipt extends React.Component {
           source={require('../assets/divvyup-background.jpg')}
           resizeMode="cover">
           <Header />
+          <HomeScreen />
           <ScrollView contentContainerStyle={styles.contentContainer}>
             {/* When you hit pick image from camera roll, on press kick off pick image function */}
             <View style={styles.helpContainer}>
-              <TouchableOpacity
-                onPress={() =>
-                  this.props.navigation.navigate('Itemized', {
-                    receiptData: this.state.googleResponse,
-                  })
-                }>
-                <Text style={styles.button}>View Itemized Display</Text>
-              </TouchableOpacity>
               <Button
                 onPress={this._pickImage}
                 title="Pick an image from camera roll"
@@ -93,6 +88,7 @@ export default class Receipt extends React.Component {
               )}
               {this._maybeRenderImage()}
               {this._maybeRenderUploadingOverlay()}
+              {this._maybeRenderViewItemizedDisplay()}
             </View>
           </ScrollView>
         </ImageBackground>
@@ -180,9 +176,27 @@ export default class Receipt extends React.Component {
               color: 'white',
             }}>
             {JSON.stringify(googleResponse.responses)}
-            {console.log(JSON.stringify(googleResponse.responses))}
+            {console.log('Raw JSON output:', JSON.stringify(googleResponse.responses))}
           </Text>
         )} */}
+      </View>
+    );
+  };
+
+  _maybeRenderViewItemizedDisplay = () => {
+    if (this.state.googleResponse === null) {
+      return null;
+    }
+    return (
+      <View>
+        <TouchableOpacity
+          onPress={() =>
+            this.props.navigation.navigate('Itemized', {
+              receiptData: this.state.googleResponse,
+            })
+          }>
+          <Text style={styles.button}>View Itemized Display</Text>
+        </TouchableOpacity>
       </View>
     );
   };
@@ -286,14 +300,11 @@ export default class Receipt extends React.Component {
         },
       );
       let responseJson = await response.json();
-      console.log(responseJson);
+      // console.log('submitToGoogle responseJson:', responseJson);
       this.setState({
         googleResponse: responseJson,
         uploading: false,
       });
-      if (this.state.googleResponse !== null) {
-        console.log('test');
-      }
     } catch (error) {
       console.log(error);
     }

@@ -3,7 +3,7 @@ import {
   StyleSheet,
   Text,
   View,
-  ImageBackground,
+  ScrollView,
   useEffect,
   useState,
 } from 'react-native';
@@ -11,10 +11,9 @@ import {receiptParser} from '../utilities/receiptParser';
 import {DataTable, Button} from 'react-native-paper';
 
 const Itemized = ({route, navigation}) => {
-  const {img, container, text, bottom} = styles;
+  const {container, bottom} = styles;
   const {receiptData} = route.params;
   let stringifiedReceiptData = JSON.stringify(receiptData.responses);
-
   let parsedData = receiptParser(receiptData.responses);
   let string = JSON.stringify(parsedData);
 
@@ -35,19 +34,13 @@ const Itemized = ({route, navigation}) => {
     }
   };
 
-  //   const total = () => {
-  //     if (parsedData) {
-  //       let totalAmt = parsedData.reduce(
-  //         acc,
-  //         itemObject => {
-  //           if (itemObject.words.includes('Total')) {
-  //             return acc + itemObject.price;
-  //           }
-  //         },
-  //         0,
-  //       );
-  //       return totalAmt;
-  //     }
+  //   const createReceiptObjectForDB = () => {
+  //     let receiptObject = {};
+  //     parsedData.forEach(itemObject => {
+  //       let key = itemObject[words].join(' ');
+  //       receiptObject[key] = itemObject.price;
+  //     });
+  //     console.log(receiptObject);
   //   };
 
   const acceptButton = () => {
@@ -68,22 +61,19 @@ const Itemized = ({route, navigation}) => {
 
   return (
     <View style={container}>
-      {/* <ImageBackground
-        style={img}
-        source={require('../assets/divvyup-background.jpg')}
-        resizeMode="cover"> */}
-      <DataTable>
-        <DataTable.Header>
-          <DataTable.Title>Item/Meal</DataTable.Title>
-          <DataTable.Title numeric>Cost</DataTable.Title>
-        </DataTable.Header>
-      </DataTable>
-      {displayItemized()}
-      <View style={bottom}>
-        {acceptButton()}
-        {editButton()}
-        <Text>{total()}</Text>
-      </View>
+      <ScrollView>
+        <DataTable>
+          <DataTable.Header>
+            <DataTable.Title>Item/Meal</DataTable.Title>
+            <DataTable.Title numeric>Cost</DataTable.Title>
+          </DataTable.Header>
+        </DataTable>
+        {displayItemized()}
+        <View style={bottom}>
+          {acceptButton()}
+          {editButton()}
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -91,17 +81,9 @@ const Itemized = ({route, navigation}) => {
 export default Itemized;
 
 const styles = StyleSheet.create({
-  img: {
-    flex: 1,
-    justifyContent: 'center',
-  },
   container: {
+    marginTop: 60,
     flex: 1,
-  },
-  text: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: 'white',
   },
   bottom: {
     marginBottom: 12,
