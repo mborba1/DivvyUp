@@ -10,20 +10,6 @@ import {
   TextInput
 } from 'react-native';
 
-import {
-  useFonts,
-  Lato_100Thin,
-  Lato_100Thin_Italic,
-  Lato_300Light,
-  Lato_300Light_Italic,
-  Lato_400Regular,
-  Lato_400Regular_Italic,
-  Lato_700Bold,
-  Lato_700Bold_Italic,
-  Lato_900Black,
-  Lato_900Black_Italic,
-} from '@expo-google-fonts/lato';
-
 //0. Import firebase for receipt collection: 
  import firebase from '../config/firebase'
  const firestore = firebase.firestore();
@@ -36,23 +22,9 @@ import { AuthenticatedUserContext } from '../navigation/AuthenticatedUserProvide
 export default EditReceipt = ({ route }) => {
  
   const {img, text, button, container} = styles;
-  //2.Set user object. Set state (however, receipt in local state here will be the PARSED receipt) 
   const { user } = useContext(AuthenticatedUserContext) 
-  //const [receipt, setReceipt] = useState({businessName: 'PIZZERIA', items:[{price: 15, description: 'pizza', quantity: 1},{price: 20, description: 'pasta',quantity: 1},{price: 12, description: 'wine',quantity: 2}]})
-  const parsedData = route.params
-
-  let [fontsLoaded] = useFonts({
-    Lato_100Thin,
-    Lato_100Thin_Italic,
-    Lato_300Light,
-    Lato_300Light_Italic,
-    Lato_400Regular,
-    Lato_400Regular_Italic,
-    Lato_700Bold,
-    Lato_700Bold_Italic,
-    Lato_900Black,
-    Lato_900Black_Italic,
-  });
+  const [receipt, setReceipt] = useState(route.params.receipt)
+  // const receipt = route.params
 
   function submitReceipt(){
    return (
@@ -61,29 +33,43 @@ export default EditReceipt = ({ route }) => {
    )        
   }
 
+  function updateItemPrice(item, newPrice){
+    const items = receipt.items
+    const index = items.indexOf(item)
+    item.price = newPrice
+    console.log(items.indexOf(item), newPrice, item)
+   // setReceipt({...receipt, items: item[index] })
+    // console.log(receipt)
+  }
+  
+
   function listItems(){
-    // console.log('PARAM PASSED: ', parsedData)
       return (
-          <View  style={{alignItems: 'center'}} >
-            <Text>USER: {user.uid}</Text>
-            <Text>PARAMS:</Text>
-              {/* <FlatList
+          <View  style={{alignItems: 'flex-start'}} >
+              <View style={{ flexDirection: 'row',  justifyContents: 'space-around'}}>
+                      <Text style={{ margin: 5}} >ITEM</Text>
+                      <Text style={{ margin: 5}} >PRICE</Text>
+                  </View>
+              <FlatList
               data={receipt.items}
               renderItem={({item}) => { 
                 return (
                   <View
-                  style={{ flexDirection: 'row',  justifyContents: 'space-evenly'}} 
+                  style={{ flexDirection: 'row'}} 
                   key={item.key}>
-                      <Text style={{ margin: 5, fontSize: 24}} >{item.description}</Text>
-                      <Text style={{ margin: 5, fontSize: 24}}>{item.price}</Text>
-                      <TextInput style={{ margin: 5, fontSize: 24, backgroundColor: '#fff', justifyContents: 'space-evenly'}} placeholder='PRICE'/>
+                      <Text style={{ margin: 5}} >{item.description}</Text>
+                      <TextInput 
+                      style={{ margin: 5, width:45, backgroundColor: '#fff'}} 
+                      keyboardType='numeric'
+                      defaultValue={item.price}
+                      onChangeText={newPrice => updateItemPrice(item, newPrice)}/>
                   </View>
                 )}}          
-              /> */}
+              />
           </View>
     )}
 
-  if (!fontsLoaded) {
+  if (!receipt) {
     return (
       <View>
         <Text>Loading</Text>
@@ -106,13 +92,7 @@ export default EditReceipt = ({ route }) => {
   }
 };
 
-// {
-//   <Button
-//   style={{marginBottom: 10}}
-//   title="SHOW RECEIPT"
-//   onPress={()=> {this.props.navigation.navigate('ConfirmReceipt')}}
-// />
-// }
+
 
 
 const styles = StyleSheet.create({

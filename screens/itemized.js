@@ -92,21 +92,7 @@ const Itemized = ({route, navigation}) => {
     // Need to add navigation to Margareth's screen here.
   };
 
-  const editButtonFunctionality = () => {
-    convertDataToCleanObjectAndSubmitToFirestore();
-    // Need to add navigation to Jazz's edit screen here.
-  };
-
-  // Integrating Jazz's function to send the receipt back to the firestore.
-  function submitReceipt() {
-    return firestore
-      .collection('receipts')
-      .add({receipt: {...receipt, charger: `${user.uid}`}});
-  }
-
-  //   AN's function to massage parsed receipt data in a form that Jazz is expecting.  However, I have no business name.
-  //   After parsedReceipt is massaged into a form Jazz is expecting, send it to db.
-  const convertDataToCleanObjectAndSubmitToFirestore = () => {
+  const convertDataToCleanObject = () => {
     let cleanReceipt = {};
     let items = [];
     parsedData.forEach(itemObject => {
@@ -119,18 +105,12 @@ const Itemized = ({route, navigation}) => {
     cleanReceipt.items = items;
     // AN set receipt state to clean receipt.
     setReceipt(cleanReceipt);
-    // Submit clean receipt to firestore with Jazz's function.
-    submitReceipt();
-  };
-
-  const acceptButtonFunctionality = () => {
-    convertDataToCleanObjectAndSubmitToFirestore();
-    // Need to add navigation to Margareth's screen here.
+    return cleanReceipt
   };
 
   const editButtonFunctionality = () => {
-    convertDataToCleanObjectAndSubmitToFirestore();
-    // Need to add navigation to Jazz's edit screen here.
+    const receipt = convertDataToCleanObject();
+    navigation.navigate('EditReceipt', {receipt: receipt})
   };
 
   //   AN: This is what will be displayed on the screen.  Using react native paper because it's cute.
