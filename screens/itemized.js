@@ -14,13 +14,6 @@ const firestore = firebase.firestore();
 import {auth} from '../config/firebase';
 import {AuthenticatedUserContext} from '../navigation/AuthenticatedUserProvider';
 
-//0.a. Import: firebase for saving receipt to store collection:
-import firebase from '../config/firebase'
-const firestore = firebase.firestore();
-//0.b: Import: authenticated user to make associate/reference to receipt: 
-import { auth } from '../config/firebase';
-import { AuthenticatedUserContext } from '../navigation/AuthenticatedUserProvider';
-
 const Itemized = ({route, navigation}) => {
   const {container, bottom} = styles;
   const {receiptData} = route.params;
@@ -67,6 +60,42 @@ const Itemized = ({route, navigation}) => {
       </Button>
     );
   }
+
+  // Integrating Jazz's function to send the receipt back to the firestore.
+  function submitReceipt() {
+    return firestore
+      .collection('receipts')
+      .add({receipt: {...receipt, charger: `${user.uid}`}});
+  }
+
+  //   AN's function to massage parsed receipt data in a form that Jazz is expecting.  However, I have no business name.
+  //   After parsedReceipt is massaged into a form Jazz is expecting, send it to db.
+  const convertDataToCleanObjectAndSubmitToFirestore = () => {
+    let cleanReceipt = {};
+    let items = [];
+    parsedData.forEach(itemObject => {
+      let obj = {};
+      let description = itemObject.words.join(' ');
+      obj.description = description;
+      obj.price = itemObject.price;
+      items.push(obj);
+    });
+    cleanReceipt.items = items;
+    // AN set receipt state to clean receipt.
+    setReceipt(cleanReceipt);
+    // Submit clean receipt to firestore with Jazz's function.
+    submitReceipt();
+  };
+
+  const acceptButtonFunctionality = () => {
+    convertDataToCleanObjectAndSubmitToFirestore();
+    // Need to add navigation to Margareth's screen here.
+  };
+
+  const editButtonFunctionality = () => {
+    convertDataToCleanObjectAndSubmitToFirestore();
+    // Need to add navigation to Jazz's edit screen here.
+  };
 
   // Integrating Jazz's function to send the receipt back to the firestore.
   function submitReceipt() {
