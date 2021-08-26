@@ -48,10 +48,8 @@ export default Header;
 
 const styles = StyleSheet.create({
   header: {
-    // height: 60,
-    padding: 15,
+    padding: 5,
     flex: 1,
-    marginTop: 50,
   },
   text: {
     fontSize: 65,

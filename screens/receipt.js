@@ -14,6 +14,7 @@ import {
   ScrollView,
   View,
   ImageBackground,
+  TouchableOpacity,
 } from 'react-native';
 // I needed to install expo-image-picker (not included in the tutorial).
 import * as ImagePicker from 'expo-image-picker';
@@ -28,7 +29,6 @@ import firebase from '../config/firebase';
 import Environment from '../config/environment';
 import Header from './header';
 import HomeScreen from './HomeScreen';
-
 
 // The tutorial is using class components, but is this best?
 // Aka should we be using hooks?
@@ -88,6 +88,7 @@ export default class Receipt extends React.Component {
               )}
               {this._maybeRenderImage()}
               {this._maybeRenderUploadingOverlay()}
+              {this._maybeRenderViewItemizedDisplay()}
             </View>
           </ScrollView>
         </ImageBackground>
@@ -143,7 +144,7 @@ export default class Receipt extends React.Component {
         <Button
           style={{marginBottom: 10}}
           onPress={() => this.submitToGoogle()}
-          title="Analyze!"
+          title="Process Receipt"
         />
 
         <View
@@ -163,19 +164,39 @@ export default class Receipt extends React.Component {
           onLongPress={this._share}
           style={{paddingVertical: 10, paddingHorizontal: 10}}
         />
-
-        <Text>Raw JSON:</Text>
-        {/* If a google response is received, display it on the screen */}
-        {/* Also if you click on the image with your mouse, you can copy it to your clipboard */}
+        {/* End User Doesn't Need to See This So I'm Commenting It Out For Now */}
+        {/* <Text>Raw JSON:</Text>
         {googleResponse && (
           <Text
             onPress={this._copyToClipboard}
             onLongPress={this._share}
-            style={{paddingVertical: 10, paddingHorizontal: 10}}>
+            style={{
+              paddingVertical: 10,
+              paddingHorizontal: 10,
+              color: 'white',
+            }}>
             {JSON.stringify(googleResponse.responses)}
             {console.log('Raw JSON output:', JSON.stringify(googleResponse.responses))}
           </Text>
-        )}
+        )} */}
+      </View>
+    );
+  };
+
+  _maybeRenderViewItemizedDisplay = () => {
+    if (this.state.googleResponse === null) {
+      return null;
+    }
+    return (
+      <View>
+        <TouchableOpacity
+          onPress={() =>
+            this.props.navigation.navigate('Itemized', {
+              receiptData: this.state.googleResponse,
+            })
+          }>
+          <Text style={styles.button}>View Itemized Display</Text>
+        </TouchableOpacity>
       </View>
     );
   };
@@ -245,7 +266,7 @@ export default class Receipt extends React.Component {
           {
             features: [
               // { type: 'LABEL_DETECTION', maxResults: 10 },
-              {type: 'LANDMARK_DETECTION', maxResults: 5},
+              // {type: 'LANDMARK_DETECTION', maxResults: 5},
               // { type: 'FACE_DETECTION', maxResults: 5 },
               // { type: 'LOGO_DETECTION', maxResults: 5 },
               {type: 'TEXT_DETECTION', maxResults: 5},
@@ -279,7 +300,7 @@ export default class Receipt extends React.Component {
         },
       );
       let responseJson = await response.json();
-      console.log('submitToGoogle responseJson:', responseJson);
+      // console.log('submitToGoogle responseJson:', responseJson);
       this.setState({
         googleResponse: responseJson,
         uploading: false,
@@ -334,5 +355,10 @@ const styles = StyleSheet.create({
   helpContainer: {
     marginTop: 15,
     alignItems: 'center',
+  },
+  button: {
+    width: '100%',
+    color: 'white',
+    fontSize: 20,
   },
 });
