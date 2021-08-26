@@ -1,12 +1,20 @@
-import { StatusBar } from 'expo-status-bar';
+import {StatusBar} from 'expo-status-bar';
 import Header from './header';
-import React, { useState } from 'react';
-import { Alert, Button as RNButton, View, StyleSheet, Text, ImageBackground, ScrollView} from 'react-native';
+import React, {useState} from 'react';
+import {
+  Alert,
+  Button as RNButton,
+  View,
+  StyleSheet,
+  Text,
+  ImageBackground,
+  ScrollView,
+} from 'react-native';
 
-import { Button, InputField, ErrorMessage } from '../components';
+import {Button, InputField, ErrorMessage} from '../components';
 
-import { auth } from '../config/firebase';
-import { signInWithGoogle } from '../config/firebase';
+import {auth} from '../config/firebase';
+import {signInWithGoogle} from '../config/firebase';
 import {
   useFonts,
   Lato_100Thin,
@@ -21,9 +29,8 @@ import {
   Lato_900Black_Italic,
 } from '@expo-google-fonts/lato';
 
-
-  //2 input fields and a button for this screen
-export default function Login ({ navigation }) {
+//2 input fields and a button for this screen
+export default function Login({navigation}) {
   const {img, text, button, container} = styles;
   //input fields where user will enter email and password
   //values of each input field is stored inside state variables using useState hook
@@ -72,74 +79,74 @@ export default function Login ({ navigation }) {
   //   }
   // }
 
-  console.log("what is auth after logging in", auth);
-  
+  // console.log('what is auth after logging in', auth);
+
   return (
-    
     <View style={styles.container}>
-      <ImageBackground style={img} source={require('../assets/divvyup-background.jpg')}
-          resizeMode="cover">
-            
-            {/* <Header /> */}
-          {/* <ScrollView contentContainerStyle={styles.contentContainer}></ScrollView> */}
-      <StatusBar style='dark-content' />
-     
-      <Text style={styles.title}>Login</Text>
-      <InputField
-        inputStyle={{
-          fontSize: 14
-        }}
-        containerStyle={{
-          backgroundColor: '#fff',
-          marginBottom: 20
-        }}
-        leftIcon='email'
-        placeholder='Enter email'
-        autoCapitalize='none'
-        keyboardType='email-address'
-        textContentType='emailAddress'
-        autoFocus={true}
-        value={userEmail}
-        onChangeText={text => setUserEmail(text)}
-      />
-      <InputField
-        inputStyle={{
-          fontSize: 14
-        }}
-        containerStyle={{
-          backgroundColor: '#fff',
-          marginBottom: 20
-        }}
-        leftIcon='lock'
-        placeholder='Enter password'
-        autoCapitalize='none'
-        autoCorrect={false}
-        secureTextEntry={passwordVisibility}
-        textContentType='password'
-        rightIcon={rightIcon}
-        value={password}
-        onChangeText={text => setPassword(text)}
-        handlePasswordVisibility={handlePasswordVisibility}
-      />
-      {loginError ? <ErrorMessage error={loginError} visible={true} /> : null}
-      <Button
-        onPress={onLogin}
-        title='Login'
-        tileColor='#fff'
-        titleSize={20}
-        containerStyle={{
-          marginBottom: 40
-        }}
-      />
-      <RNButton style={styles.buttonText}
-        onPress={() => navigation.navigate('Signup')}
-        title='Go to Signup'
-        color='#fff' 
-        
-      />
+      <ImageBackground
+        style={img}
+        source={require('../assets/divvyup-background.jpg')}
+        resizeMode="cover">
+        {/* <Header /> */}
+        <ScrollView
+          contentContainerStyle={styles.contentContainer}></ScrollView>
+        <StatusBar style="dark-content" />
+
+        <Text style={styles.title}>Login</Text>
+        <InputField
+          inputStyle={{
+            fontSize: 14,
+          }}
+          containerStyle={{
+            backgroundColor: '#fff',
+            marginBottom: 20,
+          }}
+          leftIcon="email"
+          placeholder="Enter email"
+          autoCapitalize="none"
+          keyboardType="email-address"
+          textContentType="emailAddress"
+          autoFocus={true}
+          value={userEmail}
+          onChangeText={text => setUserEmail(text)}
+        />
+        <InputField
+          inputStyle={{
+            fontSize: 14,
+          }}
+          containerStyle={{
+            backgroundColor: '#fff',
+            marginBottom: 20,
+          }}
+          leftIcon="lock"
+          placeholder="Enter password"
+          autoCapitalize="none"
+          autoCorrect={false}
+          secureTextEntry={passwordVisibility}
+          textContentType="password"
+          rightIcon={rightIcon}
+          value={password}
+          onChangeText={text => setPassword(text)}
+          handlePasswordVisibility={handlePasswordVisibility}
+        />
+        {loginError ? <ErrorMessage error={loginError} visible={true} /> : null}
+        <Button
+          onPress={onLogin}
+          title="Login"
+          tileColor="#fff"
+          titleSize={20}
+          containerStyle={{
+            marginBottom: 40,
+          }}
+        />
+        <RNButton
+          style={styles.buttonText}
+          onPress={() => navigation.navigate('Signup')}
+          title="Go to Signup"
+          color="#fff"
+        />
       </ImageBackground>
     </View>
-    
   );
 
   // return (
@@ -161,7 +168,7 @@ export default function Login ({ navigation }) {
   //       style={styles.button}
   //       onPress={() => signIn(userEmail, password)}
   //     />
-  //     {/* <Button 
+  //     {/* <Button
   //       style={styles.button}
   //       title='Signup'>
   //       New to our app? Click here to sign up!
@@ -179,11 +186,11 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#fff',
     alignSelf: 'center',
-    paddingBottom: 24
+    paddingBottom: 24,
   },
   img: {
     flex: 1,
-    justifyContent: "center"
+    justifyContent: 'center',
   },
   button: {
     width: '100%',
@@ -207,12 +214,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '600',
     fontFamily: 'Lato_400Regular',
-   
   },
   contentContainer: {
     paddingTop: 30,
-  }
- 
+  },
 });
 
 // const styles = StyleSheet.create({
@@ -281,7 +286,7 @@ const styles = StyleSheet.create({
 // export default class Login extends Component {
 //   constructor(props) {
 //     super(props);
-    
+
 //     this.state = {
 //       userEmail: '',
 //       password: '',
@@ -289,7 +294,7 @@ const styles = StyleSheet.create({
 
 // 		this.SignIn.bind(this);
 //   }
-  
+
 // 	SignIn = (userEmail, password) => {
 
 //     try {
@@ -320,7 +325,7 @@ const styles = StyleSheet.create({
 //           secureTextEntry={true}
 //           style={styles.input}
 //         />
-        
+
 //         <Button
 //           title={'Login'}
 //           style={styles.input}
