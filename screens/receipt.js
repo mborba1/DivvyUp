@@ -85,13 +85,6 @@ export default class Receipt extends React.Component {
                   renderItem={({item}) => <Text>Item: {item.description}</Text>}
                 />
               )}
-              {this.state.googleResponse && (
-                <Button
-                style={{marginBottom: 10}}
-                title="SHOW RECEIPT"
-                onPress={()=> {this.props.navigation.navigate('ConfirmReceipt')}}
-              />
-              )}
               {this._maybeRenderImage()}
               {this._maybeRenderUploadingOverlay()}
             </View>

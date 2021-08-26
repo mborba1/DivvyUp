@@ -5,6 +5,9 @@ import {
   View,
   ImageBackground,
   Button,
+  ListItem,
+  FlatList,
+  TextInput
 } from 'react-native';
 
 import {
@@ -60,8 +63,24 @@ export default ConfirmReceipt = ({ route, navigation }) => {
    )        
   }
 
-
-
+  function listItems(){
+      return (
+          <View  style={{alignItems: 'center'}} >
+              <FlatList
+              data={receipt.items}
+              renderItem={({item}) => { 
+                return (
+                  <View
+                  style={{ flexDirection: 'row',  justifyContents: 'space-evenly'}} 
+                  key={item.key}>
+                      <Text style={{ margin: 5, fontSize: 24}} >{item.description}</Text>
+                      <Text style={{ margin: 5, fontSize: 24}}>{item.price}</Text>
+                      <TextInput style={{ margin: 5, fontSize: 24, backgroundColor: '#fff', justifyContents: 'space-evenly'}} placeholder='PRICE'/>
+                  </View>
+                )}}          
+              />
+          </View>
+    )}
 
   if (!fontsLoaded) {
     return (
@@ -70,26 +89,31 @@ export default ConfirmReceipt = ({ route, navigation }) => {
       </View>
     );
   } else {
-    console.log('USER: ', user.uid)
     return (
       <View style={container}>
         <ImageBackground
           style={img}
           source={require('../assets/divvyup-background.jpg')}
           resizeMode="cover">
-          <View>
-            <Text style={text}>Items: {JSON.stringify(receipt.items)} </Text>
-            <Button onPress={submitReceipt} title="Submit"/>
-            <Button title="Edit"/>
- 
-          </View>
+            <View style={text}>
+                {listItems()}
+            </View>    
         </ImageBackground>
+        <Button title="Submit" onPress={submitReceipt}/>
       </View>
     );
   }
 };
 
-// export default confirmReceipt;
+// {
+//   <Button
+//   style={{marginBottom: 10}}
+//   title="SHOW RECEIPT"
+//   onPress={()=> {this.props.navigation.navigate('ConfirmReceipt')}}
+// />
+// }
+
+
 
 const styles = StyleSheet.create({
   img: {
