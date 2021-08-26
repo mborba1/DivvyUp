@@ -34,8 +34,6 @@ import { AuthenticatedUserContext } from '../navigation/AuthenticatedUserProvide
 
 //COMPONENT:
 export default EditReceipt = ({ route }) => {
-
-
  
   const {img, text, button, container} = styles;
   //2.Set user object. Set state (however, receipt in local state here will be the PARSED receipt) 
@@ -115,7 +113,6 @@ export default EditReceipt = ({ route }) => {
 //   onPress={()=> {this.props.navigation.navigate('ConfirmReceipt')}}
 // />
 // }
-
 
 
 const styles = StyleSheet.create({
