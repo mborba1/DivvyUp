@@ -65,22 +65,6 @@ export default function Login({navigation}) {
     }
   };
 
-  //  //log in existing user with provided firebase auth methods
-  // const signIn = (userEmail, password) => {
-  //   try {
-  //     auth.signInWithEmailAndPassword(userEmail, password);
-  //     auth.onAuthStateChanged(user => {
-  //       Alert.alert('Credentials', `${userEmail} + ${password}`);
-  //       console.log('login onAuthStateChange user', user);
-  //     });
-  //     console.log('Ive logged in!');
-  //   } catch (error) {
-  //     console.log(error.toString(error));
-  //   }
-  // }
-
-  // console.log('what is auth after logging in', auth);
-
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -148,33 +132,6 @@ export default function Login({navigation}) {
       </ImageBackground>
     </View>
   );
-
-  // return (
-  //   <View style={styles.screen}>
-  //     <TextInput
-  //       placeholder='Email Address'
-  //       value={userEmail}
-  //       onChangeText={(userEmail) => setUserEmail(userEmail)}
-  //       style={styles.inputText}
-  //     />
-  //     <TextInput
-  //       placeholder='Password'
-  //       value={password}
-  //       onChangeText={(password) => setPassword(password)}
-  //       style={styles.inputText}
-  //     />
-  //     <Button
-  //       title={'Login'}
-  //       style={styles.button}
-  //       onPress={() => signIn(userEmail, password)}
-  //     />
-  //     {/* <Button
-  //       style={styles.button}
-  //       title='Signup'>
-  //       New to our app? Click here to sign up!
-  //     </Button> */}
-  //   </View>
-  // )
 }
 
 const styles = StyleSheet.create({

@@ -1,34 +1,20 @@
+// AN Creating Header to be imported whereever needed.
+// Import React from React
 import React from 'react';
+// Importing items needed from React Native
 import {StyleSheet, Text, View} from 'react-native';
-import {
-  useFonts,
-  Lato_100Thin,
-  Lato_100Thin_Italic,
-  Lato_300Light,
-  Lato_300Light_Italic,
-  Lato_400Regular,
-  Lato_400Regular_Italic,
-  Lato_700Bold,
-  Lato_700Bold_Italic,
-  Lato_900Black,
-  Lato_900Black_Italic,
-} from '@expo-google-fonts/lato';
+// Importing agreed upon font
+import {useFonts, Lato_300Light} from '@expo-google-fonts/lato';
 
+// Creating a functional component for header
 const Header = () => {
   let {header, text} = styles;
   let [fontsLoaded] = useFonts({
-    Lato_100Thin,
-    Lato_100Thin_Italic,
     Lato_300Light,
-    Lato_300Light_Italic,
-    Lato_400Regular,
-    Lato_400Regular_Italic,
-    Lato_700Bold,
-    Lato_700Bold_Italic,
-    Lato_900Black,
-    Lato_900Black_Italic,
   });
 
+  // If the header font isn't loaded, display text saying header loaded.
+  // If fonts are loaded, display the header.
   if (!fontsLoaded) {
     return (
       <View>
