@@ -65,7 +65,7 @@ const Itemized = ({route, navigation}) => {
   function submitReceipt() {
     return firestore
       .collection('receipts')
-      .add({receipt: {...receipt, charger: `${user.uid}`}});
+      .add({...receipt, charger: `${user.uid}`});
   }
 
   //   AN's function to massage parsed receipt data in a form that Jazz is expecting.  However, I have no business name.
@@ -110,7 +110,7 @@ const Itemized = ({route, navigation}) => {
 
   const editButtonFunctionality = () => {
     const receipt = convertDataToCleanObject();
-    navigation.navigate('EditReceipt', {receipt: receipt})
+    navigation.navigate('EditReceipt', {receipt})
   };
 
   //   AN: This is what will be displayed on the screen.  Using react native paper because it's cute.

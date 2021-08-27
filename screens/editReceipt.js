@@ -5,31 +5,27 @@ import {
   View,
   ImageBackground,
   Button,
-  ListItem,
+  ScrollView,
   FlatList,
   TextInput
 } from 'react-native';
 
-//0. Import firebase for receipt collection: 
  import firebase from '../config/firebase'
  const firestore = firebase.firestore();
-//1: Import authenticated user 
 import { auth } from '../config/firebase';
 import { AuthenticatedUserContext } from '../navigation/AuthenticatedUserProvider';
 
 
-//COMPONENT:
 export default EditReceipt = ({ route }) => {
  
   const {img, text, button, container} = styles;
   const { user } = useContext(AuthenticatedUserContext) 
   const [receipt, setReceipt] = useState(route.params.receipt)
-  // const receipt = route.params
 
   function submitReceipt(){
    return (
        firestore.collection('receipts')
-       .add({receipt: {...receipt, charger: `${user.uid}`}})
+       .add({...receipt, charger: `${user.uid}`})
    )        
   }
 
@@ -37,35 +33,32 @@ export default EditReceipt = ({ route }) => {
     const items = receipt.items
     const index = items.indexOf(item)
     item.price = newPrice
-    console.log(items.indexOf(item), newPrice, item)
-   // setReceipt({...receipt, items: item[index] })
-    // console.log(receipt)
+    setReceipt({...receipt, items: items, charger: `${user.uid}`})
   }
   
-
   function listItems(){
       return (
-          <View  style={{alignItems: 'flex-start'}} >
-              <View style={{ flexDirection: 'row',  justifyContents: 'space-around'}}>
-                      <Text style={{ margin: 5}} >ITEM</Text>
-                      <Text style={{ margin: 5}} >PRICE</Text>
-                  </View>
-              <FlatList
+          <View  style={styles.list} >
+              <View style={styles.header}>
+                      <Text style={styles.textHeader} >ITEMS </Text>
+                      <Text style={styles.textHeader} >PRICE</Text>
+              </View> 
+            <FlatList
               data={receipt.items}
               renderItem={({item}) => { 
                 return (
                   <View
-                  style={{ flexDirection: 'row'}} 
+                  style={styles.listItem} 
                   key={item.key}>
-                      <Text style={{ margin: 5}} >{item.description}</Text>
+                      <Text style={styles.text}>{item.description}</Text>
                       <TextInput 
-                      style={{ margin: 5, width:45, backgroundColor: '#fff'}} 
+                      style={styles.textInput} 
                       keyboardType='numeric'
                       defaultValue={item.price}
                       onChangeText={newPrice => updateItemPrice(item, newPrice)}/>
                   </View>
-                )}}          
-              />
+                )}}           
+            />
           </View>
     )}
 
@@ -77,17 +70,17 @@ export default EditReceipt = ({ route }) => {
     );
   } else {
     return (
-      <View style={container}>
-        <ImageBackground
-          style={img}
-          source={require('../assets/divvyup-background.jpg')}
-          resizeMode="cover">
-            <View style={text}>
-                {listItems()}
-            </View>    
-        </ImageBackground>
-        <Button title="Submit" onPress={submitReceipt}/>
-      </View>
+        <View style={container}>
+          <ImageBackground
+            style={img}
+            source={require('../assets/divvyup-background.jpg')}
+            resizeMode="cover">
+              <ScrollView style={styles.container}>
+                  {listItems()}
+              </ScrollView> 
+          </ImageBackground>
+          <Button style={styles.button} title="Submit" onPress={submitReceipt}/>
+        </View>
     );
   }
 };
@@ -96,15 +89,53 @@ export default EditReceipt = ({ route }) => {
 
 
 const styles = StyleSheet.create({
+
   img: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
   },
   container: {
     flex: 1,
+  },  
+  list: {
+    marginTop: 60,
+    alignItems: 'center',
+    justifyContent: 'flex-start'
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start'
+  },
+  listItem: {
+    flexDirection: 'row',
+    padding: 10,
+    justifyContent: 'flex-end'
+  },
+  text: {
+    fontSize: 18,
+    fontWeight: '600',
+    fontFamily: 'Lato_400Regular',
+    color: 'white',
+    padding: 5,
+  },
+  textHeader: {
+    fontSize: 25,
+    fontWeight: '600',
+    fontFamily: 'Lato_400Regular',
+    color: 'white',
+    padding: 5,
+  },
+  textInput: {
+    paddingHorizontal: 2,
+    marginHorizontal: 10, 
+    width: 55, 
+    backgroundColor: '#fff',
+    borderWidth: 1, 
+    borderRadius: 5,
   },
   button: {
-    width: '100%',
+    width: '50%',
     height: '40%',
     color: 'white',
     fontFamily: 'Lato_400Regular',
@@ -113,17 +144,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     alignItems: 'center',
     padding: 30,
+    margin: 5,
     borderRadius: 10,
-  },
-  text: {
-    fontSize: 18,
-    fontWeight: '600',
-    fontFamily: 'Lato_400Regular',
-    color: 'white',
-  },
-  buttonText: {
-    fontSize: 18,
-    fontWeight: '600',
-    fontFamily: 'Lato_400Regular',
-  },
+  }
 });
