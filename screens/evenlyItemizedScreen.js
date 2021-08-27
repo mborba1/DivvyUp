@@ -40,30 +40,35 @@ import {
       },
     ]
   }
-  
+const totalPrice =  7550
 function evenlyItemizedScreen() {
     const {img, container, text, button, textInput} = styles;
-    const [numPeople, setNumPeople] = useState('');
-    console.log(dummyReceipt.total)
+    //settjing the initial state 
+    const [numPeople, setNumPeople] = useState();
+    console.log(totalPrice)
+    //this was taken from Jo's code not sure if needed?
     const {total} = dummyReceipt;
-
+    //Jo's code here
     const onEvenSplit = (num, totalPrice) => {
-        const splitAmount = (totalPrice / num);
+        const splitAmount = Number((totalPrice / num));
         console.log(splitAmount)
         return splitAmount;
       }
-
+    //setting the the number of people 
     const clickHandler = () => {
         setNumPeople(numPeople)
     }
-    const evenlyButton = () =>{
+    //the evenly button takes numPeople set in state and calls the onEvenSplit function
+    const evenlyButton = (numPeople) =>{
+      console.log(numPeople)
         return (
-        <Button color='#000029' onPress={onEvenSplit(numPeople, total)}  mode='contained'>
+        <Button color='#000029' onPress={(numPeople) => onEvenSplit(numPeople, totalPrice)}  mode='contained'>
           <Text>Evenly</Text>
         </Button>
+        
         )
     }
-    
+    //this button has no function yet
     const itemizedButton = () =>{
         return(
         <Button color='#000029' onPress={clickHandler}  mode='contained'>
@@ -81,8 +86,8 @@ function evenlyItemizedScreen() {
             <View style={text}>
               <Text style={text}>Number of People:</Text>
             </View>
-            <TextInput style={textInput} placeholder="enter number" onChangeText={(numPeople)=> setNumPeople(numPeople)}></TextInput>
-            <View style={button}>
+            <TextInput style={textInput} placeholder="enter number" onChangeText={evenlyButton}></TextInput>
+            <View style={button} > 
                 {evenlyButton()}
                 {itemizedButton()}        
             </View>
