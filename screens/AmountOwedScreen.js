@@ -1,4 +1,3 @@
-//AmountOwedScreen test
 import React, { useState } from 'react'
 import {
   StyleSheet,
@@ -7,10 +6,12 @@ import {
   View,
   FlatList,
 } from 'react-native'
+import { Feather } from '@expo/vector-icons';
 
-import Header from './screens/header';
+import Header from './header';
 
-const App = () => {
+const AmountOwedScreen = ({ navigation }) => {
+
   const [amounts, setAmounts] = useState([
     {id: '1', price: '700'},
     {id: '2', price: '3400'},
@@ -20,25 +21,12 @@ const App = () => {
     {id: '6', price: '2280'},
   ]);
 
-  // const renderItem = ({ amount }) => {
-  //   const backgroundColor = item.id === selectedId ? "#6e3b6e" : "#f9c2ff";
-  //   const color = item.id === selectedId ? 'white' : 'black';
-
-  //   return (
-  //     <Item
-  //       item={item}
-  //       onPress={() => setSelectedId(item.id)}
-  //       backgroundColor={{ backgroundColor }}
-  //       textColor={{ color }}
-  //     />
-  //   );
-  // };
     return (
     <View style={styles.container}>
 
     <ImageBackground
       style={styles.img}
-      source={require('./assets/divvyup-background.jpg')}
+      source={require('../assets/divvyup-background.jpg')}
       resizeMode="cover">
         <View style={styles.header}>
         <Header />
@@ -49,13 +37,17 @@ const App = () => {
           renderItem={({ item }) => (
           <Text style={styles.item}>Person {item.id} owes ${(item.price)/100}</Text>)}
         />
-        <View style={styles.homeIcon}></View>
+        <View style={styles.footer}>
+          <View style={styles.iconContainer}>
+            <Feather name="home" size={40} color="rgb(243, 239, 236)" />
+          </View>
+        </View>
     </ImageBackground>
   </View>
   );
 }
 
-export default App;
+export default AmountOwedScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -76,11 +68,19 @@ const styles = StyleSheet.create({
     height: 29,
     backgroundColor: '#f8f7f6',
     overflow: 'visible',
-    marginTop: 24,
-    // justifyConcent: 'center',
-    // alignSelf: 'center',
+    marginTop: 16,
+    marginLeft: 34,
+    marginRight: 34,
   },
-  homeIcon: {
+  iconContainer: {
+    marginTop: 16,
+    marginBottom: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
+    paddingTop: 50,
+  },
+  footer: {
     width: 390,
     height: 151,
     backgroundColor: '#2d3142',
