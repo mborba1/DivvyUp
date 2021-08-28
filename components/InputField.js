@@ -1,10 +1,8 @@
 import React from 'react';
-import { View, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import {View, StyleSheet, TextInput, TouchableOpacity} from 'react-native';
+import {MaterialCommunityIcons} from '@expo/vector-icons';
 
-//this inputField component contains <TextInut /> component
-
-//const InputField = (properties) => {return(what to render)}
+//this inputField component contains <TextInput /> component
 
 const InputField = ({
   leftIcon,
@@ -49,20 +47,20 @@ const styles = StyleSheet.create({
   container: {
     borderRadius: 4,
     flexDirection: 'row',
-    padding: 12
+    padding: 12,
   },
   leftIcon: {
-    marginRight: 10
+    marginRight: 10,
   },
   input: {
     flex: 1,
     width: '100%',
-    fontSize: 18
+    fontSize: 18,
   },
   rightIcon: {
     alignSelf: 'center',
-    marginLeft: 10
-  }
+    marginLeft: 10,
+  },
 });
 
 export default InputField;
