@@ -20,7 +20,14 @@ import {db} from '../config/firebase';
 import {useFonts, Lato_400Regular} from '@expo-google-fonts/lato';
 
 export default function Signup({navigation}) {
-  const {img, text, button, container, title} = styles;
+  const {
+    img,
+    text,
+    button,
+    container,
+    title,
+    touchableOpacityContainerForBottom,
+  } = styles;
   //input fields where user will enter email and password
   //values of each input field is stored inside state variables using useState hook
   //initial values of each state variable is an empty string and then updated with "set" functions with the values inside input fields
@@ -125,10 +132,12 @@ export default function Signup({navigation}) {
         {signupError ? (
           <ErrorMessage error={signupError} visible={true} />
         ) : null}
-        <Button mode="contained" onPress={onHandleSignup}>
+        <Button style={button} mode="contained" onPress={onHandleSignup}>
           Sign Up
         </Button>
-        <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+        <TouchableOpacity
+          style={touchableOpacityContainerForBottom}
+          onPress={() => navigation.navigate('Login')}>
           <Text style={text}>Return To Login Page</Text>
         </TouchableOpacity>
       </ImageBackground>
@@ -146,23 +155,16 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#fff',
     alignSelf: 'center',
-    paddingBottom: 24,
+    marginBottom: 24,
   },
   img: {
     flex: 1,
     justifyContent: 'center',
   },
   button: {
-    width: '100%',
-    height: '40%',
     color: 'white',
     fontFamily: 'Lato_400Regular',
     backgroundColor: 'black',
-    fontSize: 20,
-    textAlign: 'center',
-    alignItems: 'center',
-    padding: 30,
-    borderRadius: 10,
   },
   text: {
     fontSize: 18,
@@ -171,9 +173,8 @@ const styles = StyleSheet.create({
     color: 'white',
     alignSelf: 'center',
   },
-  buttonText: {
-    fontSize: 18,
-    fontWeight: '600',
-    fontFamily: 'Lato_400Regular',
+  touchableOpacityContainerForBottom: {
+    marginTop: 30,
+    marginBottom: '65%',
   },
 });
