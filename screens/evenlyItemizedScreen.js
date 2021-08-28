@@ -15,60 +15,31 @@ import {
     Lato_900Black_Italic,
   } from '@expo-google-fonts/lato';
   import {TextInput, Button} from 'react-native-paper';
-  // const dummyReceipt = {
-  //   id: 1,
-  //   items: [
-  //     {
-  //       id: 1,
-  //       description: 'sushi roll',
-  //       price: '700'
-  //     },
-  //     {
-  //       id: 2,
-  //       description: 'cheesecake',
-  //       price: '3400'
-  //     },
-  //     {
-  //       id: 3,
-  //       description: 'hamburger',
-  //       price: '1200'
-  //     },
-  //     {
-  //       id: 4,
-  //       description: 'carbonara',
-  //       price: '2250'
-  //     },
-  //   ]
-  // }
+ 
 const totalPrice =  7550
 
 function evenlyItemizedScreen() {
     const {img, container, text, button, textInput} = styles;
+    
     //setting the initial state 
     const numPeople = useRef(0)
     const [tempPeople, setTempPeople] = useState(0);
-    console.log(totalPrice)
     
+    //this is the split function
     const splitFunctionality = () => {
       numPeople.current = tempPeople;
       let split = totalPrice / numPeople.current;
       console.log(split);
     }
+    //function to set the temp number to the number of people
     const tempNumber = people => {
-      setTempPeople(people);
-      console.log(people)
+      setTempPeople(people); 
     }
-    //Jo's code here
-    // const onEvenSplit = (num, totalPrice) => {
-    //     const splitAmount = Number((totalPrice / num));
-    //     console.log(splitAmount)
-    //     return splitAmount;
-    //   }
-    //setting the number of people 
+  
     const clickHandler = () => {
-        setNumPeople(numPeople)
+        //need to add additional functionality later
     }
-    //the evenly button takes numPeople set in state and calls the onEvenSplit function
+    //the evenly button takes numPeople set in state and calls the splitFunctionaly function
     const evenlyButton = () =>{
       console.log(numPeople)
         return (
@@ -110,22 +81,29 @@ export default evenlyItemizedScreen;
 
 
 const styles = StyleSheet.create({
+    button: {
+      marginBottom: 12,
+      paddingVertical: 16,
+      paddingHorizontal: 40,
+      justifyContent: 'space-between',
+      flexDirection: 'row',
+      color: '#000029',
+      marginBottom: 150
+    },
+    buttonText: {
+      fontSize: 18,
+      fontWeight: '600',
+      fontFamily: 'Lato_400Regular',
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
     container: {
       flex:1, 
     },
     img: {
       flex: 1,
       justifyContent: 'center'
-    },
-    button: {
-        marginBottom: 12,
-        paddingVertical: 16,
-        paddingHorizontal: 40,
-        justifyContent: 'space-between',
-        flexDirection: 'row',
-        color: '#000029',
-        marginBottom: 150
-      },
+    }, 
     text: {
       fontSize: 18,
       fontWeight: '600',
@@ -137,12 +115,5 @@ const styles = StyleSheet.create({
     },
     textInput:{
         marginBottom: 10,
-    },
-    buttonText: {
-      fontSize: 18,
-      fontWeight: '600',
-      fontFamily: 'Lato_400Regular',
-      alignItems: 'center',
-      justifyContent: 'center'
-    },
+    }  
   })
