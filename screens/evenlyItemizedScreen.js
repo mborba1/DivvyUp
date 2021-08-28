@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import Header from './header';
 import { StyleSheet, Text, View, ImageBackground, TouchableOpacity } from 'react-native';
 import {
@@ -15,54 +15,64 @@ import {
     Lato_900Black_Italic,
   } from '@expo-google-fonts/lato';
   import {TextInput, Button} from 'react-native-paper';
-  const dummyReceipt = {
-    id: 1,
-    items: [
-      {
-        id: 1,
-        description: 'sushi roll',
-        price: '700'
-      },
-      {
-        id: 2,
-        description: 'cheesecake',
-        price: '3400'
-      },
-      {
-        id: 3,
-        description: 'hamburger',
-        price: '1200'
-      },
-      {
-        id: 4,
-        description: 'carbonara',
-        price: '2250'
-      },
-    ]
-  }
+  // const dummyReceipt = {
+  //   id: 1,
+  //   items: [
+  //     {
+  //       id: 1,
+  //       description: 'sushi roll',
+  //       price: '700'
+  //     },
+  //     {
+  //       id: 2,
+  //       description: 'cheesecake',
+  //       price: '3400'
+  //     },
+  //     {
+  //       id: 3,
+  //       description: 'hamburger',
+  //       price: '1200'
+  //     },
+  //     {
+  //       id: 4,
+  //       description: 'carbonara',
+  //       price: '2250'
+  //     },
+  //   ]
+  // }
 const totalPrice =  7550
+
 function evenlyItemizedScreen() {
     const {img, container, text, button, textInput} = styles;
-    //settjing the initial state 
-    const [numPeople, setNumPeople] = useState();
+    //setting the initial state 
+    const numPeople = useRef(0)
+    const [tempPeople, setTempPeople] = useState(0);
     console.log(totalPrice)
-    //this was taken from Jo's code not sure if needed?
-    const {total} = dummyReceipt;
+    
+    const splitFunctionality = () => {
+      numPeople.current = tempPeople;
+      let split = totalPrice / numPeople.current;
+      console.log(split);
+    }
+    const tempNumber = people => {
+      setTempPeople(people);
+      console.log(people)
+    }
     //Jo's code here
-    const onEvenSplit = (num, totalPrice) => {
-        const splitAmount = Number((totalPrice / num));
-        console.log(splitAmount)
-        return splitAmount;
-      }
-    //setting the the number of people 
+    // const onEvenSplit = (num, totalPrice) => {
+    //     const splitAmount = Number((totalPrice / num));
+    //     console.log(splitAmount)
+    //     return splitAmount;
+    //   }
+    //setting the number of people 
     const clickHandler = () => {
         setNumPeople(numPeople)
     }
     //the evenly button takes numPeople set in state and calls the onEvenSplit function
-    const evenlyButton = (numPeople) =>{
+    const evenlyButton = () =>{
       console.log(numPeople)
         return (
-        <Button color='#000029' onPress={(numPeople) => onEvenSplit(numPeople, totalPrice)}  mode='contained'>
+        <Button color='#000029' onPress={() => splitFunctionality()}  mode='contained'>
           <Text>Evenly</Text>
         </Button>
         
@@ -86,7 +96,7 @@ function evenlyItemizedScreen() {
             <View style={text}>
               <Text style={text}>Number of People:</Text>
             </View>
-            <TextInput style={textInput} placeholder="enter number" onChangeText={evenlyButton}></TextInput>
+            <TextInput style={textInput} placeholder="enter number" onChangeText={tempNumber}></TextInput>
             <View style={button} > 
                 {evenlyButton()}
                 {itemizedButton()}        
