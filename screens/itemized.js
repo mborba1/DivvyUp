@@ -15,7 +15,7 @@ import {auth} from '../config/firebase';
 import {AuthenticatedUserContext} from '../navigation/AuthenticatedUserProvider';
 
 const Itemized = ({route, navigation}) => {
-  const {container, bottom} = styles;
+  const {container, bottom, button} = styles;
   const {receiptData} = route.params;
   // This is my parsed receipt.
   let parsedData = receiptParser(receiptData.responses);
@@ -47,7 +47,10 @@ const Itemized = ({route, navigation}) => {
   // AN's Accept Button
   const acceptButton = () => {
     return (
-      <Button onPress={() => acceptButtonFunctionality()} mode="contained">
+      <Button
+        style={button}
+        onPress={() => acceptButtonFunctionality()}
+        mode="contained">
         <Text>Accept</Text>
       </Button>
     );
@@ -55,7 +58,10 @@ const Itemized = ({route, navigation}) => {
   // AN's Edit Button
   const editButton = () => {
     return (
-      <Button onPress={() => editButtonFunctionality()} mode="contained">
+      <Button
+        style={button}
+        onPress={() => editButtonFunctionality()}
+        mode="contained">
         <Text>Edit</Text>
       </Button>
     );
@@ -85,7 +91,7 @@ const Itemized = ({route, navigation}) => {
     cleanReceipt.items = items;
     // AN set receipt state to clean receipt.
     setReceipt(cleanReceipt);
-    // Submit clean receipt to firestore with Jazz's function.
+    // Submit clean receipt to firestore with Jo's function.
     submitReceipt();
   };
 
@@ -133,5 +139,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
     justifyContent: 'space-between',
     flexDirection: 'row',
+  },
+  button: {
+    backgroundColor: 'rgb(227, 100, 20)',
   },
 });

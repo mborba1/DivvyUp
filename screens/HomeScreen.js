@@ -72,7 +72,6 @@ const styles = StyleSheet.create({
   },
   emailAndLogoutPosition: {
     alignSelf: 'flex-end',
-    marginTop: '-32%',
     marginRight: '5%',
   },
   text: {
