@@ -4,20 +4,19 @@ import {
   Text,
   View,
   ImageBackground,
-  Button,
-  ScrollView,
   FlatList,
-  TextInput
+  ViewStyle,
+  TouchableOpacity
 } from 'react-native';
-
- import firebase from '../config/firebase'
- const firestore = firebase.firestore();
+import Button from '../components/Button'
+import { TextInputMask } from 'react-native-masked-text'
 import { auth } from '../config/firebase';
 import { AuthenticatedUserContext } from '../navigation/AuthenticatedUserProvider';
+import firebase from '../config/firebase'
+const firestore = firebase.firestore();
 
 
 export default EditReceipt = ({ route }) => {
- 
   const {img, text, button, container} = styles;
   const { user } = useContext(AuthenticatedUserContext) 
   const [receipt, setReceipt] = useState(route.params.receipt)
@@ -25,7 +24,7 @@ export default EditReceipt = ({ route }) => {
   function submitReceipt(){
    return (
        firestore.collection('receipts')
-       .add({...receipt, charger: `${user.uid}`})
+       .add({receipt: {...receipt, charger: `${user.uid}`}})
    )        
   }
 
@@ -39,11 +38,9 @@ export default EditReceipt = ({ route }) => {
   function listItems(){
       return (
           <View  style={styles.list} >
-              <View style={styles.header}>
-                      <Text style={styles.textHeader} >ITEMS </Text>
-                      <Text style={styles.textHeader} >PRICE</Text>
-              </View> 
             <FlatList
+              ListHeaderComponent={()=><Text style={styles.textHeader} >ITEM</Text>}
+              ItemSeparatorComponent={() =><View style={styles.separator} />}
               data={receipt.items}
               renderItem={({item}) => { 
                 return (
@@ -51,10 +48,27 @@ export default EditReceipt = ({ route }) => {
                   style={styles.listItem} 
                   key={item.key}>
                       <Text style={styles.text}>{item.description}</Text>
-                      <TextInput 
+                  </View>
+                )}}           
+            />
+            <FlatList
+             ListHeaderComponent={()=><Text style={styles.textHeader}>PRICE</Text>}
+             ItemSeparatorComponent={() =><View style={styles.separator} />}
+              data={receipt.items}
+              renderItem={({item}) => { 
+                return (
+                  <View
+                  style={styles.listItem} 
+                  key={item.key}>
+                      <TextInputMask
                       style={styles.textInput} 
-                      keyboardType='numeric'
-                      defaultValue={item.price}
+                      type={'money'}
+                      options={{
+                        separator: '.',
+                        delimiter: ',',
+                        unit: null
+                      }}
+                      value={item.price}
                       onChangeText={newPrice => updateItemPrice(item, newPrice)}/>
                   </View>
                 )}}           
@@ -70,81 +84,80 @@ export default EditReceipt = ({ route }) => {
     );
   } else {
     return (
-        <View style={container}>
+        <View style={styles.container}>
           <ImageBackground
             style={img}
             source={require('../assets/divvyup-background.jpg')}
             resizeMode="cover">
-              <ScrollView style={styles.container}>
+              <View style={styles.container}>
                   {listItems()}
-              </ScrollView> 
+                  <Button style={styles.button} title="Submit" onPress={submitReceipt}/>
+              </View> 
           </ImageBackground>
-          <Button style={styles.button} title="Submit" onPress={submitReceipt}/>
         </View>
     );
   }
 };
 
 
-
-
 const styles = StyleSheet.create({
 
   img: {
     flex: 1,
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-around'
   },
   container: {
-    flex: 1,
+    flex: 1, 
+    flexDirection: 'column'
   },  
   list: {
     marginTop: 60,
-    alignItems: 'center',
-    justifyContent: 'flex-start'
-  },
-  header: {
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-start'
+    padding: 25
   },
   listItem: {
-    flexDirection: 'row',
     padding: 10,
+    height: 50,
     justifyContent: 'flex-end'
   },
   text: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: '600',
     fontFamily: 'Lato_400Regular',
     color: 'white',
     padding: 5,
   },
   textHeader: {
-    fontSize: 25,
+    fontSize: 27,
     fontWeight: '600',
     fontFamily: 'Lato_400Regular',
     color: 'white',
     padding: 5,
+    marginBottom: 5,
   },
   textInput: {
     paddingHorizontal: 2,
+    textAlign: 'center',
     marginHorizontal: 10, 
-    width: 55, 
+    width: 60, 
     backgroundColor: '#fff',
-    borderWidth: 1, 
-    borderRadius: 5,
+    borderRadius: 3,
   },
   button: {
-    width: '50%',
-    height: '40%',
+    width: '10',
+    height: '40',
     color: 'white',
     fontFamily: 'Lato_400Regular',
-    backgroundColor: 'black',
-    fontSize: 20,
+    fontSize: 2,
     textAlign: 'center',
     alignItems: 'center',
-    padding: 30,
+    padding: 5,
     margin: 5,
     borderRadius: 10,
+  }, 
+  separator: {
+    height: 1, 
+    width: "100%",
+    backgroundColor: "#CEDCCE",
   }
 });
