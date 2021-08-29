@@ -1,5 +1,5 @@
 // AN Note: Import React from React.
-import React, {useContext, useState} from 'react';
+import React, {useContext, useState, useRef} from 'react';
 // Importing items from react native to be used in my screen.
 import {StyleSheet, Text, View, ScrollView} from 'react-native';
 // Importing my receipt parser function to use when someone navigates to this page.
@@ -25,6 +25,7 @@ const Itemized = ({route, navigation}) => {
     : 'NO USER!';
   // Here I'm using useState, changing the names of my items to the same naming convention as Jazz.
   const [receipt, setReceipt] = useState(parsedData);
+  const acceptedReceipt = useRef(null);
 
   //   AN: This will display the items on the screen if receiptdata was properly parsed.
   const displayItemized = () => {
@@ -70,7 +71,7 @@ const Itemized = ({route, navigation}) => {
   // AN Integrating Jo's function to send the receipt back to the firestore.
   async function submitReceipt() {
     const submittedReceipt = await firestore.collection('receipts').add({
-      ...receipt,
+      ...acceptedReceipt.current,
       charger: `${user.uid}`,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
     });
@@ -92,6 +93,9 @@ const Itemized = ({route, navigation}) => {
     // AN set receipt state to clean receipt.
     setReceipt(cleanReceipt);
     // Submit clean receipt to firestore with Jo's function.
+    // We need to use useRef here since this isn't getting rendered to the screen.
+    // If we don't, the uncleaned receipt will be sent back to the db instead of the clean one.
+    acceptedReceipt.current = cleanReceipt;
     submitReceipt();
   };
 

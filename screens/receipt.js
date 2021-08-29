@@ -31,6 +31,8 @@ import {Button} from 'react-native-paper';
 
 const Receipt = ({navigation}) => {
   // Use fonts so we can use our font.
+  // As of now, I'm not styling anything on this page with our font.
+  // But we can if we want to later.
   let [fontsLoaded] = useFonts({
     Lato_400Regular,
   });

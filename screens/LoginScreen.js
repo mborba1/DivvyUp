@@ -6,7 +6,6 @@ import {
   StyleSheet,
   Text,
   ImageBackground,
-  ScrollView,
   TouchableOpacity,
 } from 'react-native';
 
@@ -78,9 +77,7 @@ export default function Login({navigation}) {
         source={require('../assets/divvyup-background.jpg')}
         resizeMode="cover">
         <Header />
-        <ScrollView contentContainerStyle={contentContainer}></ScrollView>
         <StatusBar style="dark-content" />
-
         <Text style={title}>Enter Login Details</Text>
         <InputField
           inputStyle={{
@@ -159,9 +156,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Lato_400Regular',
     color: 'white',
     alignSelf: 'center',
-  },
-  contentContainer: {
-    paddingTop: 30,
   },
   touchableOpacityContainerForBottom: {
     marginTop: 30,
