@@ -10,7 +10,7 @@ import {DataTable, Button} from 'react-native-paper';
 import firebase from '../config/firebase';
 // Initiating firestore?  Ask Jazmin for clarity/should we do this in a separate file/move to config?
 const firestore = firebase.firestore();
-// Per Jazz, importing authenticated user and authenticated user context.
+// Importing authenticated user and authenticated user context.
 import {auth} from '../config/firebase';
 import {AuthenticatedUserContext} from '../navigation/AuthenticatedUserProvider';
 
@@ -19,14 +19,14 @@ const Itemized = ({route, navigation}) => {
   const {receiptData} = route.params;
   // This is my parsed receipt.
   let parsedData = receiptParser(receiptData.responses);
-  // Per Jazz, setting user object.
+  // Setting user object.
   const {user} = useContext(AuthenticatedUserContext)
     ? useContext(AuthenticatedUserContext)
     : 'NO USER!';
   // Here I'm using useState, changing the names of my items to the same naming convention as Jazz.
   const [receipt, setReceipt] = useState(parsedData);
 
-  //   This will display the items on the screen if receiptdata was properly parsed.
+  //   AN: This will display the items on the screen if receiptdata was properly parsed.
   const displayItemized = () => {
     if (receiptData === null) {
       return null;
@@ -61,11 +61,13 @@ const Itemized = ({route, navigation}) => {
     );
   };
 
-  // Integrating Jazz's function to send the receipt back to the firestore.
-  function submitReceipt() {
-    return firestore
-      .collection('receipts')
-      .add({receipt: {...receipt, charger: `${user.uid}`}});
+  // AN Integrating Jo's function to send the receipt back to the firestore.
+  async function submitReceipt() {
+    const submittedReceipt = await firestore.collection('receipts').add({
+      ...receipt,
+      charger: `${user.uid}`,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    });
   }
 
   //   AN's function to massage parsed receipt data in a form that Jazz is expecting.  However, I have no business name.
