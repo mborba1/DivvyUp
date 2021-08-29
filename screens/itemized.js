@@ -26,6 +26,9 @@ const Itemized = ({route, navigation}) => {
   // Here I'm using useState, changing the names of my items to the same naming convention as Jazz.
   const [receipt, setReceipt] = useState(parsedData);
 
+  // console.log(receipt);
+  const [receiptId, setReceiptId] = useState('');
+
   //   This will display the items on the screen if receiptdata was properly parsed.
   const displayItemized = () => {
     if (receiptData === null) {
@@ -47,7 +50,7 @@ const Itemized = ({route, navigation}) => {
    // TEMP amountOwed button to see screen, will remove after
    const amountButton = () => {
     return (
-      <Button onPress={() => navigation.navigate('AmountOwed')} mode="contained">
+      <Button onPress={() => navigation.navigate('AmountOwed', {id: receiptId})} mode="contained">
         <Text>Amount Owed</Text>
       </Button>
     );
@@ -71,10 +74,19 @@ const Itemized = ({route, navigation}) => {
   };
 
   // Integrating Jazz's function to send the receipt back to the firestore.
-  function submitReceipt() {
-    return firestore
-      .collection('receipts')
-      .add({receipt: {...receipt, charger: `${user.uid}`}});
+  const submitReceipt = async () => {
+    const submittedReceipt = await firestore
+    .collection('receipts')
+    .add({
+      ...receipt,
+      charger: `${user.uid}`,
+      createdAt : firebase.firestore.FieldValue.serverTimestamp()
+    });
+    // return firestore
+    //   .collection('receipts')
+    //   .add({receipt: {...receipt, charger: `${user.uid}`}});
+    setReceiptId(submittedReceipt.id);
+    console.log(receiptId);
   }
 
   //   AN's function to massage parsed receipt data in a form that Jazz is expecting.  However, I have no business name.
@@ -102,7 +114,7 @@ const Itemized = ({route, navigation}) => {
   };
 
   const editButtonFunctionality = () => {
-    convertDataToCleanObjectAndSubmitToFirestore();
+    // convertDataToCleanObjectAndSubmitToFirestore();
     // Need to add navigation to Jazz's edit screen here.
   };
 

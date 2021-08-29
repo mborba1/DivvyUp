@@ -10,8 +10,8 @@ import {auth} from '../config/firebase';
 
 import {AuthenticatedUserContext} from '../navigation/AuthenticatedUserProvider';
 
-//import receipt/scanner functionalities into our home screen, displayed below user info in return statement
-import Receipt from './receipt';
+// //import receipt/scanner functionalities into our home screen, displayed below user info in return statement
+// import Receipt from './receipt';
 
 //this screen is our main home screen
 //this screen will show user's email and their UID when the user has successfully signed up or logged in

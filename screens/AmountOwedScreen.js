@@ -1,16 +1,73 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import {
   StyleSheet,
   ImageBackground,
   Text,
   View,
   FlatList,
+  Button
 } from 'react-native'
 import { Feather } from '@expo/vector-icons';
 
 import Header from './header';
 
-const AmountOwedScreen = ({ navigation }) => {
+import { db } from '../config/firebase';
+import {AuthenticatedUserContext} from '../navigation/AuthenticatedUserProvider';
+
+const AmountOwedScreen = ({ navigation, route }) => {
+  const {user} = useContext(AuthenticatedUserContext)
+
+  // console.log(route);
+  const { id } = route.params;
+  console.log(id);
+
+  const [chargeesObj, setChargeesObj] = useState([]);
+  
+  const chargerId = user.uid;
+  // console.log('what is chargerId', chargerId)
+
+  const numPpl  = 4;
+  let ppCharge;
+
+  const getMostRecent = async () => {
+    // Make the initial query
+    const query = await db
+    .collection('receipts')
+    .doc(id)
+    .get();
+
+    const data = query.data();
+    console.log('what is query data', data)
+
+    const total = data.items.find(({description}) => description === 'TOTAL');
+    ppCharge = (Number(total.price) / numPpl);
+    console.log('what is per person charge', ppCharge);
+    
+    const chargees = new Array(numPpl).fill({'chargee': ppCharge});
+    console.log('what is the chargee object', chargees);
+    // console.log(data.charger);
+    // console.log(data.createdAt);
+    // console.log(data.items);
+    console.log('what is chargeesObj in state', chargeesObj);
+    //only setting the chargees right now, but will not be set until this function is complete
+    setChargeesObj(chargees);
+    // console.log('chargeesObj', chargeesObj);
+  }
+
+  // getMostRecent();
+
+  console.log("what is chargeeObj in screen", chargeesObj);
+
+  const updateChargees = async () => {
+    await db
+    .collection('receipts')
+    .doc(id)
+    .update({chargeesField: chargeesObj});
+    // console.log('is chargees added', newData.data());
+  }
+  
+
+  // updateChargees();
 
   const [amounts, setAmounts] = useState([
     {id: '1', price: '700'},
@@ -21,7 +78,7 @@ const AmountOwedScreen = ({ navigation }) => {
     {id: '6', price: '2280'},
   ]);
 
-    return (
+  return (
     <View style={styles.container}>
 
     <ImageBackground
@@ -30,6 +87,8 @@ const AmountOwedScreen = ({ navigation }) => {
       resizeMode="cover">
         <View style={styles.header}>
         <Header />
+        <Button title="add Chargees" onPress={() => getMostRecent()}/>
+        <Button title="Add chargeesObj to receipt" onPress={() => updateChargees()}/>
         </View>
         <FlatList
           keyExtractor={(item) => item.id}
