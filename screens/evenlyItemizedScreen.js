@@ -29,7 +29,7 @@ function evenlyItemizedScreen() {
     const splitFunctionality = () => {
       numPeople.current = tempPeople;
       let split = totalPrice / numPeople.current;
-      console.log(split);
+      return split;
     }
     //function to set the temp number to the number of people
     const tempNumber = people => {
@@ -41,7 +41,7 @@ function evenlyItemizedScreen() {
     }
     //the evenly button takes numPeople set in state and calls the splitFunctionaly function
     const evenlyButton = () =>{
-      console.log(numPeople)
+      
         return (
         <Button color='#000029' onPress={() => splitFunctionality()}  mode='contained'>
           <Text>Evenly</Text>
