@@ -2,7 +2,7 @@ import React, {useState, useRef, useContext} from 'react';
 import Header from './header';
 import { db } from '../config/firebase';
 import {AuthenticatedUserContext} from '../navigation/AuthenticatedUserProvider';
-import { StyleSheet, Text, View, ImageBackground, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground } from 'react-native';
 import {
     useFonts,
     Lato_100Thin,
@@ -18,13 +18,13 @@ import {
   } from '@expo-google-fonts/lato';
 import {TextInput, Button} from 'react-native-paper';
  
-// const totalPrice =  7550
 
-function evenlyItemizedScreen({navigation, route}) {
+
+function evenlyItemizedScreen({route}) {
     const {img, container, text, button, textInput} = styles;
     const {user} = useContext(AuthenticatedUserContext);
     const { id } = route.params;
-    console.log(id)
+
     const chargerId = user.uid;
 
     const [chargeesObj, setChargeesObj] = useState([]);
@@ -37,29 +37,18 @@ function evenlyItemizedScreen({navigation, route}) {
 
     
       const data = query.data();
-      console.log(data)
 
       totalPrice = data.items.find(({description}) => description === 'Total');
-      console.log(totalPrice)
       let ppCharge =  splitFunctionality()
       
       const chargees = new Array(Number(numPeople.current)).fill({name: 'chargee', amountOwed: ppCharge});
-      console.log('what is the chargee object', chargees);
+      
       setChargeesObj(chargees)
 
       
     }
     let totalPrice
-    console.log('What is chargeesObj in state', chargeesObj)
-    // const updateChargees = async () => {
-    //   getMostRecent()
-    //   await db
-    //   .collection('receipts')
-    //   .doc(id)
-    //   .update({chargeesField: chargeesObj});
-    //   // console.log('is chargees added', newData.data());
-
-    // }
+  
     const splitFunctionality = () => {
       numPeople.current = tempPeople;
       let split = totalPrice.price / numPeople.current;
@@ -70,7 +59,6 @@ function evenlyItemizedScreen({navigation, route}) {
     const numPeople = useRef(0)
     const [tempPeople, setTempPeople] = useState(0);
     
-    //this is the split function
     
     //function to set the temp number to the number of people
     const tempNumber = people => {
