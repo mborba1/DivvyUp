@@ -1,113 +1,67 @@
-// AN Note:  This is the code I edited from the tutorial.
-// This is a messy file and I need to separate out components/convert to modal screens.
-import React from 'react';
-// Import a bunch of stuff from React Native.
+// AN Note: Receipt Refactor to Functional Component
+import React, {useState, useEffect} from 'react';
 import {
   ActivityIndicator,
-  Button,
-  Clipboard,
-  FlatList,
   Image,
-  Share,
+  ImageBackground,
+  ScrollView,
   StyleSheet,
   Text,
-  ScrollView,
   View,
-  ImageBackground,
-  TouchableOpacity,
 } from 'react-native';
-// I needed to install expo-image-picker (not included in the tutorial).
+// Install expo-image-picker and import into file.
 import * as ImagePicker from 'expo-image-picker';
-// I needed to install expo-camera (not included in the tutorial).
+// Install expo-camera and import into file.
 import {Camera} from 'expo-camera';
-// I was fine using uuid, the tutorial uses nanoid.
 // This basically gives a unique identifier to each item.
 import uuid from 'uuid';
 // This is importing my firebase.
 import firebase from '../config/firebase';
 // This is importing my environment/keys to use.
 import Environment from '../config/environment';
+// This is importing my divvyup header.
 import Header from './header';
+// This is importing homescreen component which is basically the result of logging in a user.
+// It has the user email displayed and an option to logout.
 import HomeScreen from './HomeScreen';
+// As per usual, I'm importing the agreed upon font.
+import {useFonts, Lato_400Regular} from '@expo-google-fonts/lato';
+// Import Button from React Native Paper.
+import {Button} from 'react-native-paper';
 
-// The tutorial is using class components, but is this best?
-// Aka should we be using hooks?
-export default class Receipt extends React.Component {
-  // The tutorial is setting state to be an object with image, uploading, and googleResponse keys.
-  state = {
-    image: null,
-    uploading: false,
-    googleResponse: null,
-  };
-
-  // When component mounts, make sure to get access to camera and pics.
-  async componentDidMount() {
-    // This is code from the tutorial that was out of date.
-    // We should be using Camera and Image Picker here instead so I updated that.
-    // Actually, maybe I'll still need these lines of code....will play with them.
-    // await Permissions.askAsync(Permissions.CAMERA_ROLL);
-    // await Permissions.askAsync(Permissions.CAMERA);
+const Receipt = ({navigation}) => {
+  // Use fonts so we can use our font.
+  // As of now, I'm not styling anything on this page with our font.
+  // But we can if we want to later.
+  let [fontsLoaded] = useFonts({
+    Lato_400Regular,
+  });
+  // State Hooks for image, uploading, and googleResponse.
+  const [image, setImage] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const [googleResponse, setGoogleResponse] = useState(null);
+  // Deconstructing stylesheet.
+  const {
+    container,
+    img,
+    button,
+    processReceiptButton,
+    viewReceiptDetail,
+    scrollViewContainer,
+  } = styles;
+  // Instead of ComponentDidMount, I will use useEffect for CameraPermissions.
+  useEffect(() => {
     // Here I'm requesting permission to use the camera of the user.
-    await Camera.requestCameraPermissionsAsync();
-    // Here I'm requesting permission to use cameral.
-    await ImagePicker.requestCameraPermissionsAsync();
+    Camera.requestCameraPermissionsAsync();
+    // Here I'm requesting permission to use camera.
+    ImagePicker.requestCameraPermissionsAsync();
     // Here I'm requesting permission to take a picture from the user's camera roll.
     // I'm inputting false as a parameter because I don't need write-only permissions.
-    await ImagePicker.requestMediaLibraryPermissionsAsync(false);
-  }
-
-  // This is rendering my screen.
-  render() {
-    // Deconstructing image from this.state.
-    let {image} = this.state;
-    const {container, img} = styles;
-    return (
-      <View style={container}>
-        <ImageBackground
-          style={img}
-          source={require('../assets/divvyup-background.jpg')}
-          resizeMode="cover">
-          <Header />
-          <HomeScreen />
-          <ScrollView contentContainerStyle={styles.contentContainer}>
-            {/* When you hit pick image from camera roll, on press kick off pick image function */}
-            <View style={styles.helpContainer}>
-              <Button
-                onPress={this._pickImage}
-                title="Pick an image from camera roll"
-              />
-              {/* When you hit take a photo, access camera and take image, but I can't get this to work yet.  Need to figure out how to get the app on my phone to test with my camera */}
-              <Button onPress={this._takePhoto} title="Take a photo" />
-              {this.state.googleResponse && (
-                <FlatList
-                  data={this.state.googleResponse.responses[0].labelAnnotations}
-                  extraData={this.state}
-                  keyExtractor={this._keyExtractor}
-                  renderItem={({item}) => <Text>Item: {item.description}</Text>}
-                />
-              )}
-              {this._maybeRenderImage()}
-              {this._maybeRenderUploadingOverlay()}
-              {this._maybeRenderViewItemizedDisplay()}
-            </View>
-          </ScrollView>
-        </ImageBackground>
-      </View>
-    );
-  }
-  // I currently don't know that this is organizing.
-  organize = array => {
-    return array.map(function (item, i) {
-      return (
-        <View key={i}>
-          <Text>{item}</Text>
-        </View>
-      );
-    });
-  };
+    ImagePicker.requestMediaLibraryPermissionsAsync(false);
+  }, []);
   // Rendering the Overlay - basically this is formatting stuff.
-  _maybeRenderUploadingOverlay = () => {
-    if (this.state.uploading) {
+  const _maybeRenderUploadingOverlay = () => {
+    if (uploading) {
       return (
         <View
           style={[
@@ -124,9 +78,8 @@ export default class Receipt extends React.Component {
     }
   };
   // This is rendering the image.
-  _maybeRenderImage = () => {
+  const _maybeRenderImage = () => {
     // Deconstructing image and google response from this.state.
-    let {image, googleResponse} = this.state;
     // However, if there is no image, do nothing.
     if (!image) {
       return;
@@ -142,11 +95,11 @@ export default class Receipt extends React.Component {
         }}>
         {/* This is a button that kicks off the function that submits the image to the google api */}
         <Button
-          style={{marginBottom: 10}}
-          onPress={() => this.submitToGoogle()}
-          title="Process Receipt"
-        />
-
+          mode="contained"
+          style={processReceiptButton}
+          onPress={() => submitToGoogle()}>
+          Process Receipt
+        </Button>
         <View
           style={{
             borderTopRightRadius: 3,
@@ -159,108 +112,65 @@ export default class Receipt extends React.Component {
           }}>
           <Image source={{uri: image}} style={{width: 250, height: 250}} />
         </View>
-        <Text
-          onPress={this._copyToClipboard}
-          onLongPress={this._share}
-          style={{paddingVertical: 10, paddingHorizontal: 10}}
-        />
-        {/* End User Doesn't Need to See This So I'm Commenting It Out For Now */}
-        {/* <Text>Raw JSON:</Text>
-        {googleResponse && (
-          <Text
-            onPress={this._copyToClipboard}
-            onLongPress={this._share}
-            style={{
-              paddingVertical: 10,
-              paddingHorizontal: 10,
-              color: 'white',
-            }}>
-            {JSON.stringify(googleResponse.responses)}
-            {console.log('Raw JSON output:', JSON.stringify(googleResponse.responses))}
-          </Text>
-        )} */}
       </View>
     );
   };
 
-  _maybeRenderViewItemizedDisplay = () => {
-    if (this.state.googleResponse === null) {
+  const _maybeRenderViewItemizedDisplay = () => {
+    if (googleResponse === null) {
       return null;
     }
     return (
       <View>
-        <TouchableOpacity
+        <Button
+          mode="contained"
+          style={viewReceiptDetail}
           onPress={() =>
-            this.props.navigation.navigate('Itemized', {
-              receiptData: this.state.googleResponse,
+            navigation.navigate('Itemized', {
+              receiptData: googleResponse,
             })
           }>
-          <Text style={styles.button}>View Itemized Display</Text>
-        </TouchableOpacity>
+          View Receipt Detail
+        </Button>
       </View>
     );
   };
 
-  _keyExtractor = (item, index) => item.id;
-
-  _renderItem = item => {
-    <Text>response: {JSON.stringify(item)}</Text>;
-  };
-
-  _share = () => {
-    Share.share({
-      message: JSON.stringify(this.state.googleResponse.responses),
-      title: 'Check it out',
-      url: this.state.image,
-    });
-  };
-
-  _copyToClipboard = () => {
-    Clipboard.setString(this.state.image);
-    alert('Copied to clipboard');
-  };
-
-  _takePhoto = async () => {
+  const _takePhoto = async () => {
     let pickerResult = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
       aspect: [4, 3],
     });
-
-    this._handleImagePicked(pickerResult);
+    _handleImagePicked(pickerResult);
   };
 
-  _pickImage = async () => {
+  const _pickImage = async () => {
     let pickerResult = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
       aspect: [4, 3],
     });
-
-    this._handleImagePicked(pickerResult);
+    _handleImagePicked(pickerResult);
   };
 
-  _handleImagePicked = async pickerResult => {
+  const _handleImagePicked = async pickerResult => {
     try {
-      this.setState({uploading: true});
-
+      setUploading(true);
       if (!pickerResult.cancelled) {
         let uploadUrl = await uploadImageAsync(pickerResult.uri);
-        this.setState({image: uploadUrl});
+        setImage(uploadUrl);
       }
     } catch (e) {
       console.log(e);
       alert('Upload failed, sorry :(');
     } finally {
-      this.setState({uploading: false});
+      setUploading(false);
     }
   };
   // So here's the important bit, this is where you talk to google.
   // You get charged by feature you use from google.
-  // So I'm only using landmark detection, text, and document text detection.
-  // I'm keeping landmark so I can demonstrate how this works to my team.
-  submitToGoogle = async () => {
+  const submitToGoogle = async () => {
     try {
-      this.setState({uploading: true});
-      let {image} = this.state;
+      setUploading(true);
       let body = JSON.stringify({
         requests: [
           {
@@ -285,7 +195,6 @@ export default class Receipt extends React.Component {
         ],
       });
       // Here you fetch a response from google.
-      // It looks like you don't need to convert to base 64 here?
       // You're body contains the image info in the format google vision API needs.
       let response = await fetch(
         'https://vision.googleapis.com/v1/images:annotate?key=' +
@@ -300,40 +209,71 @@ export default class Receipt extends React.Component {
         },
       );
       let responseJson = await response.json();
-      // console.log('submitToGoogle responseJson:', responseJson);
-      this.setState({
-        googleResponse: responseJson,
-        uploading: false,
-      });
+      setGoogleResponse(responseJson);
+      setUploading(false);
     } catch (error) {
       console.log(error);
     }
   };
-}
-// I think this is where you are storing the image into firebase.
-async function uploadImageAsync(uri) {
-  const blob = await new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.onload = function () {
-      resolve(xhr.response);
-    };
-    xhr.onerror = function (e) {
-      console.log(e);
-      reject(new TypeError('Network request failed'));
-    };
-    xhr.responseType = 'blob';
-    xhr.open('GET', uri, true);
-    xhr.send(null);
-  });
 
-  const ref = firebase.storage().ref().child(uuid.v4());
-  const snapshot = await ref.put(blob);
+  async function uploadImageAsync(uri) {
+    const blob = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.onload = function () {
+        resolve(xhr.response);
+      };
+      xhr.onerror = function (e) {
+        console.log(e);
+        reject(new TypeError('Network request failed'));
+      };
+      xhr.responseType = 'blob';
+      xhr.open('GET', uri, true);
+      xhr.send(null);
+    });
+    const ref = firebase.storage().ref().child(uuid.v4());
+    const snapshot = await ref.put(blob);
+    blob.close();
+    return await snapshot.ref.getDownloadURL();
+  }
 
-  blob.close();
+  // This is what displays on our screen initially.
+  if (!fontsLoaded) {
+    return (
+      <View>
+        <Text>Loading</Text>
+      </View>
+    );
+  } else {
+  }
+  return (
+    <View style={container}>
+      {/* Creating our Background */}
+      <ImageBackground
+        style={img}
+        source={require('../assets/divvyup-flower-background.jpeg')}
+        resizeMode="cover">
+        {/* Adding our Header */}
+        <Header />
+        {/* Displaying our user and ability to logout */}
+        <HomeScreen />
+        <ScrollView contentContainerStyle={scrollViewContainer}>
+          <Button style={button} mode="contained" onPress={() => _pickImage()}>
+            Select Receipt From Camera Roll
+          </Button>
+          <Button style={button} mode="contained" onPress={() => _takePhoto()}>
+            Take A Photo Of Receipt
+          </Button>
+          {_maybeRenderImage()}
+          {_maybeRenderUploadingOverlay()}
+          {_maybeRenderViewItemizedDisplay()}
+        </ScrollView>
+      </ImageBackground>
+    </View>
+  );
+};
 
-  return await snapshot.ref.getDownloadURL();
-}
-// Styling for the screen.
+export default Receipt;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -342,23 +282,22 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
   },
-  developmentModeText: {
-    marginBottom: 20,
-    color: 'rgba(0,0,0,0.4)',
-    fontSize: 14,
-    lineHeight: 19,
-    textAlign: 'center',
+  button: {
+    marginBottom: '5%',
+    backgroundColor: 'rgb(227, 100, 20)',
+    alignSelf: 'stretch',
   },
-  contentContainer: {
-    paddingTop: 30,
-  },
-  helpContainer: {
-    marginTop: 15,
+  scrollViewContainer: {
+    height: '65%',
     alignItems: 'center',
   },
-  button: {
-    width: '100%',
-    color: 'white',
-    fontSize: 20,
+  processReceiptButton: {
+    marginBottom: '5%',
+    backgroundColor: 'rgb(20, 116, 111)',
+  },
+  viewReceiptDetail: {
+    marginTop: '5%',
+    marginBottom: '5%',
+    backgroundColor: 'rgb(20, 116, 111)',
   },
 });

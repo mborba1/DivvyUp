@@ -1,4 +1,4 @@
-//Google auth tutorial homescreen--wait to delete after whole navigation system is set up
+//Google auth tutorial homescreen
 
 import {StatusBar} from 'expo-status-bar';
 import React, {useContext} from 'react';
@@ -10,10 +10,9 @@ import {auth} from '../config/firebase';
 
 import {AuthenticatedUserContext} from '../navigation/AuthenticatedUserProvider';
 
-// //import receipt/scanner functionalities into our home screen, displayed below user info in return statement
-// import Receipt from './receipt';
+import {useFonts, Lato_400Regular} from '@expo-google-fonts/lato';
 
-//this screen is our main home screen
+//this screen will be integrated with our camera/googlevision receipt component.
 //this screen will show user's email and their UID when the user has successfully signed up or logged in
 //signOut button/component allows user to log out of current account and return to login/signup screen
 //Receipt/scanner component is imported into this homescreen and displayed beneath user info
@@ -21,6 +20,13 @@ export default function HomeScreen() {
   //AuthenticatedUserContext allows us to access user state so we can generate UID and email address
   //this will also allow us to access other info on user once other info is set-up
   const {user} = useContext(AuthenticatedUserContext);
+
+  let [fontsLoaded] = useFonts({
+    Lato_400Regular,
+  });
+
+  const {text, container, emailAndLogoutPosition, logout} = styles;
+  const {email} = user;
 
   //this function is triggered once logout icon is pressed and will log out user
   const handleSignOut = async () => {
@@ -31,21 +37,31 @@ export default function HomeScreen() {
     }
   };
 
-  return (
-    <View style={styles.container}>
-      {/* <Receipt /> */}
-      <StatusBar style="dark-content" />
-      <View style={styles.row}>
-        <Text style={styles.title}>Welcome {user.email}!</Text>
-        <IconButton
-          style={styles.logout}
-          name="logout"
-          size={24}
-          color="#fff"
-          onPress={handleSignOut}
-        />
+  if (!fontsLoaded) {
+    return (
+      <View>
+        <Text>Loading</Text>
       </View>
-      <Text style={styles.text}>Your UID is: {user.uid} </Text>
+    );
+  } else {
+  }
+  return (
+    <View style={container}>
+      <StatusBar style="dark-content" />
+      <View style={emailAndLogoutPosition}>
+        <Text style={text}>
+          User: {email}
+          <Text>
+            {'  '}
+            <IconButton
+              name="logout"
+              size={16}
+              color="#fff"
+              onPress={handleSignOut}
+            />
+          </Text>
+        </Text>
+      </View>
     </View>
   );
 }
@@ -53,29 +69,15 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: '#e93b81',
-    paddingTop: 50,
-    // paddingHorizontal: 12
   },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 24,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: '#fff',
-    // alignContent: 'center',
-    paddingLeft: 70,
+  emailAndLogoutPosition: {
+    alignSelf: 'flex-end',
+    marginRight: '5%',
   },
   text: {
-    fontSize: 16,
-    fontWeight: 'normal',
+    fontSize: 18,
     color: '#fff',
-  },
-  logout: {
-    paddingRight: 100,
+    fontFamily: 'Lato_400Regular',
+    alignSelf: 'center',
   },
 });

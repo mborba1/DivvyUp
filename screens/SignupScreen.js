@@ -1,49 +1,46 @@
 import {StatusBar} from 'expo-status-bar';
 import Header from './header';
 import React, {useState} from 'react';
+import {Button} from 'react-native-paper';
+
 import {
-  Alert,
-  Button as RNButton,
-  TextInput,
   View,
   StyleSheet,
   Text,
   ImageBackground,
+  TouchableOpacity,
 } from 'react-native';
 
-import {Button, InputField, ErrorMessage} from '../components';
+import {InputField, ErrorMessage} from '../components';
 
 import {auth} from '../config/firebase';
+
 import {db} from '../config/firebase';
-import {
-  useFonts,
-  Lato_100Thin,
-  Lato_100Thin_Italic,
-  Lato_300Light,
-  Lato_300Light_Italic,
-  Lato_400Regular,
-  Lato_400Regular_Italic,
-  Lato_700Bold,
-  Lato_700Bold_Italic,
-  Lato_900Black,
-  Lato_900Black_Italic,
-} from '@expo-google-fonts/lato';
-// import {TextInput} from 'react-native-paper';
+
+import {useFonts, Lato_400Regular} from '@expo-google-fonts/lato';
+
 export default function Signup({navigation}) {
-  const {img, text, button, container} = styles;
+  const {
+    img,
+    text,
+    button,
+    container,
+    title,
+    touchableOpacityContainerForBottom,
+  } = styles;
   //input fields where user will enter email and password
   //values of each input field is stored inside state variables using useState hook
   //initial values of each state variable is an empty string and then updated with "set" functions with the values inside input fields
   const [userEmail, setUserEmail] = useState('');
   const [password, setPassword] = useState('');
+  let [fontsLoaded] = useFonts({
+    Lato_400Regular,
+  });
 
   //3 other state variables defined
   const [passwordVisibility, setPasswordVisibility] = useState(true); //show or hide password on input field
   const [rightIcon, setRightIcon] = useState('eye'); //to set a default eye icon for password visability functionality
   const [signupError, setSignupError] = useState(''); //to store any incoming error when signing up from firebase
-
-  // console.log('inside signup, what is props', props);
-  // console.log('what is auth inside signup', auth);
 
   //toggle function to to see password in inputText form
   const handlePasswordVisibility = () => {
@@ -78,14 +75,23 @@ export default function Signup({navigation}) {
     }
   };
 
+  if (!fontsLoaded) {
+    return (
+      <View>
+        <Text>Loading</Text>
+      </View>
+    );
+  } else {
+  }
   return (
-    <View style={styles.container}>
+    <View style={container}>
       <ImageBackground
         style={img}
         source={require('../assets/divvyup-background.jpg')}
         resizeMode="cover">
         <StatusBar style="dark-content" />
-        <Text style={styles.title}>Create new account</Text>
+        <Header />
+        <Text style={title}>Create New Account</Text>
         <InputField
           inputStyle={{
             fontSize: 14,
@@ -125,21 +131,14 @@ export default function Signup({navigation}) {
         {signupError ? (
           <ErrorMessage error={signupError} visible={true} />
         ) : null}
-        <Button
-          onPress={onHandleSignup}
-          // backgroundColor='#f57c00'
-          title="Signup"
-          tileColor="#fff"
-          titleSize={20}
-          containerStyle={{
-            marginBottom: 24,
-          }}
-        />
-        <RNButton
-          onPress={() => navigation.navigate('Login')}
-          title="Go to Login"
-          color="#fff"
-        />
+        <Button style={button} mode="contained" onPress={onHandleSignup}>
+          Sign Up
+        </Button>
+        <TouchableOpacity
+          style={touchableOpacityContainerForBottom}
+          onPress={() => navigation.navigate('Login')}>
+          <Text style={text}>Return To Login Page</Text>
+        </TouchableOpacity>
       </ImageBackground>
     </View>
   );
@@ -150,37 +149,31 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
+    fontFamily: 'Lato_400Regular',
     fontSize: 24,
     fontWeight: '600',
     color: '#fff',
     alignSelf: 'center',
-    paddingBottom: 24,
+    marginBottom: 24,
   },
   img: {
     flex: 1,
     justifyContent: 'center',
   },
   button: {
-    width: '100%',
-    height: '40%',
     color: 'white',
     fontFamily: 'Lato_400Regular',
     backgroundColor: 'black',
-    fontSize: 20,
-    textAlign: 'center',
-    alignItems: 'center',
-    padding: 30,
-    borderRadius: 10,
   },
   text: {
     fontSize: 18,
     fontWeight: '600',
     fontFamily: 'Lato_400Regular',
     color: 'white',
+    alignSelf: 'center',
   },
-  buttonText: {
-    fontSize: 18,
-    fontWeight: '600',
-    fontFamily: 'Lato_400Regular',
+  touchableOpacityContainerForBottom: {
+    marginTop: 30,
+    marginBottom: '65%',
   },
 });
