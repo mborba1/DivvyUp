@@ -1,9 +1,5 @@
 import React from 'react';
-import { StyleSheet, Pressable, Text } from 'react-native';
-
-//this Button component contains a configurable <Pressable /> component
-
-//const Button = (properties) => {return(Pressable function)}
+import {StyleSheet, Pressable, Text} from 'react-native';
 
 const Button = ({
   title,
@@ -12,7 +8,7 @@ const Button = ({
   titleSize = 14,
   onPress,
   width = '100%',
-  containerStyle
+  containerStyle,
 }) => {
   return (
     <Pressable
@@ -24,9 +20,9 @@ const Button = ({
             {
               opacity: 0.5,
               backgroundColor,
-              width
+              width,
             },
-            containerStyle
+            containerStyle,
           ];
         }
 
@@ -35,13 +31,12 @@ const Button = ({
           {
             opacity: 1,
             backgroundColor,
-            width
+            width,
           },
-          containerStyle
+          containerStyle,
         ];
-      }}
-    >
-      <Text style={[styles.text, { color: titleColor, fontSize: titleSize }]}>
+      }}>
+      <Text style={[styles.text, {color: titleColor, fontSize: titleSize}]}>
         {title}
       </Text>
     </Pressable>
@@ -50,16 +45,15 @@ const Button = ({
 
 const styles = StyleSheet.create({
   text: {
-    fontWeight: '600'
-    
+    fontWeight: '600',
   },
   base: {
     alignItems: 'center',
     justifyContent: 'center',
     minHeight: 42,
     borderRadius: 4,
-    paddingHorizontal: 12
-  }
+    paddingHorizontal: 12,
+  },
 });
 
 export default Button;
