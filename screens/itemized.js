@@ -67,7 +67,7 @@ const Itemized = ({route, navigation}) => {
         <Text>Edit</Text>
       </Button>
     );
-  }
+  };
 
   // AN Integrating Jo's function to send the receipt back to the firestore.
   async function submitReceipt() {
@@ -121,12 +121,12 @@ const Itemized = ({route, navigation}) => {
     cleanReceipt.items = items;
     // AN set receipt state to clean receipt.
     setReceipt(cleanReceipt);
-    return cleanReceipt
+    return cleanReceipt;
   };
 
   const editButtonFunctionality = () => {
     const receipt = convertDataToCleanObject();
-    navigation.navigate('EditReceipt', {receipt})
+    navigation.navigate('EditReceipt', {receipt});
   };
 
   //   AN: This is what will be displayed on the screen.  Using react native paper because it's cute.
