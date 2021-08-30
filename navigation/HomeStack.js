@@ -11,7 +11,6 @@ const Stack = createStackNavigator();
 export default function HomeStack() {
   return (
     <Stack.Navigator>
-      {/* <Stack.Screen name="Home" component={HomeScreen} /> */}
       <Stack.Screen name="Receipt" component={Receipt} />
       <Stack.Screen name="Itemized" component={Itemized} />
     </Stack.Navigator>
