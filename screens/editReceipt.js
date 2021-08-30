@@ -30,7 +30,6 @@ export default EditReceipt = ({ route }) => {
 
   function updateItemPrice(item, newPrice){
     const items = receipt.items
-    const index = items.indexOf(item)
     item.price = newPrice
     setReceipt({...receipt, items: items, charger: `${user.uid}`})
   }
