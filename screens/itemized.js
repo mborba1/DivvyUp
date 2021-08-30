@@ -14,6 +14,8 @@ const firestore = firebase.firestore();
 import {auth} from '../config/firebase';
 import {AuthenticatedUserContext} from '../navigation/AuthenticatedUserProvider';
 
+import { db } from '../config/firebase';
+
 const Itemized = ({route, navigation}) => {
   const {container, bottom} = styles;
   const {receiptData} = route.params;
@@ -75,7 +77,7 @@ const Itemized = ({route, navigation}) => {
 
   // Integrating Jazz's function to send the receipt back to the firestore.
   const submitReceipt = async () => {
-    const submittedReceipt = await firestore
+    const submittedReceipt = await db
     .collection('receipts')
     .add({
       ...receipt,
@@ -85,6 +87,7 @@ const Itemized = ({route, navigation}) => {
     // return firestore
     //   .collection('receipts')
     //   .add({receipt: {...receipt, charger: `${user.uid}`}});
+
     setReceiptId(submittedReceipt.id);
     console.log(receiptId);
   }

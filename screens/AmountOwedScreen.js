@@ -5,7 +5,7 @@ import {
   Text,
   View,
   FlatList,
-  Button
+  Button,
 } from 'react-native'
 import { Feather } from '@expo/vector-icons';
 
@@ -26,7 +26,7 @@ const AmountOwedScreen = ({ navigation, route }) => {
   const chargerId = user.uid;
   // console.log('what is chargerId', chargerId)
 
-  const numPpl  = 4;
+  const numPpl  = 8;
   let ppCharge;
 
   const getMostRecent = async () => {
@@ -37,13 +37,13 @@ const AmountOwedScreen = ({ navigation, route }) => {
     .get();
 
     const data = query.data();
-    console.log('what is query data', data)
+    console.log('what is query data', data);
 
     const total = data.items.find(({description}) => description === 'TOTAL');
     ppCharge = (Number(total.price) / numPpl);
     console.log('what is per person charge', ppCharge);
     
-    const chargees = new Array(numPpl).fill({'chargee': ppCharge});
+    const chargees = new Array(numPpl).fill({name: 'chargee', amountOwed: ppCharge});
     console.log('what is the chargee object', chargees);
     // console.log(data.charger);
     // console.log(data.createdAt);
@@ -54,7 +54,6 @@ const AmountOwedScreen = ({ navigation, route }) => {
     // console.log('chargeesObj', chargeesObj);
   }
 
-  // getMostRecent();
 
   console.log("what is chargeeObj in screen", chargeesObj);
 
@@ -66,17 +65,6 @@ const AmountOwedScreen = ({ navigation, route }) => {
     // console.log('is chargees added', newData.data());
   }
   
-
-  // updateChargees();
-
-  const [amounts, setAmounts] = useState([
-    {id: '1', price: '700'},
-    {id: '2', price: '3400'},
-    {id: '3', price: '1200'},
-    {id: '4', price: '2250'},
-    {id: '5', price: '1350'},
-    {id: '6', price: '2280'},
-  ]);
 
   return (
     <View style={styles.container}>
@@ -91,16 +79,16 @@ const AmountOwedScreen = ({ navigation, route }) => {
         <Button title="Add chargeesObj to receipt" onPress={() => updateChargees()}/>
         </View>
         <FlatList
-          keyExtractor={(item) => item.id}
-          data={amounts}
+          // keyExtractor={(item) => item.id}
+          data={chargeesObj}
           renderItem={({ item }) => (
-          <Text style={styles.item}>Person {item.id} owes ${(item.price)/100}</Text>)}
+          <Text style={styles.item}>Person {item.name} owes ${(item.amountOwed).toFixed(2)}</Text>)}
         />
-        <View style={styles.footer}>
+        {/* <View style={styles.footer}>
           <View style={styles.iconContainer}>
             <Feather name="home" size={40} color="rgb(243, 239, 236)" />
           </View>
-        </View>
+        </View> */}
     </ImageBackground>
   </View>
   );
