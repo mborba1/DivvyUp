@@ -43,7 +43,7 @@ function evenlyItemizedScreen({navigation, route}) {
       console.log(totalPrice)
       let ppCharge =  splitFunctionality()
       
-      const chargees = new Array(numPeople).fill({name: 'chargee', amountOwed: ppCharge});
+      const chargees = new Array(Number(numPeople.current)).fill({name: 'chargee', amountOwed: ppCharge});
       console.log('what is the chargee object', chargees);
       setChargeesObj(chargees)
 
