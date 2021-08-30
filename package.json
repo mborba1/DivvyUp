@@ -25,13 +25,17 @@
     "expo-camera": "~11.2.2",
     "expo-constants": "~11.0.1",
     "expo-font": "~9.2.1",
+    "expo-google-sign-in": "~9.2.1",
     "expo-image-picker": "^10.2.2",
     "expo-status-bar": "~1.0.4",
     "firebase": "^8.2.3",
     "react": "16.13.1",
+    "react-currency-input-field": "^3.4.3",
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz",
+    "react-native-currency-input": "^1.0.1",
     "react-native-gesture-handler": "^1.10.3",
+    "react-native-masked-text": "^1.13.0",
     "react-native-pager-view": "^5.4.0",
     "react-native-paper": "^4.9.2",
     "react-native-safe-area-context": "3.2.0",
@@ -39,8 +43,9 @@
     "react-native-tab-view": "^3.1.1",
     "react-native-vector-icons": "^8.1.0",
     "react-native-web": "~0.13.12",
-    "uuid": "^3.4.0",
-    "expo-google-sign-in": "~9.2.1"
+    "react-text-mask": "^5.4.3",
+    "text-mask-addons": "^3.8.0",
+    "uuid": "^3.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0"
