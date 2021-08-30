@@ -26,6 +26,7 @@ const Itemized = ({route, navigation}) => {
   // Here I'm using useState, changing the names of my items to the same naming convention as Jazz.
   const [receipt, setReceipt] = useState(parsedData);
   const acceptedReceipt = useRef(null);
+  const [receiptId, setReceiptId] = useState('')
 
   //   AN: This will display the items on the screen if receiptdata was properly parsed.
   const displayItemized = () => {
@@ -75,6 +76,8 @@ const Itemized = ({route, navigation}) => {
       charger: `${user.uid}`,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
     });
+    setReceiptId(submittedReceipt.id)
+    console.log(receiptId)
   }
 
   //   AN's function to massage parsed receipt data in a form that Jazz is expecting.  However, I have no business name.
@@ -102,6 +105,7 @@ const Itemized = ({route, navigation}) => {
   const acceptButtonFunctionality = () => {
     convertDataToCleanObjectAndSubmitToFirestore();
     // Need to add navigation to Margareth's screen here.
+    navigation.navigate('SplitReceipt', {id: receiptId})
   };
 
   const convertDataToCleanObject = () => {

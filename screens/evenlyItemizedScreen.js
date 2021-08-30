@@ -1,5 +1,7 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useContext} from 'react';
 import Header from './header';
+import { db } from '../config/firebase';
+import {AuthenticatedUserContext} from '../navigation/AuthenticatedUserProvider';
 import { StyleSheet, Text, View, ImageBackground, TouchableOpacity } from 'react-native';
 import {
     useFonts,
@@ -14,23 +16,62 @@ import {
     Lato_900Black,
     Lato_900Black_Italic,
   } from '@expo-google-fonts/lato';
-  import {TextInput, Button} from 'react-native-paper';
+import {TextInput, Button} from 'react-native-paper';
  
-const totalPrice =  7550
+// const totalPrice =  7550
 
-function evenlyItemizedScreen() {
+function evenlyItemizedScreen({navigation, route}) {
     const {img, container, text, button, textInput} = styles;
+    const {user} = useContext(AuthenticatedUserContext);
+    const { id } = route.params;
+    console.log(id)
+    const chargerId = user.uid;
+
+    const [chargeesObj, setChargeesObj] = useState([]);
+    const getMostRecent = async () => {
+      // Make the initial query
+      const query = await db
+      .collection('receipts')
+      .doc(id)
+      .get();
+
     
+      const data = query.data();
+      console.log(data)
+
+      totalPrice = data.items.find(({description}) => description === 'Total');
+      console.log(totalPrice)
+      let ppCharge =  splitFunctionality()
+      
+      const chargees = new Array(numPeople).fill({name: 'chargee', amountOwed: ppCharge});
+      console.log('what is the chargee object', chargees);
+      setChargeesObj(chargees)
+
+      
+    }
+    let totalPrice
+    console.log('What is chargeesObj in state', chargeesObj)
+    // const updateChargees = async () => {
+    //   getMostRecent()
+    //   await db
+    //   .collection('receipts')
+    //   .doc(id)
+    //   .update({chargeesField: chargeesObj});
+    //   // console.log('is chargees added', newData.data());
+
+    // }
+    const splitFunctionality = () => {
+      numPeople.current = tempPeople;
+      let split = totalPrice.price / numPeople.current;
+      return split;
+    }
+
     //setting the initial state 
     const numPeople = useRef(0)
     const [tempPeople, setTempPeople] = useState(0);
     
     //this is the split function
-    const splitFunctionality = () => {
-      numPeople.current = tempPeople;
-      let split = totalPrice / numPeople.current;
-      return split;
-    }
+    
     //function to set the temp number to the number of people
     const tempNumber = people => {
       setTempPeople(people); 
@@ -43,7 +84,7 @@ function evenlyItemizedScreen() {
     const evenlyButton = () =>{
       
         return (
-        <Button color='#000029' onPress={() => splitFunctionality()}  mode='contained'>
+        <Button color='#000029' onPress={() => getMostRecent()}  mode='contained'>
           <Text>Evenly</Text>
         </Button>
         

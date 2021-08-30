@@ -6,6 +6,7 @@ import Home from '../screens/home'; //Anj's homescreen
 import Receipt from '../screens/receipt'; //Anj's receipt
 import EditReceipt from '../screens/editReceipt'
 import Itemized from '../screens/itemized'; //AN Itemized Screen
+import evenlyItemizedScreen from '../screens/evenlyItemizedScreen';
 
 const Stack = createStackNavigator();
 
@@ -15,6 +16,7 @@ export default function HomeStack() {
       <Stack.Screen name="Receipt" component={Receipt} />
       <Stack.Screen name="EditReceipt" component={EditReceipt} /> 
       <Stack.Screen name="Itemized" component={Itemized} />
+      <Stack.Screen name="SplitReceipt" component={evenlyItemizedScreen} />
     </Stack.Navigator>
   );
 }
