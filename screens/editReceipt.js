@@ -42,8 +42,6 @@ export default EditReceipt = ({route, navigation}) => {
     setReceipt({...receipt, items: items, charger: `${user.uid}`});
   }
 
-  console.log(receipt)
-
   function listItems() {
     return (
       <View>
