@@ -23,7 +23,7 @@ function evenlyItemizedScreen({route, navigation}) {
     const {img, container, text, button, textInput} = styles;
     const {user} = useContext(AuthenticatedUserContext);
     const { id } = route.params;
-    console.log(id);
+
 
     const chargerId = user.uid;
     const [chargeesObj, setChargeesObj] = useState([]);
