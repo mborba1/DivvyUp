@@ -26,7 +26,6 @@ function evenlyItemizedScreen({route, navigation}) {
 
 
     const chargerId = user.uid;
-    const [chargeesObj, setChargeesObj] = useState([]);
     const getMostRecent = async () => {
       // Make the initial query
       const query = await db

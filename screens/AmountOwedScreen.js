@@ -17,7 +17,7 @@ const AmountOwed = ({ route }) => {
     await db
     .collection('receipts')
     .doc(id)
-    .update({chargeesField: chargeesProp});
+    .update({chargees: chargeesProp});
   }
 
   return (
