@@ -5,92 +5,48 @@ import {
   Text,
   View,
   FlatList,
-  Button,
 } from 'react-native'
 import { Feather } from '@expo/vector-icons';
+import { Button } from 'react-native-paper';
 
 import Header from './header';
 
 import { db } from '../config/firebase';
-import {AuthenticatedUserContext} from '../navigation/AuthenticatedUserProvider';
 
-const AmountOwedScreen = ({ navigation, route }) => {
-  const {user} = useContext(AuthenticatedUserContext)
-
-  // console.log(route);
-  const { id } = route.params;
-  console.log(id);
-
-  const [chargeesObj, setChargeesObj] = useState([]);
-  
-  const chargerId = user.uid;
-  // console.log('what is chargerId', chargerId)
-
-  const numPpl  = 8;
-  let ppCharge;
-
-  const getMostRecent = async () => {
-    // Make the initial query
-    const query = await db
-    .collection('receipts')
-    .doc(id)
-    .get();
-
-    const data = query.data();
-    console.log('what is query data', data);
-
-    const total = data.items.find(({description}) => description === 'TOTAL');
-    ppCharge = (Number(total.price) / numPpl);
-    console.log('what is per person charge', ppCharge);
-    
-    const chargees = new Array(numPpl).fill({name: 'chargee', amountOwed: ppCharge});
-    console.log('what is the chargee object', chargees);
-    // console.log(data.charger);
-    // console.log(data.createdAt);
-    // console.log(data.items);
-    console.log('what is chargeesObj in state', chargeesObj);
-    //only setting the chargees right now, but will not be set until this function is complete
-    setChargeesObj(chargees);
-    // console.log('chargeesObj', chargeesObj);
-  }
-
-
-  console.log("what is chargeeObj in screen", chargeesObj);
+const AmountOwedScreen = ({ route }) => {
+  const { chargeesProp, id } = route.params;
 
   const updateChargees = async () => {
     await db
     .collection('receipts')
     .doc(id)
-    .update({chargeesField: chargeesObj});
-    // console.log('is chargees added', newData.data());
+    .update({chargeesField: chargeesProp});
   }
-  
 
   return (
     <View style={styles.container}>
-
-    <ImageBackground
-      style={styles.img}
-      source={require('../assets/divvyup-background.jpg')}
-      resizeMode="cover">
-        <View style={styles.header}>
-        <Header />
-        <Button title="add Chargees" onPress={() => getMostRecent()}/>
-        <Button title="Add chargeesObj to receipt" onPress={() => updateChargees()}/>
-        </View>
-        <FlatList
-          // keyExtractor={(item) => item.id}
-          data={chargeesObj}
-          renderItem={({ item }) => (
-          <Text style={styles.item}>Person {item.name} owes ${(item.amountOwed).toFixed(2)}</Text>)}
-        />
-        {/* <View style={styles.footer}>
-          <View style={styles.iconContainer}>
-            <Feather name="home" size={40} color="rgb(243, 239, 236)" />
+      <ImageBackground
+        style={styles.img}
+        source={require('../assets/divvyup-flower-background.jpeg')}
+        resizeMode="cover">
+          <View style={styles.header}>
+          <Header />
+          <Button 
+            style={styles.button}
+            onPress={updateChargees}
+            mode="contained"
+          >
+            <Text>Send Charges</Text>
+          </Button>
           </View>
-        </View> */}
-    </ImageBackground>
-  </View>
+          <FlatList
+            // keyExtractor={(item) => item.id}
+            data={chargeesProp}
+            renderItem={({ item }) => (
+            <Text style={styles.item}>Person {item.name} owes ${(item.amountOwed).toFixed(2)}</Text>)}
+          />
+      </ImageBackground>
+    </View>
   );
 }
 
@@ -134,4 +90,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     borderRadius: 34,
   }, 
+  button: {
+    backgroundColor: 'rgb(227, 100, 20)',
+  },
 })

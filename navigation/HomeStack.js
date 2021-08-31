@@ -16,8 +16,8 @@ export default function HomeStack() {
       <Stack.Screen name="Receipt" component={Receipt} />
       <Stack.Screen name="EditReceipt" component={EditReceipt} />
       <Stack.Screen name="Itemized" component={Itemized} />
-      <Stack.Screen name='AmountOwed' component={AmountOwedScreen} />
       <Stack.Screen name="SplitReceipt" component={evenlyItemizedScreen} />
+      <Stack.Screen name='AmountOwed' component={AmountOwedScreen} />
     </Stack.Navigator>
   );
 }

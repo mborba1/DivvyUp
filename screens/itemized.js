@@ -47,16 +47,7 @@ const Itemized = ({route, navigation}) => {
       );
     }
   };
-
-   // TEMP amountOwed button to see screen, will remove after
-   const amountButton = () => {
-    return (
-      <Button onPress={() => navigation.navigate('AmountOwed', {id: receiptId})} mode="contained">
-        <Text>Amount Owed</Text>
-      </Button>
-    );
-  };
-
+  
   // AN's Accept Button
   const acceptButton = () => {
     return (
@@ -152,7 +143,6 @@ const Itemized = ({route, navigation}) => {
         <View style={bottom}>
           {acceptButton()}
           {editButton()}
-          {amountButton()}
         </View>
       </ScrollView>
     </View>
