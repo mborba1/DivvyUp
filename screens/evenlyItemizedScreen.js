@@ -23,6 +23,7 @@ function evenlyItemizedScreen({route, navigation}) {
     const {img, container, text, button, textInput} = styles;
     const {user} = useContext(AuthenticatedUserContext);
     const { id } = route.params;
+    console.log('what is id', id)
 
     const chargerId = user.uid;
     const [chargeesObj, setChargeesObj] = useState([]);
@@ -34,6 +35,7 @@ function evenlyItemizedScreen({route, navigation}) {
         .get();
 
       const data = query.data();
+      console.log('what is data', data)
 
       totalPrice = data.items.find(({description}) => description === 'total' || description === 'TOTAL' || description === 'Total');
       let ppCharge =  splitFunctionality()

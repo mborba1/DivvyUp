@@ -8,7 +8,7 @@ const firestore = firebase.firestore();
 import Header from './header';
 import {Button} from 'react-native-paper';
 
-export default EditReceipt = ({route}) => {
+export default EditReceipt = ({route, navigation}) => {
   const {
     img,
     text,
@@ -22,11 +22,18 @@ export default EditReceipt = ({route}) => {
   } = styles;
   const {user} = useContext(AuthenticatedUserContext);
   const [receipt, setReceipt] = useState(route.params.receipt);
+  const [receiptId, setReceiptId] = useState('')
 
-  function submitReceipt() {
-    return firestore
+  async function submitReceipt() {
+    const edittedReceipt = await firestore
       .collection('receipts')
-      .add({receipt: {...receipt, charger: `${user.uid}`}});
+      .add({
+        ...receipt, 
+        charger: `${user.uid}`,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+    setReceiptId(edittedReceipt.id)
+    navigation.navigate('SplitReceipt', {id: receiptId})
   }
 
   function updateItemPrice(item, newPrice) {
@@ -34,6 +41,8 @@ export default EditReceipt = ({route}) => {
     item.price = newPrice;
     setReceipt({...receipt, items: items, charger: `${user.uid}`});
   }
+
+  console.log(receipt)
 
   function listItems() {
     return (

@@ -6,14 +6,11 @@ import {
   View,
   FlatList,
 } from 'react-native'
-import { Feather } from '@expo/vector-icons';
 import { Button } from 'react-native-paper';
-
 import Header from './header';
-
 import { db } from '../config/firebase';
 
-const AmountOwedScreen = ({ route }) => {
+const AmountOwed = ({ route }) => {
   const { chargeesProp, id } = route.params;
 
   const updateChargees = async () => {
@@ -50,7 +47,7 @@ const AmountOwedScreen = ({ route }) => {
   );
 }
 
-export default AmountOwedScreen;
+export default AmountOwed;
 
 const styles = StyleSheet.create({
   container: {
