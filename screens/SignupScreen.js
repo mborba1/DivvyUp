@@ -61,16 +61,15 @@ export default function Signup({navigation}) {
   const onHandleSignup = async () => {
     try {
       if (userEmail !== '' && password !== '') {
-        const credential = await auth.createUserWithEmailAndPassword(
+        let credential = await auth.createUserWithEmailAndPassword(
           userEmail,
           password,
         );
-
-        //once new user signed up, link auth uid to new instance in users collection in firestore
-        db.collection('users').doc(credential.user.uid).set({
-          email: credential.user.email,
-        });
       }
+      //once new user signed up, link auth uid to new instance in users collection in firestore
+      db.collection('users').doc(credential.user.uid).set({
+        email: credential.user.email,
+      });
     } catch (error) {
       setSignupError(error.message);
     }

@@ -14,6 +14,8 @@ const firestore = firebase.firestore();
 import {auth} from '../config/firebase';
 import {AuthenticatedUserContext} from '../navigation/AuthenticatedUserProvider';
 
+import { db } from '../config/firebase';
+
 const Itemized = ({route, navigation}) => {
   const {container, bottom, button} = styles;
   const {receiptData} = route.params;
@@ -45,7 +47,7 @@ const Itemized = ({route, navigation}) => {
       );
     }
   };
-
+  
   // AN's Accept Button
   const acceptButton = () => {
     return (
@@ -70,14 +72,13 @@ const Itemized = ({route, navigation}) => {
   };
 
   // AN Integrating Jo's function to send the receipt back to the firestore.
-  async function submitReceipt() {
-    const submittedReceipt = await firestore.collection('receipts').add({
+  const submitReceipt = async () => {
+    const submittedReceipt = await db.collection('receipts').add({
       ...acceptedReceipt.current,
       charger: `${user.uid}`,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
     });
     setReceiptId(submittedReceipt.id)
-    console.log(receiptId)
   }
 
   //   AN's function to massage parsed receipt data in a form that Jazz is expecting.  However, I have no business name.
@@ -104,7 +105,6 @@ const Itemized = ({route, navigation}) => {
 
   const acceptButtonFunctionality = () => {
     convertDataToCleanObjectAndSubmitToFirestore();
-    // Need to add navigation to Margareth's screen here.
     navigation.navigate('SplitReceipt', {id: receiptId})
   };
 

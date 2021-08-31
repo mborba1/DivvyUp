@@ -16,37 +16,32 @@ import {
     Lato_900Black,
     Lato_900Black_Italic,
   } from '@expo-google-fonts/lato';
-import {TextInput, Button} from 'react-native-paper';
- 
+import {TextInput, Button} from 'react-native-paper'; 
 
 
-function evenlyItemizedScreen({route}) {
+function evenlyItemizedScreen({route, navigation}) {
     const {img, container, text, button, textInput} = styles;
     const {user} = useContext(AuthenticatedUserContext);
     const { id } = route.params;
 
-    const chargerId = user.uid;
 
-    const [chargeesObj, setChargeesObj] = useState([]);
+    const chargerId = user.uid;
     const getMostRecent = async () => {
       // Make the initial query
       const query = await db
-      .collection('receipts')
-      .doc(id)
-      .get();
+        .collection('receipts')
+        .doc(id)
+        .get();
 
-    
       const data = query.data();
 
-      totalPrice = data.items.find(({description}) => description === 'Total');
+      totalPrice = data.items.find(({description}) => description === 'total' || description === 'TOTAL' || description === 'Total');
       let ppCharge =  splitFunctionality()
       
       const chargees = new Array(Number(numPeople.current)).fill({name: 'chargee', amountOwed: ppCharge});
-      
-      setChargeesObj(chargees)
-
-      
+      navigation.navigate('AmountOwed', {chargeesProp: chargees, id: id});
     }
+
     let totalPrice
   
     const splitFunctionality = () => {
@@ -72,7 +67,7 @@ function evenlyItemizedScreen({route}) {
     const evenlyButton = () =>{
       
         return (
-        <Button color='#000029' onPress={() => getMostRecent()}  mode='contained'>
+        <Button color='#000029' onPress={getMostRecent} mode='contained'>
           <Text>Evenly</Text>
         </Button>
         
@@ -96,10 +91,14 @@ function evenlyItemizedScreen({route}) {
             <View style={text}>
               <Text style={text}>Number of People:</Text>
             </View>
-            <TextInput style={textInput} placeholder="enter number" onChangeText={tempNumber}></TextInput>
+            <TextInput 
+              style={textInput} 
+              placeholder="enter number" 
+              onChangeText={tempNumber} 
+            ></TextInput>
             <View style={button} > 
                 {evenlyButton()}
-                {itemizedButton()}        
+                {itemizedButton()}
             </View>
         </ImageBackground>
       </View>
