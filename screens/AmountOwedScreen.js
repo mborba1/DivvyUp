@@ -36,12 +36,15 @@ const AmountOwed = ({ route }) => {
             <Text>Send Charges</Text>
           </Button>
           </View>
+          <View style={styles.content}>
           <FlatList
             // keyExtractor={(item) => item.id}
             data={chargeesProp}
             renderItem={({ item }) => (
-            <Text style={styles.item}>Person {item.name} owes ${(item.amountOwed).toFixed(2)}</Text>)}
+              <Text style={styles.item}>Person {item.name} owes ${(item.amountOwed).toFixed(2)}</Text>
+            )}
           />
+          </View>
       </ImageBackground>
     </View>
   );
@@ -60,7 +63,7 @@ const styles = StyleSheet.create({
   header: {
     flex: 1,
     height: 60,
-    paddingTop: 112,
+    paddingTop: 80,
     padding: 38,
   },
   item:{
@@ -69,8 +72,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#f8f7f6',
     overflow: 'visible',
     marginTop: 16,
-    marginLeft: 34,
-    marginRight: 34,
+    alignItems: 'center',
+  },
+  content: {
+    padding: 40,
+    paddingTop: 10,
+    paddingBottom: 40,
+    flex: 3.5,
   },
   iconContainer: {
     marginTop: 16,

@@ -22,7 +22,6 @@ export default EditReceipt = ({route, navigation}) => {
   } = styles;
   const {user} = useContext(AuthenticatedUserContext);
   const [receipt, setReceipt] = useState(route.params.receipt);
-  const [receiptId, setReceiptId] = useState('')
 
   async function submitReceipt() {
     const edittedReceipt = await firestore
@@ -32,8 +31,7 @@ export default EditReceipt = ({route, navigation}) => {
         charger: `${user.uid}`,
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       });
-    setReceiptId(edittedReceipt.id)
-    navigation.navigate('SplitReceipt', {id: receiptId})
+    navigation.navigate('SplitReceipt', {id: edittedReceipt.id})
   }
 
   function updateItemPrice(item, newPrice) {
