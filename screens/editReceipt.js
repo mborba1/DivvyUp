@@ -52,7 +52,7 @@ export default EditReceipt = ({route, navigation}) => {
               data={receipt.items}
               renderItem={({item, index}) => {
                 return (
-                  <View style={listItem} key={`${index}item`}>
+                  <View style={listItem}>
                     <Text style={text}>{item.description}</Text>
                   </View>
                 );
@@ -65,7 +65,7 @@ export default EditReceipt = ({route, navigation}) => {
               data={receipt.items}
               renderItem={({item, index}) => {
                 return (
-                  <View style={listItem} key={`${index}cost`}>
+                  <View style={listItem}>
                     <TextInputMask
                       style={textInput}
                       type={'money'}
