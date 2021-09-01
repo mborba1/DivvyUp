@@ -69,11 +69,13 @@ const Itemized = ({route, navigation}) => {
 
   // AN Integrating Jo's function to send the receipt back to the firestore.
   const submitReceipt = async () => {
-    const submittedReceipt = await db.collection('receipts').add({
-      ...acceptedReceipt.current,
-      charger: `${user.uid}`,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-    });
+    const submittedReceipt = await db
+      .collection('receipts')
+      .add({
+        ...acceptedReceipt.current,
+        charger: `${user.uid}`,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      });
     navigation.navigate('SplitReceipt', {id: submittedReceipt.id})
   }
 

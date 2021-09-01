@@ -1,5 +1,5 @@
 import React, {useContext, useState} from 'react';
-import {StyleSheet, Text, View, ImageBackground, FlatList} from 'react-native';
+import {StyleSheet, Text, View, ImageBackground, FlatList, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import {TextInputMask} from 'react-native-masked-text';
 import {auth} from '../config/firebase';
 import {AuthenticatedUserContext} from '../navigation/AuthenticatedUserProvider';
@@ -42,44 +42,47 @@ export default EditReceipt = ({route, navigation}) => {
 
   function listItems() {
     return (
-      <View>
-        <View style={list}>
-          <FlatList
-            ListHeaderComponent={() => <Text style={textHeader}>ITEM</Text>}
-            ItemSeparatorComponent={() => <View style={separator} />}
-            data={receipt.items}
-            renderItem={({item, index}) => {
-              return (
-                <View style={listItem} key={`${index}item`}>
-                  <Text style={text}>{item.description}</Text>
-                </View>
-              );
-            }}
-          />
-          <FlatList
-            ListHeaderComponent={() => <Text style={textHeader}>COST</Text>}
-            ItemSeparatorComponent={() => <View style={separator} />}
-            data={receipt.items}
-            renderItem={({item, index}) => {
-              return (
-                <View style={listItem} key={`${index}cost`}>
-                  <TextInputMask
-                    style={textInput}
-                    type={'money'}
-                    options={{
-                      separator: '.',
-                      delimiter: ',',
-                      unit: null,
-                    }}
-                    value={item.price}
-                    onChangeText={newPrice => updateItemPrice(item, newPrice)}
-                  />
-                </View>
-              );
-            }}
-          />
+      <TouchableWithoutFeedback onPress={ () => Keyboard.dismiss() }>
+        <View>
+          <View style={list}>
+            <FlatList
+              ListHeaderComponent={() => <Text style={textHeader}>ITEM</Text>}
+              ItemSeparatorComponent={() => <View style={separator} />}
+              data={receipt.items}
+              renderItem={({item, index}) => {
+                return (
+                  <View style={listItem} key={`${index}item`}>
+                    <Text style={text}>{item.description}</Text>
+                  </View>
+                );
+              }}
+            />
+            <FlatList
+              ListHeaderComponent={() => <Text style={textHeader}>COST</Text>}
+              ItemSeparatorComponent={() => <View style={separator} />}
+              data={receipt.items}
+              renderItem={({item, index}) => {
+                return (
+                  <View style={listItem} key={`${index}cost`}>
+                    <TextInputMask
+                      style={textInput}
+                      type={'money'}
+                      options={{
+                        separator: '.',
+                        delimiter: ',',
+                        unit: null,
+                      }}
+                      value={item.price}
+                      onChangeText={newPrice => updateItemPrice(item, newPrice)}
+                      keyboardType="decimal-pad"
+                    />
+                  </View>
+                );
+              }}
+            />
+          </View>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
     );
   }
 
