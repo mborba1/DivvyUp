@@ -38,7 +38,7 @@ const AmountOwed = ({ route }) => {
           </View>
           <View style={styles.content}>
           <FlatList
-            // keyExtractor={(item) => item.id}
+            keyExtractor={(item, index) => index.toString()}
             data={chargeesProp}
             renderItem={({ item }) => (
               <Text style={styles.item}>Person {item.name} owes ${(item.amountOwed).toFixed(2)}</Text>

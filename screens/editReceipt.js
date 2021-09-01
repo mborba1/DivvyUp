@@ -46,24 +46,26 @@ export default EditReceipt = ({route, navigation}) => {
         <View>
           <View style={list}>
             <FlatList
+              keyExtractor={(item, index) => index.toString()}
               ListHeaderComponent={() => <Text style={textHeader}>ITEM</Text>}
               ItemSeparatorComponent={() => <View style={separator} />}
               data={receipt.items}
               renderItem={({item, index}) => {
                 return (
-                  <View style={listItem} key={`${index}item`}>
+                  <View style={listItem}>
                     <Text style={text}>{item.description}</Text>
                   </View>
                 );
               }}
             />
             <FlatList
+              keyExtractor={(item, index) => index.toString()}
               ListHeaderComponent={() => <Text style={textHeader}>COST</Text>}
               ItemSeparatorComponent={() => <View style={separator} />}
               data={receipt.items}
               renderItem={({item, index}) => {
                 return (
-                  <View style={listItem} key={`${index}cost`}>
+                  <View style={listItem}>
                     <TextInputMask
                       style={textInput}
                       type={'money'}
