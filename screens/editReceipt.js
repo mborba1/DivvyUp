@@ -46,6 +46,7 @@ export default EditReceipt = ({route, navigation}) => {
         <View>
           <View style={list}>
             <FlatList
+              keyExtractor={(item, index) => index}
               ListHeaderComponent={() => <Text style={textHeader}>ITEM</Text>}
               ItemSeparatorComponent={() => <View style={separator} />}
               data={receipt.items}
@@ -58,6 +59,7 @@ export default EditReceipt = ({route, navigation}) => {
               }}
             />
             <FlatList
+              keyExtractor={(item, index) => index}
               ListHeaderComponent={() => <Text style={textHeader}>COST</Text>}
               ItemSeparatorComponent={() => <View style={separator} />}
               data={receipt.items}
