@@ -2,7 +2,7 @@ import React, {useState, useRef, useContext} from 'react';
 import Header from './header';
 import { db } from '../config/firebase';
 import {AuthenticatedUserContext} from '../navigation/AuthenticatedUserProvider';
-import { StyleSheet, Text, View, ImageBackground } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import {
     useFonts,
     Lato_100Thin,
@@ -24,7 +24,6 @@ function evenlyItemizedScreen({route, navigation}) {
     const {user} = useContext(AuthenticatedUserContext);
     const { id } = route.params;
 
-
     const chargerId = user.uid;
     const getMostRecent = async () => {
       // Make the initial query
@@ -35,7 +34,8 @@ function evenlyItemizedScreen({route, navigation}) {
 
       const data = query.data();
 
-      totalPrice = data.items.find(({description}) => description === 'total' || description === 'TOTAL' || description === 'Total');
+      totalPrice = data.items.find(
+        ({description}) => description === 'total' || description === 'TOTAL' || description === 'Total');
       let ppCharge =  splitFunctionality()
       
       const chargees = new Array(Number(numPeople.current)).fill({name: 'chargee', amountOwed: ppCharge});
@@ -82,6 +82,7 @@ function evenlyItemizedScreen({route, navigation}) {
         )
     }
     return (
+      <TouchableWithoutFeedback onPress={ () => Keyboard.dismiss() }>
         <View style={container}>
         <ImageBackground
           style={img}
@@ -95,6 +96,7 @@ function evenlyItemizedScreen({route, navigation}) {
               style={textInput} 
               placeholder="enter number" 
               onChangeText={tempNumber} 
+              keyboardType="number-pad"
             ></TextInput>
             <View style={button} > 
                 {evenlyButton()}
@@ -102,7 +104,8 @@ function evenlyItemizedScreen({route, navigation}) {
             </View>
         </ImageBackground>
       </View>
-    );5
+      </TouchableWithoutFeedback>  
+    );
 }
 
 export default evenlyItemizedScreen;
