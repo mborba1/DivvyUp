@@ -1,24 +1,15 @@
-import React, { useContext, useState } from 'react'
-import {
-  StyleSheet,
-  ImageBackground,
-  Text,
-  View,
-  FlatList,
-} from 'react-native'
-import { Button } from 'react-native-paper';
+import React, {useContext, useState} from 'react';
+import {StyleSheet, ImageBackground, Text, View, FlatList} from 'react-native';
+import {Button} from 'react-native-paper';
 import Header from './header';
-import { db } from '../config/firebase';
+import {db} from '../config/firebase';
 
-const AmountOwed = ({ route }) => {
-  const { chargeesProp, id } = route.params;
+const AmountOwed = ({route}) => {
+  const {chargeesProp, id} = route.params;
 
   const updateChargees = async () => {
-    await db
-    .collection('receipts')
-    .doc(id)
-    .update({chargees: chargeesProp});
-  }
+    await db.collection('receipts').doc(id).update({chargees: chargeesProp});
+  };
 
   return (
     <View style={styles.container}>
@@ -26,29 +17,30 @@ const AmountOwed = ({ route }) => {
         style={styles.img}
         source={require('../assets/divvyup-flower-background.jpeg')}
         resizeMode="cover">
-          <View style={styles.header}>
+        <View style={styles.header}>
           <Header />
-          <Button 
+          <Button
             style={styles.button}
             onPress={updateChargees}
-            mode="contained"
-          >
+            mode="contained">
             <Text>Send Charges</Text>
           </Button>
-          </View>
-          <View style={styles.content}>
+        </View>
+        <View style={styles.content}>
           <FlatList
             keyExtractor={(item, index) => index.toString()}
             data={chargeesProp}
-            renderItem={({ item }) => (
-              <Text style={styles.item}>Person {item.name} owes ${(item.amountOwed).toFixed(2)}</Text>
+            renderItem={({item, index}) => (
+              <Text style={styles.item}>
+                Person {+`${index}` + 1} owes ${item.amountOwed.toFixed(2)}
+              </Text>
             )}
           />
-          </View>
+        </View>
       </ImageBackground>
     </View>
   );
-}
+};
 
 export default AmountOwed;
 
@@ -66,7 +58,7 @@ const styles = StyleSheet.create({
     paddingTop: 80,
     padding: 38,
   },
-  item:{
+  item: {
     width: 322,
     height: 29,
     backgroundColor: '#f8f7f6',
@@ -94,8 +86,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#2d3142',
     overflow: 'hidden',
     borderRadius: 34,
-  }, 
+  },
   button: {
     backgroundColor: 'rgb(227, 100, 20)',
   },
-})
+});
