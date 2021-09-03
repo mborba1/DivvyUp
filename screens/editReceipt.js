@@ -1,5 +1,13 @@
 import React, {useContext, useState} from 'react';
-import {StyleSheet, Text, View, ImageBackground, FlatList, TouchableWithoutFeedback, Keyboard} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ImageBackground,
+  FlatList,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from 'react-native';
 import {TextInputMask} from 'react-native-masked-text';
 import {auth} from '../config/firebase';
 import {AuthenticatedUserContext} from '../navigation/AuthenticatedUserProvider';
@@ -24,14 +32,12 @@ export default EditReceipt = ({route, navigation}) => {
   const [receipt, setReceipt] = useState(route.params.receipt);
 
   async function submitReceipt() {
-    const edittedReceipt = await firestore
-      .collection('receipts')
-      .add({
-        ...receipt, 
-        charger: `${user.uid}`,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-      });
-    navigation.navigate('SplitReceipt', {id: edittedReceipt.id})
+    const edittedReceipt = await firestore.collection('receipts').add({
+      ...receipt,
+      charger: `${user.uid}`,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    });
+    navigation.navigate('SplitReceipt', {id: edittedReceipt.id});
   }
 
   function updateItemPrice(item, newPrice) {
@@ -42,7 +48,7 @@ export default EditReceipt = ({route, navigation}) => {
 
   function listItems() {
     return (
-      <TouchableWithoutFeedback onPress={ () => Keyboard.dismiss() }>
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View>
           <View style={list}>
             <FlatList
