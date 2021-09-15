@@ -9,5 +9,7 @@ npm-debug.*
 *.orig.*
 web-build/
 secret.js
+secret_old.js
+package-lock.json
 # macOS
 .DS_Store
