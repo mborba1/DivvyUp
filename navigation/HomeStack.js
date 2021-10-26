@@ -9,6 +9,7 @@ import AmountOwed from '../screens/AmountOwedScreen';
 import evenlyItemizedScreen from '../screens/evenlyItemizedScreen';
 import ItemizedSplit from '../screens/itemizedSplit';
 import FinalItemized from '../screens/finalItemized';
+import AppForm from '../components/AppForm';
 
 const Stack = createStackNavigator();
 
@@ -22,6 +23,7 @@ export default function HomeStack() {
       <Stack.Screen name="AmountOwed" component={AmountOwed} />
       <Stack.Screen name="ItemizedSplit" component={ItemizedSplit} />
       <Stack.Screen name="FinalItemized" component={FinalItemized} />
+      <Stack.Screen name="AppForm" component={AppForm} />
     </Stack.Navigator>
   );
 }
