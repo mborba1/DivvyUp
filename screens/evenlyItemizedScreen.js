@@ -58,7 +58,7 @@ function evenlyItemizedScreen({route, navigation}) {
   };
 
   const moveToAllocationScreen = async () => {
-    //need to add additional functionality later
+   
     const query = await db.collection('receipts').doc(id).get();
     const receiptDetail = query.data();
     numPeople.current = tempPeople;
@@ -75,7 +75,7 @@ function evenlyItemizedScreen({route, navigation}) {
       </Button>
     );
   };
-  //this button has no function yet
+  
   const itemizedButton = () => {
     return (
       <Button color="#000029" onPress={moveToAllocationScreen} mode="contained">
