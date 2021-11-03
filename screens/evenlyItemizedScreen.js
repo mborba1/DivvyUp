@@ -58,7 +58,6 @@ function evenlyItemizedScreen({route, navigation}) {
   };
 
   const moveToAllocationScreen = async () => {
-   
     const query = await db.collection('receipts').doc(id).get();
     const receiptDetail = query.data();
     numPeople.current = tempPeople;
